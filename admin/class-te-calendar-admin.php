@@ -100,4 +100,77 @@ class Te_Calendar_Admin {
 
 	}
 
+	/**
+	 * Register a new custom post type for the events to be stored in.
+	 *
+	 * @since 		1.0.0
+	 */
+	public function events_custom_post_type() {
+		register_post_type( 'tecal_events',
+			array(
+				'labels' => array(
+					'name' => __( 'Events', $this->plugin_name ),
+					'singular_name' => __( 'Event', $this->plugin_name ),
+					'add_new' => __('Add', $this->plugin_name),
+					'menu_name' => __('Events', $this->plugin_name),
+					'add_new_item' => __('Add event', $this->plugin_name),
+					'edit_item' => __('Edit event', $this->plugin_name),
+					'new_item' => __('New event', $this->plugin_name),
+					'all_items' => __('Events', $this->plugin_name),
+					'view_item' => __('View event', $this->plugin_name),
+					'search_items' => __('Search events', $this->plugin_name),
+					'not_found' =>  __('Looks like there are no events, yet.', $this->plugin_name),
+					'not_found_in_trash' => __('There are no trashed events.', $this->plugin_name),
+					'parent_item_colon' => ''
+				),
+			'public' => true,
+			'has_archive' => false,
+			'rewrite' => array(
+				'slug' => __('events')
+				),
+			'supports' => array('title', 'editor', 'custom-fields', 'taxonomy'),
+			'menu_position' => 100
+			)
+		);
+	}
+
+	/**
+	 * Register a new custom taxonomy for the calendars to be stored in.
+	 *
+	 * @since 		1.0.0
+	 */
+	public function calendars_custom_taxonomy() {
+		// Add new taxonomy, NOT hierarchical (like tags)
+		$labels = array(
+			'name'                       => _x( 'Calendars', 'taxonomy general name', $this->plugin_name ),
+			'singular_name'              => _x( 'Calendar', 'taxonomy singular name', $this->plugin_name ),
+			'search_items'               => __( 'Search Writers', $this->plugin_name ),
+			'popular_items'              => __( 'Popular Writers', $this->plugin_name ),
+			'all_items'                  => __( 'All Writers', $this->plugin_name ),
+			'parent_item'                => null,
+			'parent_item_colon'          => null,
+			'edit_item'                  => __( 'Edit Writer', $this->plugin_name ),
+			'update_item'                => __( 'Update Writer', $this->plugin_name ),
+			'add_new_item'               => __( 'Add New Writer', $this->plugin_name ),
+			'new_item_name'              => __( 'New Writer Name', $this->plugin_name ),
+			'separate_items_with_commas' => __( 'Separate writers with commas', $this->plugin_name ),
+			'add_or_remove_items'        => __( 'Add or remove writers', $this->plugin_name ),
+			'choose_from_most_used'      => __( 'Choose from the most used writers', $this->plugin_name ),
+			'not_found'                  => __( 'No writers found.', $this->plugin_name ),
+			'menu_name'                  => __( 'Writers', $this->plugin_name ),
+		);
+
+		$args = array(
+			'hierarchical'          => false,
+			'labels'                => $labels,
+			'show_ui'               => true,
+			'show_admin_column'     => true,
+			'update_count_callback' => '_update_post_term_count',
+			'query_var'             => true,
+			'rewrite'               => array( 'slug' => 'writer' ),
+		);
+
+		register_taxonomy( 'calendars', 'tecal_events', $args );
+	}
+
 }
