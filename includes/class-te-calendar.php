@@ -114,9 +114,14 @@ class Te_Calendar {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-te-calendar-admin.php';
 
 		/**
-		 * The class responsible for defining all actions that occur in the admin area.
+		 * The file responsible for defining the widget settings.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-te-calendar-widget.php';
+
+		/**
+		 * The class responsible for defining everything that happens on the edit event page.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-te-calendar-event-details-controller.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -155,12 +160,16 @@ class Te_Calendar {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Te_Calendar_Admin( $this->get_plugin_name(), $this->get_version() );
+		$event_controller = new Te_Calendar_Event_Details_Controller();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'init', $plugin_admin, 'events_custom_post_type' );
 		$this->loader->add_action( 'init', $plugin_admin, 'calendars_custom_taxonomy' );
 		$this->loader->add_action( 'widgets_init', $plugin_admin, 'widget_register' );
+
+		$this->loader->add_action( 'admin_init', $event_controller, 'event_metaboxes_register' );
+		$this->loader->add_action( 'save_post', $event_controller, 'event_details_save' );
 
 	}
 

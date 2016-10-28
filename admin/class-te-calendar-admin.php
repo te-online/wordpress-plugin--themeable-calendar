@@ -128,7 +128,7 @@ class Te_Calendar_Admin {
 			'rewrite' => array(
 				'slug' => __('events')
 				),
-			'supports' => array('title', 'editor', 'custom-fields', 'taxonomy'),
+			'supports' => array('title', 'editor', 'taxonomy'),
 			'menu_position' => 100
 			)
 		);
