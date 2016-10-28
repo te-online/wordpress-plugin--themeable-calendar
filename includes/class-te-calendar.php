@@ -114,6 +114,11 @@ class Te_Calendar {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-te-calendar-admin.php';
 
 		/**
+		 * The class responsible for defining all actions that occur in the admin area.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-te-calendar-widget.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
@@ -155,6 +160,7 @@ class Te_Calendar {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'init', $plugin_admin, 'events_custom_post_type' );
 		$this->loader->add_action( 'init', $plugin_admin, 'calendars_custom_taxonomy' );
+		$this->loader->add_action( 'widgets_init', $plugin_admin, 'widget_register' );
 
 	}
 

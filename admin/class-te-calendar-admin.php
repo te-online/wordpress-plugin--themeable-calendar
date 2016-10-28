@@ -167,10 +167,19 @@ class Te_Calendar_Admin {
 			'show_admin_column'     => true,
 			'update_count_callback' => '_update_post_term_count',
 			'query_var'             => true,
-			'rewrite'               => array( 'slug' => 'writer' ),
+			'rewrite'               => array( 'slug' => 'calendar' ),
 		);
 
 		register_taxonomy( 'calendars', 'tecal_events', $args );
+	}
+
+	/**
+	 * Register a new widget.
+	 *
+	 * @since 		1.0.0
+	 */
+	public function widget_register() {
+		register_widget( 'Te_Calendar_Widget' );
 	}
 
 }
