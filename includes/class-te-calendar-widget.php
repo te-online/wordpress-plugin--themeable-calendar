@@ -28,40 +28,19 @@ class Te_Calendar_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 		// outputs the content of the widget
-		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
+		// $title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
 
-		$num_posts = ( empty( $instance['num_posts'] ) || intval( $instance['num_posts']) < 1 ) ? 3 : intval( $instance['num_posts'] );
+		// $num_posts = ( empty( $instance['num_posts'] ) || intval( $instance['num_posts']) < 1 ) ? 3 : intval( $instance['num_posts'] );
 
-		// Get to know if this is a single page and the post id we are viewing right now.
-		$exclude_self = 0;
-
-		if( is_single() ) {
-			global $post;
-			$exclude_self = $post->ID;
-		}
-
-		// Get the last three posts with an offset of the post per page setting.
-		$posts = get_posts( array(
-			'posts_per_page' => $num_posts,
-			'post__not_in' => array( $exclude_self )
+		query_posts( array(
+			'posts_per_page' => 5,
+			'post_type' => 'tecal_events'
 			)
 		);
 
-		if( count($posts) > 0 ) {
-			echo '
-				<h2 class="section-title section-title--dark">' . $args['before_title'] . $title . $args['after_title'] . '</h2>
-				<div class="news-list">';
-			foreach( $posts as $post ) {
-				echo '
-					<div class="news-item">
-						<h3 class="news-item__title">
-							<a href="' . get_permalink($post) . '">' . $post->post_title . '</a>
-						</h3>
-					</div>';
-			}
-			echo '
-				</div>';
-		}
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'templates/te-calendar-default-template-sidebar.php';
+
+		wp_reset_query();
 	}
 
 	/**

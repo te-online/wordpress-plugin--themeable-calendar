@@ -129,6 +129,11 @@ class Te_Calendar {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-te-calendar-public.php';
 
+		/**
+		 * The class responsible for defining all public templating functions.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-te-calendar-global-functions.php';
+
 		$this->loader = new Te_Calendar_Loader();
 
 	}
