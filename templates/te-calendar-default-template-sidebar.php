@@ -1,5 +1,16 @@
 <?php // Calendar-Template-Name: Default Theme Widget ?>
 
+<style>
+	.calendar--default-widget .calendar__item {
+		margin-bottom: 1em;
+	}
+
+	.calendar--default-widget .calendar__item__day,
+	.calendar--default-widget .calendar__item__time {
+		opacity: 0.75;
+	}
+</style>
+
 <section class="calendar calendar--default-widget">
 	<?php
 		if( have_posts() ) {
@@ -9,19 +20,13 @@
 				<div class="calendar__item">
 					<div>
 						<span class="calendar__item__day">
-							<a href="<?php the_permalink(); ?>">
-								<?php the_event_day(); ?> &middot;
-							</a>
+							<?php the_event_day(); ?> &middot;
 						</span>
 						<span class="calendar__item__date calendar__item__year">
-							<a href="<?php the_permalink(); ?>">
-								<?php the_event_date(); // date_format($datum,'j.n.') ?><?php the_event_year(); // date_format($datum,'Y') ?> &middot;
-							</a>
+							<?php the_event_date(); // date_format($datum,'j.n.') ?><?php the_event_year(); // date_format($datum,'Y') ?>
 						</span>
 						<span class="calendar__item__time">
-							<a href="<?php the_permalink(); ?>">
-								<?php the_event_time(); // date_format($datum,'Y') ?>
-							</a>
+							&middot; <?php the_event_time(); // date_format($datum,'Y') ?>
 						</span>
 					</div>
 					<div>
@@ -33,7 +38,7 @@
 					</div>
 					<div>
 						<span class="calendar__item__location">
-							<?php the_event_location(); ?>
+							<em><?php the_event_location(); ?></em>
 						</span>
 					</div>
 				</div>
