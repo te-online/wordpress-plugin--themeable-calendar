@@ -6,7 +6,10 @@ class Te_Calendar_Global_Functions {
 	 * @since 		1.0.0
 	 */
 	static function get_event_day() {
-		return "Monday";
+		global $post;
+
+		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
+		return date_i18n( 'l', $begin->format('U') );
 	}
 
 	// static function the_event_day() {
@@ -19,7 +22,10 @@ class Te_Calendar_Global_Functions {
 	 * @since 		1.0.0
 	 */
 	static function get_event_date() {
-		return "20.11.";
+		global $post;
+
+		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
+		return date_i18n( 'j.n.', $begin->format('U') );
 	}
 
 	// static function the_event_date() {
@@ -32,7 +38,10 @@ class Te_Calendar_Global_Functions {
 	 * @since 		1.0.0
 	 */
 	static function get_event_year() {
-		return "2016";
+		global $post;
+
+		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
+		return date_i18n( 'Y', $begin->format('U') );
 	}
 
 	// static function the_event_year() {
@@ -45,7 +54,10 @@ class Te_Calendar_Global_Functions {
 	 * @since 		1.0.0
 	 */
 	static function get_event_time() {
-		return "20.15 Uhr";
+		global $post;
+
+		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
+		return date_i18n( 'H.i', $begin->format('U') ) . _x( " Uhr", 'te-calendar', "Wie in 12.00 Uhr" );
 	}
 
 	// static function the_event_time() {
@@ -58,7 +70,10 @@ class Te_Calendar_Global_Functions {
 	 * @since 		1.0.0
 	 */
 	static function get_event_location() {
-		return "Gemeindehaus";
+		global $post;
+
+		$location = get_post_meta( $post->ID, 'tecal_events_location', true );
+		return $location;
 	}
 
 	// static function the_event_location() {
