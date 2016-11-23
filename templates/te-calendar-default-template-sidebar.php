@@ -47,7 +47,7 @@
 		} else {
 	?>
 			<div class="calendar__item calendar__item--no-items">
-				Uhm, there are no upcoming calendar entries, I think.
+				Sorry, there are no upcoming calendar entries right now.
 			</div>
 	<?php
 		}

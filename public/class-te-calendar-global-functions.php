@@ -25,6 +25,7 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
+		print_r($begin);
 		return date_i18n( 'j.n.', $begin->format('U') );
 	}
 

@@ -32,11 +32,26 @@ class Te_Calendar_Widget extends WP_Widget {
 
 		// $num_posts = ( empty( $instance['num_posts'] ) || intval( $instance['num_posts']) < 1 ) ? 3 : intval( $instance['num_posts'] );
 
+		$today = date_create_from_format( 'U', strtotime( 'today midnight' ) );
+		// print_r(maybe_serialize($today));
+
 		query_posts( array(
-			'posts_per_page' => 5,
-			'post_type' => 'tecal_events'
+				'posts_per_page' => 5,
+				'post_type' => 'tecal_events',
+				'orderby' => 'meta_value',
+				'meta_key' => 'tecal_events_begin',
+				'meta_query' => array(
+					array(
+						'key' => 'tecal_events_begin',
+						'value' => $today,
+						'type' => 'date',
+						'compare' => '>='
+					)
+				)
 			)
 		);
+
+		 echo $GLOBALS['wp_query']->request;
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'templates/te-calendar-default-template-sidebar.php';
 
