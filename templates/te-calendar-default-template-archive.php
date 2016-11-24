@@ -8,8 +8,6 @@
 	.calendar--default-archive .calendar__item {
 		margin-top: 1em;
 		margin-bottom: 1em;
-
-		/* border-bottom: 1px solid #b6b6b6; */
 		padding-bottom: 1.5em;
 	}
 
@@ -18,18 +16,10 @@
 	}
 
 	.calendar--default-archive .calendar__item__description {
-		/* padding-left: .5em; */
-		/* padding-right: .5em; */
 		padding-bottom: .25em;
 		padding-top: .25em;
 		margin-top: 1.5em;
 		margin-bottom: -1em;
-		/* margin-bottom: .75em; */
-		/* background: #e6e6e6; */
-		/* font-size: 80%; */
-		/* opacity: .9; */
-		/* border-radius: .25em; */
-		/* border-top:  1px solid #b6b6b6; */
 	}
 
 	.calendar--default-archive .calendar__item__description::before,
@@ -41,14 +31,6 @@
     content: "";
     position: absolute;
     margin-top: -.9em;
-	}
-
-	.calendar--default-archive .calendar__item__description::before {
-
-	}
-
-	.calendar--default-archive .calendar__item__description::after {
-
 	}
 
 </style>
