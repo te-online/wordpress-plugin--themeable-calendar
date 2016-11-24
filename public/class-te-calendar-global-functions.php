@@ -9,7 +9,7 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
-		return date_i18n( 'l', $begin->format('U') );
+		return date_i18n( 'l', $begin );
 	}
 
 	// static function the_event_day() {
@@ -25,8 +25,7 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
-		print_r($begin);
-		return date_i18n( 'j.n.', $begin->format('U') );
+		return date_i18n( 'j.n.', $begin );
 	}
 
 	// static function the_event_date() {
@@ -42,7 +41,7 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
-		return date_i18n( 'Y', $begin->format('U') );
+		return date_i18n( 'Y', $begin );
 	}
 
 	// static function the_event_year() {
@@ -57,8 +56,13 @@ class Te_Calendar_Global_Functions {
 	static function get_event_time() {
 		global $post;
 
+		$allday = get_post_meta( $post->ID, 'tecal_events_allday', true );
+		if( $allday ) {
+			return __( "ganztägig", 'te-calendar' );
+		}
+
 		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
-		return date_i18n( 'H.i', $begin->format('U') ) . _x( " Uhr", 'te-calendar', "Wie in 12.00 Uhr" );
+		return date_i18n( 'H.i', $begin ) . _x( " Uhr", 'te-calendar', "Wie in 12.00 Uhr" );
 	}
 
 	// static function the_event_time() {

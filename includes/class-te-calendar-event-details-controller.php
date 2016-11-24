@@ -15,14 +15,19 @@ class Te_Calendar_Event_Details_Controller {
 	 * @since 		1.0.0
 	 */
 	public function event_details_metabox( $post ) {
+		$today = date_create();
 		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
-		$begin_date = ( $begin instanceof DateTime ) ? $begin : date_create();
-		$begin_string = $begin_date->format('Y-m-d');
-		$begin_time = ( $begin_date == date_create() ) ? $begin_date->format( 'H:00' ) : $begin_date->format( 'H:i' );
+		if( ( date_create_from_format( 'U', $begin ) instanceof DateTime ) != true ) {
+			$begin = $today->format('U');
+		}
+		$begin_string = date_i18n( 'Y-m-d', $begin );
+		$begin_time = ( $begin == $today->format('U') ) ? date_i18n( 'H:00', $begin ) : date_i18n( 'H:i', $begin );
 		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
-		$end_date = ( $end instanceof DateTime ) ? $end : date_create();
-		$end_string = $end_date->format('Y-m-d');
-		$end_time = ( $end_date == date_create() ) ? $end_date->format( 'H:00' ) : $end_date->format( 'H:i' );
+		if( ( date_create_from_format( 'U', $end ) instanceof DateTime ) != true ) {
+			$end = $today->format('U');
+		}
+		$end_string = date_i18n( 'Y-m-d', $end );
+		$end_time = ( $end == $today->format('U') ) ? date_i18n( 'H:00', ( $end + 60 * 60 ) ) : date_i18n( 'H:i', $end );
 		$allday = get_post_meta( $post->ID, 'tecal_events_allday', true );
 		$location = get_post_meta( $post->ID, 'tecal_events_location', true );
 		$repeat_mode = get_post_meta( $post->ID, 'tecal_events_repeat_mode', true );
@@ -80,13 +85,13 @@ class Te_Calendar_Event_Details_Controller {
     	if( isset( $_POST['tecal_events_begin'] ) && isset( $_POST['tecal_events_begin_time'] ) ) {
     		$begin_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_begin'] ) . " " . esc_attr( $_POST['tecal_events_begin_time'] ) ) );
     		$begin_date = ( $begin_date == false ) ? date_create() : $begin_date;
-    		update_post_meta( $post_id, 'tecal_events_begin', $begin_date );
+    		update_post_meta( $post_id, 'tecal_events_begin', $begin_date->format('U') );
     	}
 
     	if( isset( $_POST['tecal_events_end'] ) && isset( $_POST['tecal_events_end_time'] ) ) {
 	    	$end_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_end'] ) . " " . esc_attr( $_POST['tecal_events_end_time'] ) ) );
 	    	$end_date = ( $end_date == false ) ? date_create() : $end_date;
-	    	update_post_meta( $post_id, 'tecal_events_end', $end_date );
+	    	update_post_meta( $post_id, 'tecal_events_end', $end_date->format('U') );
 	    }
 
 	    if( isset( $_POST['tecal_events_location'] ) ) {
