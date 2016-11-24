@@ -1,6 +1,10 @@
 <?php // Calendar-Template-Name: Default Theme Widget ?>
 
 <style>
+	.calendar--default-widget {
+		margin-top:  1em;
+	}
+
 	.calendar--default-widget .calendar__item {
 		margin-bottom: 1em;
 	}
@@ -20,13 +24,13 @@
 				<div class="calendar__item">
 					<div>
 						<span class="calendar__item__day">
-							<?php the_event_day(); ?> &middot;
+							<?php the_event_begin_day(); ?> &middot;
 						</span>
 						<span class="calendar__item__date calendar__item__year">
-							<?php the_event_date(); // date_format($datum,'j.n.') ?><?php the_event_year(); // date_format($datum,'Y') ?>
+							<?php the_event_begin_date(); // date_format($datum,'j.n.') ?><?php the_event_begin_year(); // date_format($datum,'Y') ?>
 						</span>
 						<span class="calendar__item__time">
-							&middot; <?php the_event_time(); // date_format($datum,'Y') ?>
+							&middot; <?php the_event_begin_time(); // date_format($datum,'Y') ?>
 						</span>
 					</div>
 					<div>

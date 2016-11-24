@@ -1,59 +1,59 @@
 <?php
 class Te_Calendar_Global_Functions {
 	/**
-	 * Get the weekday of the event.
+	 * Get the event begin in a given format.
 	 *
 	 * @since 		1.0.0
 	 */
-	static function get_event_day() {
+	static function get_event_begin( $format ) {
+		global $post;
+
+		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
+		return date_i18n( $format, $begin );
+	}
+
+	/**
+	 * Get the weekday of the event begin.
+	 *
+	 * @since 		1.0.0
+	 */
+	static function get_event_begin_day() {
 		global $post;
 
 		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
 		return date_i18n( 'l', $begin );
 	}
 
-	// static function the_event_day() {
-	// 	echo $this->get_event_day();
-	// }
-
 	/**
-	 * Get the short form date of the event.
+	 * Get the short form date of the event begin.
 	 *
 	 * @since 		1.0.0
 	 */
-	static function get_event_date() {
+	static function get_event_begin_date() {
 		global $post;
 
 		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
 		return date_i18n( 'j.n.', $begin );
 	}
 
-	// static function the_event_date() {
-	// 	echo $this->get_event_date();
-	// }
-
 	/**
-	 * Get the year of the event.
+	 * Get the year of the event begin.
 	 *
 	 * @since 		1.0.0
 	 */
-	static function get_event_year() {
+	static function get_event_begin_year() {
 		global $post;
 
 		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
 		return date_i18n( 'Y', $begin );
 	}
 
-	// static function the_event_year() {
-	// 	echo $this->get_event_year();
-	// }
-
 	/**
-	 * Get the time of the event.
+	 * Get the time of the event begin.
 	 *
 	 * @since 		1.0.0
 	 */
-	static function get_event_time() {
+	static function get_event_begin_time() {
 		global $post;
 
 		$allday = get_post_meta( $post->ID, 'tecal_events_allday', true );
@@ -65,9 +65,70 @@ class Te_Calendar_Global_Functions {
 		return date_i18n( 'H.i', $begin ) . _x( " Uhr", 'te-calendar', "Wie in 12.00 Uhr" );
 	}
 
-	// static function the_event_time() {
-	// 	echo $this->get_event_time();
-	// }
+	/**
+	 * Get the event end in a given format.
+	 *
+	 * @since 		1.0.0
+	 */
+	static function get_event_end( $format ) {
+		global $post;
+
+		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
+		return date_i18n( $format, $end );
+	}
+
+	/**
+	 * Get the weekday of the event end.
+	 *
+	 * @since 		1.0.0
+	 */
+	static function get_event_end_day() {
+		global $post;
+
+		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
+		return date_i18n( 'l', $end );
+	}
+
+	/**
+	 * Get the short form date of the event end.
+	 *
+	 * @since 		1.0.0
+	 */
+	static function get_event_end_date() {
+		global $post;
+
+		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
+		return date_i18n( 'j.n.', $end );
+	}
+
+	/**
+	 * Get the year of the event end.
+	 *
+	 * @since 		1.0.0
+	 */
+	static function get_event_end_year() {
+		global $post;
+
+		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
+		return date_i18n( 'Y', $end );
+	}
+
+	/**
+	 * Get the time of the event end.
+	 *
+	 * @since 		1.0.0
+	 */
+	static function get_event_end_time() {
+		global $post;
+
+		$allday = get_post_meta( $post->ID, 'tecal_events_allday', true );
+		if( $allday ) {
+			return "";
+		}
+
+		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
+		return date_i18n( 'H.i', $end ) . _x( " Uhr", 'te-calendar', "Wie in 12.00 Uhr" );
+	}
 
 	/**
 	 * Get the location of the event.
@@ -81,26 +142,62 @@ class Te_Calendar_Global_Functions {
 		return $location;
 	}
 
-	// static function the_event_location() {
-	// 	echo $this->get_event_location();
-	// }
+	/**
+	 * Know if the event is an allday-event.
+	 *
+	 * @since 		1.0.0
+	 */
+	static function get_event_is_allday() {
+		global $post;
+
+		$allday = get_post_meta( $post->ID, 'tecal_events_allday', true );
+		if( $allday ) {
+			return true;
+		}
+
+		return false;
+	}
 }
 
-// $te_calendar_global_functions = new Te_Calendar_Global_Functions();
+// Event begin functions.
 
-if( !function_exists('get_event_day') ) { function get_event_day() { return Te_Calendar_Global_Functions::get_event_day(); } }
-if( !function_exists('the_event_day') ) { function the_event_day() { echo Te_Calendar_Global_Functions::get_event_day(); } }
+if( !function_exists('get_event_begin') ) { function get_event_begin( $format = "d-m-Y" ) { return Te_Calendar_Global_Functions::get_event_begin( $format ); } }
+if( !function_exists('the_event_begin') ) { function the_event_begin( $format = "d-m-Y") { echo Te_Calendar_Global_Functions::get_event_begin( $format ); } }
 
-if( !function_exists('get_event_date') ) { function get_event_date() { return Te_Calendar_Global_Functions::get_event_date(); } }
-if( !function_exists('the_event_date') ) { function the_event_date() { echo Te_Calendar_Global_Functions::get_event_date(); } }
+if( !function_exists('get_event_begin_day') ) { function get_event_begin_day() { return Te_Calendar_Global_Functions::get_event_begin_day(); } }
+if( !function_exists('the_event_begin_day') ) { function the_event_begin_day() { echo Te_Calendar_Global_Functions::get_event_begin_day(); } }
 
-if( !function_exists('get_event_year') ) { function get_event_year() { return Te_Calendar_Global_Functions::get_event_year(); } }
-if( !function_exists('the_event_year') ) { function the_event_year() { echo Te_Calendar_Global_Functions::get_event_year(); } }
+if( !function_exists('get_event_begin_date') ) { function get_event_begin_date() { return Te_Calendar_Global_Functions::get_event_begin_date(); } }
+if( !function_exists('the_event_begin_date') ) { function the_event_begin_date() { echo Te_Calendar_Global_Functions::get_event_begin_date(); } }
 
-if( !function_exists('get_event_time') ) { function get_event_time() { return Te_Calendar_Global_Functions::get_event_time(); } }
-if( !function_exists('the_event_time') ) { function the_event_time() { echo Te_Calendar_Global_Functions::get_event_time(); } }
+if( !function_exists('get_event_begin_year') ) { function get_event_begin_year() { return Te_Calendar_Global_Functions::get_event_begin_year(); } }
+if( !function_exists('the_event_begin_year') ) { function the_event_begin_year() { echo Te_Calendar_Global_Functions::get_event_begin_year(); } }
+
+if( !function_exists('get_event_begin_time') ) { function get_event_begin_time() { return Te_Calendar_Global_Functions::get_event_begin_time(); } }
+if( !function_exists('the_event_begin_time') ) { function the_event_begin_time() { echo Te_Calendar_Global_Functions::get_event_begin_time(); } }
+
+// Event end functions.
+
+if( !function_exists('get_event_end') ) { function get_event_end( $format = "d-m-Y" ) { return Te_Calendar_Global_Functions::get_event_end( $format ); } }
+if( !function_exists('the_event_end') ) { function the_event_end( $format = "d-m-Y") { echo Te_Calendar_Global_Functions::get_event_end( $format ); } }
+
+if( !function_exists('get_event_end_day') ) { function get_event_end_day() { return Te_Calendar_Global_Functions::get_event_end_day(); } }
+if( !function_exists('the_event_end_day') ) { function the_event_end_day() { echo Te_Calendar_Global_Functions::get_event_end_day(); } }
+
+if( !function_exists('get_event_end_date') ) { function get_event_end_date() { return Te_Calendar_Global_Functions::get_event_end_date(); } }
+if( !function_exists('the_event_end_date') ) { function the_event_end_date() { echo Te_Calendar_Global_Functions::get_event_end_date(); } }
+
+if( !function_exists('get_event_end_year') ) { function get_event_end_year() { return Te_Calendar_Global_Functions::get_event_end_year(); } }
+if( !function_exists('the_event_end_year') ) { function the_event_end_year() { echo Te_Calendar_Global_Functions::get_event_end_year(); } }
+
+if( !function_exists('get_event_end_time') ) { function get_event_end_time() { return Te_Calendar_Global_Functions::get_event_end_time(); } }
+if( !function_exists('the_event_end_time') ) { function the_event_end_time() { echo Te_Calendar_Global_Functions::get_event_end_time(); } }
+
+// Event details function.
 
 if( !function_exists('get_event_location') ) { function get_event_location() { return Te_Calendar_Global_Functions::get_event_location(); } }
 if( !function_exists('the_event_location') ) { function the_event_location() { echo Te_Calendar_Global_Functions::get_event_location(); } }
+
+if( !function_exists('get_event_is_allday') ) { function get_event_is_allday() { return Te_Calendar_Global_Functions::get_event_is_allday(); } }
 
 ?>

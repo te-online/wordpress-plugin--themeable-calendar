@@ -119,6 +119,11 @@ class Te_Calendar {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-te-calendar-widget.php';
 
 		/**
+		 * The file responsible for defining the shortcodes settings.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-te-calendar-shortcode.php';
+
+		/**
 		 * The class responsible for defining everything that happens on the edit event page.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-te-calendar-event-details-controller.php';
@@ -172,6 +177,7 @@ class Te_Calendar {
 		$this->loader->add_action( 'init', $plugin_admin, 'events_custom_post_type' );
 		$this->loader->add_action( 'init', $plugin_admin, 'calendars_custom_taxonomy' );
 		$this->loader->add_action( 'widgets_init', $plugin_admin, 'widget_register' );
+		$this->loader->add_action( 'init', $plugin_admin, 'shortcode_register' );
 
 		$this->loader->add_action( 'admin_init', $event_controller, 'event_metaboxes_register' );
 		$this->loader->add_action( 'save_post', $event_controller, 'event_details_save' );

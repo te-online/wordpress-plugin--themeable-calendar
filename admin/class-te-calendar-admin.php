@@ -182,4 +182,14 @@ class Te_Calendar_Admin {
 		register_widget( 'Te_Calendar_Widget' );
 	}
 
+	/**
+		* Register a new shortcoe-
+		*
+		* @since 		1.0.0
+		*/
+	public function shortcode_register() {
+		$shortcode = new Te_Calendar_Shortcode();
+		add_shortcode( 'calendar', array( $shortcode, 'shortcode' ) );
+	}
+
 }
