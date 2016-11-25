@@ -255,7 +255,8 @@ class Te_Calendar_Admin {
 					'end' => date( 'c', get_post_meta( $event->ID, 'tecal_events_end', true ) ),
 					'allDay' => ( get_post_meta( $event->ID, 'tecal_events_allday', true ) ) ? true : false,
 					'location' => get_post_meta( $event->ID, 'tecal_events_location', true ),
-					'description' => get_the_content( $event->ID )
+					'description' => $event->post_content,
+					'hasEnd' => get_post_meta( $event->ID, 'tecal_events_has_end', true )
 				);
 
 				$response_events[] = $prep_event;

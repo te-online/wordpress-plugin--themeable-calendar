@@ -16,68 +16,44 @@ class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
     // Your custom list table is here
     public function display() {
     	?>
-    	<div class="new termine-no-show">
-    	<!-- <div class="new"> -->
-				<h3>Neuer Termin</h3>
-				<form action="" method="post">
-				<table class="new-termin"><tbody>
-				<tr>
-					<td><label for="titel" class="termine-label">Titel</label></td>
-					<td><input type="text" autocomplete="off" id="titel" value="" name="titel" class="termine-input" /></td>
-				</tr>
-				<tr>
-					<td><label for="ort" class="termine-label">Ort</label></td>
-					<td><input type="text" id="ort" autocomplete="off" value="" name="ort" class="termine-input" /></td>
-				</tr>
-				<tr>
-					<td><label for="infos" class="termine-label">Zusatzinformationen</label></td>
-					<td><textarea id="infos" class="infos" autocomplete="off" name="infos"></textarea></td>
-				</tr>
-				<tr>
-					<td><label for="keywords" class="termine-label">Stichwörter</label></td>
-					<td><input type="text" autocomplete="off" id="keywords" value="" class="termine-input" name="keywords" /></td>
-				</tr>
-				<tr>
-					<td><label for="datum" class="termine-label">Datum</label></td>
-					<td><input type="text" id="datum" autocomplete="off" value="" name="datum" class="datum" /> <input type="checkbox" id="ohne_uhrzeit" name="ohne_uhrzeit" /> <label for="ohne_uhrzeit" class="termine-label">Uhrzeit nicht beachten</label></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td><span id="datum-lesbar"></span></td>
-				</tr>
-				</tbody></table><br />
-				<div class="duplicate-termine termine-no-show">
-					<h3>Wiederholungen des Termins</h3>
-					<input type="checkbox" name="repeat-each-true" id="repeat-each-true" />
-					<select name="repeat-each" id="repeat-each">
-						<option value="1">Jede Woche</option>
-						<option value="2">Alle 2 Wochen</option>
-						<option value="3">Alle 3 Wochen</option>
-						<option value="4">Alle 4 Wochen</option>
-						<option value="8">Alle 8 Wochen</option>
-						<option value="12">Alle 12 Wochen</option>
-					</select> wiederholen<br /><br />
-					<input type="checkbox" name="repeat-each-day-true" id="repeat-each-day-true" />
-					Jeden
-					<select name="repeat-each-day" id="repeat-each-day">
-						<option value="1">1.</option>
-						<option value="2">2.</option>
-						<option value="3">3.</option>
-						<option value="4">4.</option>
-					</select> <span class="repeat-tag"></span> im Monat wiederholen<br /><br />
-					und zwar <input type="text" name="repeat-times" value="5" size="1" id="repeat-times" /> mal.<br /><br />
-					<input type="button" value="Folgetermine hinzufügen" class="button" id="duplicate-termine-button" name="dupliacte-termine-button"> <input type="button" value="Alle löschen" class="button" id="delete-all-button" name="delete-all-button" style="display: none !important;"> <img alt="" id="ajax-loading-duplicate" class="ajax-loading" src="<?php bloginfo('url'); ?>/wp-admin/images/wpspin_light.gif" style="vertical-align: middle;">
-					<div class="duplicated-termine"></div>
+    	<div class="tecal__edit-modal__container">
+	    	<div class="tecal__edit-modal__inner">
+	    	<!-- <div class="new"> -->
+					<h3 class="tecal__edit-modal__new-title"><?php _e( 'New event', 'te-calendar' ); ?></h3>
+					<h3 class="tecal__edit-modal__edit-title"><?php _e( 'Edit event', 'te-calendar' ); ?></h3>
+					<form action="" method="post" id="edit-event-form">
+
+						<p><label for="tecal_events_title"><?php _e('Title:', 'te-calendar'); ?></label>
+						<input class="widefat" id="tecal_events_title" name="tecal_events_title" type="text" value="" /></p>
+
+						<p><label for="tecal_events_allday"><?php _e('All day:', 'te-calendar'); ?></label>
+						<input class="widefat" id="tecal_events_allday" name="tecal_events_allday" type="checkbox" /></p>
+
+				    <p class="tecal_multi-input"><label for="tecal_events_begin"><?php _e('Begin:', 'te-calendar'); ?>&nbsp;</label>
+						<input class="threethirdfat" id="tecal_events_begin" name="tecal_events_begin" type="date" value="" />
+						<input class="thirdfat" id="tecal_events_begin_time" name="tecal_events_begin_time" type="time" value="" /></p>
+
+						<p><label for="tecal_events_has_end"><?php _e('Specify an end:', 'te-calendar'); ?></label>
+						<input class="widefat" id="tecal_events_has_end" name="tecal_events_has_end" type="checkbox" /></p>
+
+						<p class="tecal_multi-input"><label for="tecal_events_end"><?php _e('End:', 'te-calendar'); ?>&nbsp;</label>
+						<input class="threethirdfat" id="tecal_events_end" name="tecal_events_end" type="date" value="" />
+						<input class="thirdfat" id="tecal_events_end_time" name="tecal_events_end_time" type="time" value="" /></p>
+
+				    <p><label for="tecal_events_location"><?php _e('Location:', 'te-calendar'); ?></label>
+						<input class="widefat" id="tecal_events_location" name="tecal_events_location" type="text" value="" /></p>
+
+						<p><label for="tecal_events_description"><?php _e('Description:', 'te-calendar'); ?></label>
+						<textarea class="widefat tecal_events_description" id="tecal_events_description" name="tecal_events_description"></textarea></p>
+
+						<div class="tecal_edit-modal__submit">
+							<input type="button" name="tecal_edit-modal_cancel" value="<?php _e( 'Cancel', 'te-calendar' ); ?>" class="button-secondary">
+
+							<input type="submit" name="tecal_edit-modal_save" value="<?php _e( 'Save', 'te-calendar' ); ?>" class="button-primary">
+						</div>
+
+					</form>
 				</div>
-
-	            <?php wp_nonce_field(); ?>
-
-				<input type="hidden" name="action" value="speichern" />
-				<input type="hidden" name="lastnumber" value="0" id="lastnumber" />
-				<input type="hidden" name="numbers" value="" id="numbers" />
-
-				<br /><input type="submit" name="save" value="Speichern" class="button-primary" id="speichern"><br /><br />
-				</form>
 			</div>
 
 			<div id="calendar"></div>

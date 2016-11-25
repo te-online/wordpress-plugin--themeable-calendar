@@ -313,74 +313,7 @@
 			timeFormat: "H:mm",
 			weekNumbers: false,
 			eventClick: function(calEvent, jsEvent, view) {
-				alert("Hallo");
-				// if($('#calendar-active').attr("active") == "true") {
-				// 	// Doing stuff if an event is clicked
-				// 	// We disable the calendar for editing
-				// 	changeCalendarState(false);
-				// 	// Sliding the Editing up and (newly filled) down againg with the neccessary fields
-				// 	$('#calendar-edit').slideUp(function() {
-				// 		$(this).html('');
-				// 		$(this).slideDown();
-				// 		var id = calEvent.id;
-				// 		var $edit = $('#calendar-edit');
-				// 		$edit.append('<h3>Termin bearbeiten</h3>');
-				// 		$edit.append('<p class="calendar-edit-container" style="width: 250px;"><span class="calendar-edit-uhrzeit-lesbar"></span><br /><label class="calendar-edit-label" for="datum-edit-'+id+'">Datum</label><br /><input type="text" id="datum-edit-'+id+'" value="'+calEvent.dateTime+'" class="date-input datum-edit" /></p>');
-				// 		$('#datum-edit-'+id).datetimepicker();
-				// 		$('#datum-edit-'+id).datetimepicker("option", "dateFormat", "yy-mm-dd");
-				// 		$('#datum-edit-'+id).datetimepicker("option", "timeFormat", "hh:mm");
-				// 		var datum = calEvent.dateTime;
-				// 		$('#datum-edit-'+id).datetimepicker("setDate", datum.substr(0,datum.length-3));
-				// 		var checked = (calEvent.ohneuhrzeit == "0") ? 'checked="checked" ' : '';
-				// 		$edit.append('<p class="calendar-edit-container"><label class="calendar-edit-label" for="ohne_uhrzeit-edit-'+id+'">Uhrzeit beachten?</label><br /><input type="checkbox" class="ohne_uhrzeit-edit" id="ohne_uhrzeit-edit-'+id+'" '+checked+'/></p>');
-				// 		checked = (calEvent.wichtig == "1") ? 'checked="checked" ' : '';
-
-				// 		// Format-Dummies
-				// 		var $container = $('<p></p>').addClass('calendar-edit-container');
-				// 		var $label = $('<label></label>').addClass('calendar-edit-label');
-
-				// 		$edit.append($container.clone()
-				// 			.append($label.clone().attr('for', 'wichtig-edit-'+id).text('Hervorheben?'))
-				// 			.append('<br />')
-				// 			.append($('<input type="checkbox" '+checked+'/>').addClass('wichtig-edit').attr('id', 'wichtig-edit-'+id))
-				// 		);
-
-				// 		$edit.append($container.clone()
-				// 			.append($label.clone().attr('for', 'titel-edit-'+id).text('Titel'))
-				// 			.append('<br />')
-				// 			.append($('<input type="text" />').addClass('termin-calendar-input').attr('id', 'titel-edit-'+id).val(calEvent.title))
-				// 		);
-
-				// 		$edit.append($container.clone()
-				// 			.append($label.clone().attr('for', 'ort-edit-'+id).text('Ort'))
-				// 			.append('<br />')
-				// 			.append($('<input type="text" />').addClass('termin-calendar-input').attr('id', 'ort-edit-'+id).val(calEvent.ort))
-				// 		);
-
-				// 		$edit.append($container.clone()
-				// 			.append($label.clone().attr('for', 'info-edit-'+id).text('Info'))
-				// 			.append('<br />')
-				// 			.append($('<textarea></textarea>').addClass('termin-calendar-input').attr('id', 'info-edit-'+id).text(calEvent.info))
-				// 		);
-
-				// 		$edit.append($container.clone()
-				// 			.append($label.clone().attr('for', 'keywords-edit-'+id).text('Keywords'))
-				// 			.append('<br />')
-				// 			.append($('<input type="text" />').addClass('termin-calendar-input').attr('id', 'keywords-edit-'+id).val(calEvent.keywords))
-				// 		);
-
-				// 		$edit.append('<p style="clear: both; height: 5px;"></p><input type="button" name="save" value="Speichern" mode="normal" class="button-primary inline-edit-save" save-id="'+id+'" /> <input type="button" name="save" value="Kopie speichern" class="button-primary inline-edit-save" mode="duplicate" save-id="'+id+'" /> <input type="button" name="cancel" value="Abbrechen" class="button-secondary calendar-edit-cancel" cancel-id="'+id+'" /> <img alt="" id="ajax-loading-'+id+'" class="ajax-loading" src="' + WPURLS.siteurl + '/wp-admin/images/wpspin_light.gif" style="vertical-align: middle;"> <span class="delete"><a id="calendar-delete-event" item_id="'+id+'" href="#">Termin löschen</a></span>');
-
-				// 		$("html, body").animate({ scrollTop: 0 }, "slow");
-
-				// 		// Show date in human readable format
-				// 		renderDate($('#datum-edit-'+id).datetimepicker("getDate"),"#ohne_uhrzeit-edit-"+id,".calendar-edit-uhrzeit-lesbar",true);
-				// 	});
-				// } else {
-				// 	// Disabling the editing for the time of editing an event
-				// 	return false;
-				// }
-
+				tecal_showModal( calEvent, null, null, jsEvent, view, 'edit' );
 			},
 			eventDrop: function( calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view ) {
 				// If the calendar is active
@@ -417,26 +350,115 @@
 				$('.fc-header-left').append('<span id="refreshing-calendar"><img alt="Loading" id="ajax-loading" class="ajax-loading" src="' + WPURLS.siteurl + '/wp-admin/images/wpspin_light.gif" style="vertical-align: middle; visibility: visible;"> Aktualisiere...</span>');
 			},
 			dayClick: function( date, allDay, jsEvent, view ) {
-				if(!$('.new').is(":visible")) {
-					// Adding the current time
-					var nowDate = new Date();
-					date.setHours(nowDate.getHours());
-					date.setMinutes(nowDate.getMinutes());
-					var newDatum = convertDate(date);
-					// adding the date to the field
-					$('#datum').val(newDatum);
-					// Refreshing the human-readable date
-					renderDate(date,"#ohne_uhrzeit","#datum-lesbar",false);
-					// Showing the add-form
-					$('.add').click();
-				} else {
-					return false;
-				}
+				tecal_showModal( date, allDay, jsEvent, view, 'new' );
 			},
 			disableDragging: false,
 			disableResizing: true,
 			height: 700
 		}, localOptions));
+
+		function tecal_showModal( calEvent, date, allDay, jsEvent, view, mode ) {
+			var modal = document.querySelector('.tecal__edit-modal__container');
+			var cancel_button = document.querySelector('[name="tecal_edit-modal_cancel"]');
+			var save_button = document.querySelector('[name="tecal_edit-modal_save"]');
+
+			modal.classList.add('is-visible');
+
+			cancel_button.addEventListener('click', tecal_modalCancelEvent, true);
+
+			console.log(calEvent);
+
+			var title_input = document.querySelector('[name="tecal_events_title"]');
+			var location_input = document.querySelector('[name="tecal_events_location"]');
+			var begin_date_input = document.querySelector('[name="tecal_events_begin"]');
+			var begin_time_input = document.querySelector('[name="tecal_events_begin_time"]');
+			var allday_input = document.querySelector('[name="tecal_events_allday"]');
+			var end_date_input = document.querySelector('[name="tecal_events_end"]');
+			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
+			var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
+			var description_input = document.querySelector('[name="tecal_events_description"]');
+
+			if( mode == 'edit' ) {
+				modal.classList.add('is-edit');
+				save_button.addEventListener('click', tecal_modalSaveEditEvent, true);
+
+				title_input.value = calEvent.title;
+				location_input.value = calEvent.location;
+				begin_date_input.value = calEvent.start.format('YYYY-MM-DD');
+				allday_input.checked = calEvent.allDay;
+				if( calEvent.allDay === false ) {
+					end_date_input.value = calEvent.end.format('YYYY-MM-DD');
+					end_time_input.value = calEvent.end.format('HH:mm');
+					begin_time_input.value = calEvent.start.format('HH:mm');
+					has_end_input.checked = calEvent.hasEnd;
+				} else {
+					end_date_input.disabled = true;
+					end_time_input.disabled = true;
+					has_end_input.disabled = true;
+					begin_time_input.disabled = true;
+				}
+				description_input.value = calEvent.description;
+			} else {
+				modal.classList.add('is-new');
+				save_button.addEventListener('click', tecal_modalSaveNewEvent, true);
+
+				// Reset all inputs.
+				title_input.value = "";
+				location_input.value = "";
+				begin_date_input.value = "";
+				begin_time_input.value = "";
+				begin_time_input.disabled = false;
+				allday_input.selected = false;
+				end_date_input.value = "";
+				end_time_input.value = "";
+				end_date_input.disabled = false;
+				end_time_input.disabled = false;
+				has_end_input.seleted = false;
+				has_end_input.disabled = false;
+				description_input.value = "";
+			}
+		}
+
+
+		function tecal_modalUnregisterEventListener() {
+			var modal = document.querySelector('.tecal__edit-modal__container');
+			var cancel_button = document.querySelector('[name="tecal_edit-modal_cancel"]');
+			var save_button = document.querySelector('[name="tecal_edit-modal_save"]');
+
+			modal.classList.remove('is-visible');
+			// Incorporate that an animation is taking place.
+			setTimeout(function() {
+				modal.classList.remove('is-edit');
+				modal.classList.remove('is-new');
+			}, 300);
+
+			cancel_button.removeEventListener('click', tecal_modalCancelEvent);
+			save_button.removeEventListener('click', tecal_modalSaveEditEvent);
+			save_button.removeEventListener('click', tecal_modalSaveNewEvent);
+		}
+
+		var tecal_modalCancelEvent = function(e) {
+			tecal_modalUnregisterEventListener();
+
+			e.preventDefault();
+			return false;
+		}
+
+		var tecal_modalSaveEditEvent = function(e) {
+			// Post AJAX here.
+			tecal_modalUnregisterEventListener();
+
+			e.preventDefault();
+			return false;
+		}
+
+		var tecal_modalSaveNewEvent = function(e) {
+			// Post AJAX here.
+			tecal_modalUnregisterEventListener();
+
+			e.preventDefault();
+			return false;
+		}
 
 		function changeCalendarState(onoff) {
 			//onoff = onoff || true;

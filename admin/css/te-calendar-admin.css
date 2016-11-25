@@ -4,7 +4,7 @@
  */
 
 .termine-no-show {
-	display: none;
+	/* display: none; */
 }
 
 .duplicate-termine {
@@ -12,18 +12,78 @@
 	background-color: #f1f1f1;
 }
 
-.new {
-	/* border-top: 2px solid #f2f2f2;
-	border-bottom: 2px solid #f2f2f2;
-	padding: 10px 0 0 10px; */
+.tecal__edit-modal__container {
+	width: 100%;
+	height: 100vh;
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	top: 0;
+	left: 0;
+	background: rgba(172, 172, 172, .5);
+	z-index: 9999;
+	margin-left: -20px;
+	padding-right: 20px;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity .3s ease;
+}
 
+.tecal__edit-modal__container.is-visible {
+	opacity: 1;
+	pointer-events: initial;
+}
+
+.tecal__edit-modal__new-title,
+.tecal__edit-modal__edit-title {
+	display: none;
+}
+
+.tecal__edit-modal__container.is-new .tecal__edit-modal__new-title {
+	display: block;
+}
+
+.tecal__edit-modal__container.is-edit .tecal__edit-modal__edit-title {
+	display: block;
+}
+
+.tecal__edit-modal__inner {
   width: 300px;
-  height: 400px;
-  overflow: hidden;
-  background: fuchsia;
-  border-radius: 2em;
-  position: absolute;
-  z-index: 9999;
+  background: #fff;
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0 0 10px 5px #aaa;
+}
+
+.tecal_edit-modal__submit {
+	text-align: right;
+	margin-top: 1.5em;
+	margin-bottom: .5em;
+	display: flex;
+	justify-content: space-between;
+}
+
+.tecal_multi-input {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.tecal_events_description {
+	min-height: 100px;
+}
+
+input.halffat {
+	width: 50%;
+}
+
+input.thirdfat {
+	width: 33.3333%;
+}
+
+input.threethirdfat {
+	width: 66.66666%;
 }
 
 table.new-termin {
