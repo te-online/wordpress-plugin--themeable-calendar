@@ -38,18 +38,21 @@ class Te_Calendar_Shortcode {
 
 		$today = strtotime( 'today midnight' );
 
+		$compare_operator = ( $atts['archive'] == 'true' ) ? '<' : '>=';
+		$order = ( $atts['archive'] == 'true' ) ? 'DESC' : 'ASC';
+
 		query_posts( array(
 				'posts_per_page' => $num_events,
 				'post_type' => 'tecal_events',
 				'orderby' => 'meta_value',
 				'meta_key' => 'tecal_events_begin',
-				'order' => 'ASC',
+				'order' => $order,
 				'meta_query' => array(
 					array(
 						'key' => 'tecal_events_begin',
 						'value' => $today,
 						'type' => 'numeric',
-						'compare' => '>='
+						'compare' => $compare_operator
 					)
 				)
 			)
