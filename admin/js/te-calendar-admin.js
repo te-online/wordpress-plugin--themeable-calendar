@@ -301,80 +301,85 @@
 			// Loading real events here will be the next challenge
 			eventSources: [
 				{
-					url: ajaxurl + '/wp-admin/admin.php?page=termine&feed-me=true',
+					url: ajaxurl,
+					type: 'POST',
+					data: {
+						action: 'te_calendar_fetch_events'
+					},
 					className: 'event-object'
 				}
 			],
-			events: [{"id":"534","title":"Frauenhilfe Ochtrup","start":"2016-11-09T15:00:00","allDay":false,"ort":"","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-09 15:00:00","wichtig":"0"},{"id":"540","title":"Frauenhilfe Metelen","start":"2016-11-02T15:00:00","allDay":false,"ort":"","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-02 15:00:00","wichtig":"0"},{"id":"541","title":"Frauenhilfe Metelen","start":"2016-12-07T15:00:00","allDay":false,"ort":"","info":"Adventsfeier\n","keywords":"","ohneuhrzeit":"0","dateTime":"2016-12-07 15:00:00","wichtig":"0"},{"id":"567","title":"11-Uhr-Gottesdienst-Vorbereitung","start":"2016-11-23T20:00:00","allDay":false,"ort":"Ev. Gemeindehaus","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-23 20:00:00","wichtig":"0"},{"id":"546","title":"Vorbereitung 11-Uhr-Gottesdienst","start":"2016-11-02T20:00:00","allDay":false,"ort":"Gemeindehaus Ochtrup","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-02 20:00:00","wichtig":"0"},{"id":"547","title":"Konzert","start":"2016-11-13T17:00:00","allDay":false,"ort":"Ev. Kirche Ochtrup","info":"Motetten von J.S. Bach, Capella Enschede\n","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-13 17:00:00","wichtig":"0"},{"id":"549","title":"Konfi-Kids","start":"2016-11-03T15:30:00","allDay":false,"ort":"","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-03 15:30:00","wichtig":"0"},{"id":"550","title":"Konfi-Kids","start":"2016-11-10T15:30:00","allDay":false,"ort":"Ev. Gemeindehaus Ochtrup","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-10 15:30:00","wichtig":"0"},{"id":"554","title":"Presbyterium","start":"2016-11-03T19:30:00","allDay":false,"ort":"Ochtrup","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-03 19:30:00","wichtig":"0"},{"id":"557","title":"Presbyterium","start":"2016-12-05T19:30:00","allDay":false,"ort":"Ochtrup","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-12-05 19:30:00","wichtig":"0"},{"id":"564","title":"Trauercaf\u00e9 Hoffnungs-schimmer","start":"2016-12-07T15:00:00","allDay":false,"ort":"Villa Winkel","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-12-07 15:00:00","wichtig":"0"},{"id":"570","title":"Offener Trauertreff \"Innehalten\"","start":"2016-11-12T10:30:00","allDay":false,"ort":"Kommunalfriedhof","info":"Mitglieder des Hospizvereins laden auf dem Kommunalfriedhof bei einem Stehkaffee zu Begegnung, Innehalten, Verweilen ein. \n","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-12 10:30:00","wichtig":"0"},{"id":"569","title":"Offener Trauertreff \"Innehalten\"","start":"2016-11-05T10:30:00","allDay":false,"ort":"Kommunalfriedhof","info":"Mitglieder des Hospizvereins laden auf dem Kommunalfriedhof bei einem Stehkaffee zu Begegnung, Innehalten, Verweilen ein. \n","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-05 10:30:00","wichtig":"0"},{"id":"571","title":"\u00d6ffentlicher Hospizstammtisch","start":"2016-11-14T19:30:00","allDay":false,"ort":"Paddy's Irish Pub","info":"Markus B\u00fcnseler von der Buchhandlung Steffers stellt Buchneuheiten vor.\n","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-14 19:30:00","wichtig":"0"},{"id":"572","title":"Probe Junger Chor","start":"2016-11-12T11:00:00","allDay":false,"ort":"Ev. Kirche","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-12 11:00:00","wichtig":"0"},{"id":"573","title":"Vortragsabend \"Der Islam und die Muslime in Deutschland\"","start":"2016-11-08T19:30:00","allDay":false,"ort":"Clemens-August-Heim","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-08 19:30:00","wichtig":"0"},{"id":"574","title":"Adventsbasar Eine Welt Gruppe","start":"2016-11-27T11:00:00","allDay":false,"ort":"Ev. Gemeindehaus Ochtrup","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-27 11:00:00","wichtig":"0"}],
+			//events: [{"id":"534","title":"Frauenhilfe Ochtrup","start":"2016-11-09T15:00:00","allDay":false,"ort":"","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-09 15:00:00","wichtig":"0"},{"id":"540","title":"Frauenhilfe Metelen","start":"2016-11-02T15:00:00","allDay":false,"ort":"","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-02 15:00:00","wichtig":"0"},{"id":"541","title":"Frauenhilfe Metelen","start":"2016-12-07T15:00:00","allDay":false,"ort":"","info":"Adventsfeier\n","keywords":"","ohneuhrzeit":"0","dateTime":"2016-12-07 15:00:00","wichtig":"0"},{"id":"567","title":"11-Uhr-Gottesdienst-Vorbereitung","start":"2016-11-23T20:00:00","allDay":false,"ort":"Ev. Gemeindehaus","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-23 20:00:00","wichtig":"0"},{"id":"546","title":"Vorbereitung 11-Uhr-Gottesdienst","start":"2016-11-02T20:00:00","allDay":false,"ort":"Gemeindehaus Ochtrup","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-02 20:00:00","wichtig":"0"},{"id":"547","title":"Konzert","start":"2016-11-13T17:00:00","allDay":false,"ort":"Ev. Kirche Ochtrup","info":"Motetten von J.S. Bach, Capella Enschede\n","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-13 17:00:00","wichtig":"0"},{"id":"549","title":"Konfi-Kids","start":"2016-11-03T15:30:00","allDay":false,"ort":"","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-03 15:30:00","wichtig":"0"},{"id":"550","title":"Konfi-Kids","start":"2016-11-10T15:30:00","allDay":false,"ort":"Ev. Gemeindehaus Ochtrup","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-10 15:30:00","wichtig":"0"},{"id":"554","title":"Presbyterium","start":"2016-11-03T19:30:00","allDay":false,"ort":"Ochtrup","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-03 19:30:00","wichtig":"0"},{"id":"557","title":"Presbyterium","start":"2016-12-05T19:30:00","allDay":false,"ort":"Ochtrup","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-12-05 19:30:00","wichtig":"0"},{"id":"564","title":"Trauercaf\u00e9 Hoffnungs-schimmer","start":"2016-12-07T15:00:00","allDay":false,"ort":"Villa Winkel","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-12-07 15:00:00","wichtig":"0"},{"id":"570","title":"Offener Trauertreff \"Innehalten\"","start":"2016-11-12T10:30:00","allDay":false,"ort":"Kommunalfriedhof","info":"Mitglieder des Hospizvereins laden auf dem Kommunalfriedhof bei einem Stehkaffee zu Begegnung, Innehalten, Verweilen ein. \n","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-12 10:30:00","wichtig":"0"},{"id":"569","title":"Offener Trauertreff \"Innehalten\"","start":"2016-11-05T10:30:00","allDay":false,"ort":"Kommunalfriedhof","info":"Mitglieder des Hospizvereins laden auf dem Kommunalfriedhof bei einem Stehkaffee zu Begegnung, Innehalten, Verweilen ein. \n","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-05 10:30:00","wichtig":"0"},{"id":"571","title":"\u00d6ffentlicher Hospizstammtisch","start":"2016-11-14T19:30:00","allDay":false,"ort":"Paddy's Irish Pub","info":"Markus B\u00fcnseler von der Buchhandlung Steffers stellt Buchneuheiten vor.\n","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-14 19:30:00","wichtig":"0"},{"id":"572","title":"Probe Junger Chor","start":"2016-11-12T11:00:00","allDay":false,"ort":"Ev. Kirche","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-12 11:00:00","wichtig":"0"},{"id":"573","title":"Vortragsabend \"Der Islam und die Muslime in Deutschland\"","start":"2016-11-08T19:30:00","allDay":false,"ort":"Clemens-August-Heim","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-08 19:30:00","wichtig":"0"},{"id":"574","title":"Adventsbasar Eine Welt Gruppe","start":"2016-11-27T11:00:00","allDay":false,"ort":"Ev. Gemeindehaus Ochtrup","info":"","keywords":"","ohneuhrzeit":"0","dateTime":"2016-11-27 11:00:00","wichtig":"0"}],
 			timeFormat: "H:mm",
 			weekNumbers: false,
 			eventClick: function(calEvent, jsEvent, view) {
-				if($('#calendar-active').attr("active") == "true") {
-					// Doing stuff if an event is clicked
-					// We disable the calendar for editing
-					changeCalendarState(false);
-					// Sliding the Editing up and (newly filled) down againg with the neccessary fields
-					$('#calendar-edit').slideUp(function() {
-						$(this).html('');
-						$(this).slideDown();
-						var id = calEvent.id;
-						var $edit = $('#calendar-edit');
-						$edit.append('<h3>Termin bearbeiten</h3>');
-						$edit.append('<p class="calendar-edit-container" style="width: 250px;"><span class="calendar-edit-uhrzeit-lesbar"></span><br /><label class="calendar-edit-label" for="datum-edit-'+id+'">Datum</label><br /><input type="text" id="datum-edit-'+id+'" value="'+calEvent.dateTime+'" class="date-input datum-edit" /></p>');
-						$('#datum-edit-'+id).datetimepicker();
-						$('#datum-edit-'+id).datetimepicker("option", "dateFormat", "yy-mm-dd");
-						$('#datum-edit-'+id).datetimepicker("option", "timeFormat", "hh:mm");
-						var datum = calEvent.dateTime;
-						$('#datum-edit-'+id).datetimepicker("setDate", datum.substr(0,datum.length-3));
-						var checked = (calEvent.ohneuhrzeit == "0") ? 'checked="checked" ' : '';
-						$edit.append('<p class="calendar-edit-container"><label class="calendar-edit-label" for="ohne_uhrzeit-edit-'+id+'">Uhrzeit beachten?</label><br /><input type="checkbox" class="ohne_uhrzeit-edit" id="ohne_uhrzeit-edit-'+id+'" '+checked+'/></p>');
-						checked = (calEvent.wichtig == "1") ? 'checked="checked" ' : '';
+				alert("Hallo");
+				// if($('#calendar-active').attr("active") == "true") {
+				// 	// Doing stuff if an event is clicked
+				// 	// We disable the calendar for editing
+				// 	changeCalendarState(false);
+				// 	// Sliding the Editing up and (newly filled) down againg with the neccessary fields
+				// 	$('#calendar-edit').slideUp(function() {
+				// 		$(this).html('');
+				// 		$(this).slideDown();
+				// 		var id = calEvent.id;
+				// 		var $edit = $('#calendar-edit');
+				// 		$edit.append('<h3>Termin bearbeiten</h3>');
+				// 		$edit.append('<p class="calendar-edit-container" style="width: 250px;"><span class="calendar-edit-uhrzeit-lesbar"></span><br /><label class="calendar-edit-label" for="datum-edit-'+id+'">Datum</label><br /><input type="text" id="datum-edit-'+id+'" value="'+calEvent.dateTime+'" class="date-input datum-edit" /></p>');
+				// 		$('#datum-edit-'+id).datetimepicker();
+				// 		$('#datum-edit-'+id).datetimepicker("option", "dateFormat", "yy-mm-dd");
+				// 		$('#datum-edit-'+id).datetimepicker("option", "timeFormat", "hh:mm");
+				// 		var datum = calEvent.dateTime;
+				// 		$('#datum-edit-'+id).datetimepicker("setDate", datum.substr(0,datum.length-3));
+				// 		var checked = (calEvent.ohneuhrzeit == "0") ? 'checked="checked" ' : '';
+				// 		$edit.append('<p class="calendar-edit-container"><label class="calendar-edit-label" for="ohne_uhrzeit-edit-'+id+'">Uhrzeit beachten?</label><br /><input type="checkbox" class="ohne_uhrzeit-edit" id="ohne_uhrzeit-edit-'+id+'" '+checked+'/></p>');
+				// 		checked = (calEvent.wichtig == "1") ? 'checked="checked" ' : '';
 
-						// Format-Dummies
-						var $container = $('<p></p>').addClass('calendar-edit-container');
-						var $label = $('<label></label>').addClass('calendar-edit-label');
+				// 		// Format-Dummies
+				// 		var $container = $('<p></p>').addClass('calendar-edit-container');
+				// 		var $label = $('<label></label>').addClass('calendar-edit-label');
 
-						$edit.append($container.clone()
-							.append($label.clone().attr('for', 'wichtig-edit-'+id).text('Hervorheben?'))
-							.append('<br />')
-							.append($('<input type="checkbox" '+checked+'/>').addClass('wichtig-edit').attr('id', 'wichtig-edit-'+id))
-						);
+				// 		$edit.append($container.clone()
+				// 			.append($label.clone().attr('for', 'wichtig-edit-'+id).text('Hervorheben?'))
+				// 			.append('<br />')
+				// 			.append($('<input type="checkbox" '+checked+'/>').addClass('wichtig-edit').attr('id', 'wichtig-edit-'+id))
+				// 		);
 
-						$edit.append($container.clone()
-							.append($label.clone().attr('for', 'titel-edit-'+id).text('Titel'))
-							.append('<br />')
-							.append($('<input type="text" />').addClass('termin-calendar-input').attr('id', 'titel-edit-'+id).val(calEvent.title))
-						);
+				// 		$edit.append($container.clone()
+				// 			.append($label.clone().attr('for', 'titel-edit-'+id).text('Titel'))
+				// 			.append('<br />')
+				// 			.append($('<input type="text" />').addClass('termin-calendar-input').attr('id', 'titel-edit-'+id).val(calEvent.title))
+				// 		);
 
-						$edit.append($container.clone()
-							.append($label.clone().attr('for', 'ort-edit-'+id).text('Ort'))
-							.append('<br />')
-							.append($('<input type="text" />').addClass('termin-calendar-input').attr('id', 'ort-edit-'+id).val(calEvent.ort))
-						);
+				// 		$edit.append($container.clone()
+				// 			.append($label.clone().attr('for', 'ort-edit-'+id).text('Ort'))
+				// 			.append('<br />')
+				// 			.append($('<input type="text" />').addClass('termin-calendar-input').attr('id', 'ort-edit-'+id).val(calEvent.ort))
+				// 		);
 
-						$edit.append($container.clone()
-							.append($label.clone().attr('for', 'info-edit-'+id).text('Info'))
-							.append('<br />')
-							.append($('<textarea></textarea>').addClass('termin-calendar-input').attr('id', 'info-edit-'+id).text(calEvent.info))
-						);
+				// 		$edit.append($container.clone()
+				// 			.append($label.clone().attr('for', 'info-edit-'+id).text('Info'))
+				// 			.append('<br />')
+				// 			.append($('<textarea></textarea>').addClass('termin-calendar-input').attr('id', 'info-edit-'+id).text(calEvent.info))
+				// 		);
 
-						$edit.append($container.clone()
-							.append($label.clone().attr('for', 'keywords-edit-'+id).text('Keywords'))
-							.append('<br />')
-							.append($('<input type="text" />').addClass('termin-calendar-input').attr('id', 'keywords-edit-'+id).val(calEvent.keywords))
-						);
+				// 		$edit.append($container.clone()
+				// 			.append($label.clone().attr('for', 'keywords-edit-'+id).text('Keywords'))
+				// 			.append('<br />')
+				// 			.append($('<input type="text" />').addClass('termin-calendar-input').attr('id', 'keywords-edit-'+id).val(calEvent.keywords))
+				// 		);
 
-						$edit.append('<p style="clear: both; height: 5px;"></p><input type="button" name="save" value="Speichern" mode="normal" class="button-primary inline-edit-save" save-id="'+id+'" /> <input type="button" name="save" value="Kopie speichern" class="button-primary inline-edit-save" mode="duplicate" save-id="'+id+'" /> <input type="button" name="cancel" value="Abbrechen" class="button-secondary calendar-edit-cancel" cancel-id="'+id+'" /> <img alt="" id="ajax-loading-'+id+'" class="ajax-loading" src="' + WPURLS.siteurl + '/wp-admin/images/wpspin_light.gif" style="vertical-align: middle;"> <span class="delete"><a id="calendar-delete-event" item_id="'+id+'" href="#">Termin löschen</a></span>');
+				// 		$edit.append('<p style="clear: both; height: 5px;"></p><input type="button" name="save" value="Speichern" mode="normal" class="button-primary inline-edit-save" save-id="'+id+'" /> <input type="button" name="save" value="Kopie speichern" class="button-primary inline-edit-save" mode="duplicate" save-id="'+id+'" /> <input type="button" name="cancel" value="Abbrechen" class="button-secondary calendar-edit-cancel" cancel-id="'+id+'" /> <img alt="" id="ajax-loading-'+id+'" class="ajax-loading" src="' + WPURLS.siteurl + '/wp-admin/images/wpspin_light.gif" style="vertical-align: middle;"> <span class="delete"><a id="calendar-delete-event" item_id="'+id+'" href="#">Termin löschen</a></span>');
 
-						$("html, body").animate({ scrollTop: 0 }, "slow");
+				// 		$("html, body").animate({ scrollTop: 0 }, "slow");
 
-						// Show date in human readable format
-						renderDate($('#datum-edit-'+id).datetimepicker("getDate"),"#ohne_uhrzeit-edit-"+id,".calendar-edit-uhrzeit-lesbar",true);
-					});
-				} else {
-					// Disabling the editing for the time of editing an event
-					return false;
-				}
+				// 		// Show date in human readable format
+				// 		renderDate($('#datum-edit-'+id).datetimepicker("getDate"),"#ohne_uhrzeit-edit-"+id,".calendar-edit-uhrzeit-lesbar",true);
+				// 	});
+				// } else {
+				// 	// Disabling the editing for the time of editing an event
+				// 	return false;
+				// }
 
 			},
 			eventDrop: function( calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view ) {
