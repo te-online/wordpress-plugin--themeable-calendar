@@ -246,16 +246,16 @@
 		// var y = date.getFullYear();
 
 		var localOptions = {
-		buttonText: {
-			today: 'Heute',
-			month: 'Monat',
-			day: 'Tag',
-			week: 'Woche'
-		},
-		monthNames: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
-		monthNamesShort: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sept','Okt','Nov','Dez'],
-		dayNames: ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],
-		dayNamesShort: ['So','Mo','Di','Mi','Do','Fr','Sa']
+			buttonText: {
+				today: 'Heute',
+				month: 'Monat',
+				day: 'Tag',
+				week: 'Woche'
+			},
+			monthNames: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+			monthNamesShort: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sept','Okt','Nov','Dez'],
+			dayNames: ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],
+			dayNamesShort: ['So','Mo','Di','Mi','Do','Fr','Sa']
 		}
 
 		// If the calendar div exists we will add a refresh-update-message
@@ -274,26 +274,26 @@
 		// });
 
 		// Refresh the human readable date
-		$('.datum-edit, .ohne_uhrzeit-edit').live("change", function() {
-			renderDate($('.datum-edit').datetimepicker("getDate"),".ohne_uhrzeit-edit",".calendar-edit-uhrzeit-lesbar",true);
-		});
+		// $('.datum-edit, .ohne_uhrzeit-edit').live("change", function() {
+		// 	renderDate($('.datum-edit').datetimepicker("getDate"),".ohne_uhrzeit-edit",".calendar-edit-uhrzeit-lesbar",true);
+		// });
 
 		// Deleting an event
-		$('#calendar-delete-event').live("click", function() {
-			var item_id = $(this).attr("item_id");
-			$('#ajax-loading-'+item_id).css("visibility",'visible');
-			$.ajax({
-			type: "GET",
-			url: "admin.php?page=termine",
-			data: { action: "delete", item_id: item_id }
-			}).done(function( msg ) {
-				// Close editing and refresh calendar
-				$('#calendar-edit').slideUp(function() {
-						$(this).html('');
-					});
-				$('#calendar').fullCalendar('refetchEvents');
-			});
-		});
+		// $('#calendar-delete-event').live("click", function() {
+		// 	var item_id = $(this).attr("item_id");
+		// 	$('#ajax-loading-'+item_id).css("visibility",'visible');
+		// 	$.ajax({
+		// 	type: "GET",
+		// 	url: "admin.php?page=termine",
+		// 	data: { action: "delete", item_id: item_id }
+		// 	}).done(function( msg ) {
+		// 		// Close editing and refresh calendar
+		// 		$('#calendar-edit').slideUp(function() {
+		// 				$(this).html('');
+		// 			});
+		// 		$('#calendar').fullCalendar('refetchEvents');
+		// 	});
+		// });
 
 		$('#calendar').fullCalendar($.extend({
 			editable: true,
@@ -316,26 +316,26 @@
 				tecal_showModal( calEvent, null, null, jsEvent, view, 'edit' );
 			},
 			eventDrop: function( calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view ) {
-				return false;
-
 				// If the calendar is active
-				if($('#calendar-active').attr("active") == "true") {
+				// if($('#calendar-active').attr("active") == "true") {
 					// Disabling calendar for saving
 					changeCalendarState(false);
-					// Converting the date
-					var newdatum = convertDate(calEvent.start);
-					// Saving the delay after drop
-					$.ajax({
-					type: "POST",
-					url: "#",
-					data: { action: "inline-edit", id: calEvent.id, datum: newdatum, ort: calEvent.ort, titel: calEvent.title, info: calEvent.info, keywords: calEvent.keywords, ohneuhrzeit: calEvent.ohneuhrzeit }
-					}).done(function( msg ) {
+
+					var data = {
+						tecal_events_post_id: calEvent.id,
+						tecal_events_begin: moment(calEvent.start).format('YYYY-MM-DD'),
+						tecal_events_begin_time: moment(calEvent.start).format('HH:mm'),
+						tecal_events_end: moment(calEvent.end).format('YYYY-MM-DD'),
+						tecal_events_end_time: moment(calEvent.end).format('HH:mm'),
+						action: 'te_calendar_move_event'
+					};
+
+					$.post(ajaxurl, data, function(response) {
+						$( '#calendar' ).fullCalendar( 'refetchEvents' );
 						// Make the calendar work again
-						changeCalendarState(true);
+						// changeCalendarState(true);
 					});
-				} else {
-					revertFunc();
-				}
+				// }
 			},
 			loading: function(bool) {
 				if(bool) {
@@ -382,6 +382,9 @@
 			var description_input = document.querySelector('[name="tecal_events_description"]');
 			var edit_id_hidden = document.querySelector('[name="tecal_events_edit_id"]');
 
+			allday_input.addEventListener('click', tecal_alldayClicked, true);
+			has_end_input.addEventListener('click', tecal_hasEndClicked, true);
+
 			if( mode == 'edit' ) {
 				modal.classList.add('is-edit');
 				save_button.addEventListener('click', tecal_modalSaveEditEvent, true);
@@ -390,16 +393,24 @@
 				title_input.value = calEvent.title;
 				location_input.value = calEvent.location;
 				begin_date_input.value = calEvent.start.format('YYYY-MM-DD');
-				allday_input.checked = calEvent.allDay;
+				has_end_input.checked = ( calEvent.hasEnd === true || calEvent.hasEnd === "1" ) ? true : false;
+				has_end_input.disabled = false;
+				if( calEvent.hasEnd === true || calEvent.hasEnd === "1" ) {
+					end_date_input.disabled = false;
+					end_time_input.disabled = false;
+				} else {
+					end_date_input.disabled = true;
+					end_time_input.disabled = true;
+				}
+				allday_input.checked = ( calEvent.allDay === true || calEvent.allDay === "1" ) ? true : false;
 				if( calEvent.allDay === false || calEvent.allDay === "0" ) {
 					end_date_input.value = moment(calEvent.end).format('YYYY-MM-DD');
 					end_time_input.value = moment(calEvent.end).format('HH:mm');
 					begin_time_input.value = moment(calEvent.start).format('HH:mm');
-					has_end_input.checked = calEvent.hasEnd;
+					begin_time_input.disabled = false;
 				} else {
-					end_date_input.disabled = true;
+					end_date_input.value = moment(calEvent.end).format('YYYY-MM-DD');
 					end_time_input.disabled = true;
-					has_end_input.disabled = true;
 					begin_time_input.disabled = true;
 				}
 				description_input.value = calEvent.description;
@@ -417,7 +428,7 @@
 				begin_time_input.value = "";
 				begin_time_input.disabled = true;
 				allday_input.checked = true;
-				end_date_input.value = "";
+				end_date_input.value = date.format('YYYY-MM-DD');
 				end_time_input.value = "";
 				end_date_input.disabled = true;
 				end_time_input.disabled = true;
@@ -433,6 +444,8 @@
 			var cancel_button = document.querySelector('[name="tecal_edit-modal_cancel"]');
 			var save_button = document.querySelector('[name="tecal_edit-modal_save"]');
 			var delete_button = document.querySelector('[name="tecal_edit-modal_delete"]');
+			var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
+			var allday_input = document.querySelector('[name="tecal_events_allday"]');
 
 			modal.classList.remove('is-visible');
 			// Incorporate that an animation is taking place.
@@ -445,6 +458,38 @@
 			save_button.removeEventListener('click', tecal_modalSaveEditEvent);
 			save_button.removeEventListener('click', tecal_modalSaveNewEvent);
 			delete_button.removeEventListener('click', tecal_modalDeleteEvent);
+			allday_input.removeEventListener('click', tecal_alldayClicked);
+			has_end_input.removeEventListener('click', tecal_hasEndClicked);
+		}
+
+		var tecal_alldayClicked = function(e) {
+			var begin_time_input = document.querySelector('[name="tecal_events_begin_time"]');
+			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
+
+			if( e.target.checked ) {
+				begin_time_input.disabled = true;
+				end_time_input.disabled = true;
+			} else {
+				begin_time_input.disabled = false;
+				end_time_input.disabled = false;
+			}
+		}
+
+		var tecal_hasEndClicked = function(e) {
+			var end_date_input = document.querySelector('[name="tecal_events_end"]');
+			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
+			var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
+			var allday_input = document.querySelector('[name="tecal_events_allday"]');
+
+			if( e.target.checked ) {
+				end_date_input.disabled = false;
+				if( allday_input.checked !== true ) {
+					end_time_input.disabled = false;
+				}
+			} else {
+				end_date_input.disabled = true;
+				end_time_input.disabled = true;
+			}
 		}
 
 		var tecal_modalCancelEvent = function(e) {
@@ -567,15 +612,15 @@
 			}
 		}
 
-		function convertDate(oDate) {
-			oDate = oDate || new Date();
-			var monate = Array("01","02","03","04","05","06","07","08","09","10","11","12");
-			var date = (oDate.getDate() < 10) ? "0"+oDate.getDate() : oDate.getDate();
-			var hours = (oDate.getHours() < 10) ? "0"+oDate.getHours() : oDate.getHours();
-			var minutes = (oDate.getMinutes() < 10) ? "0"+oDate.getMinutes() : oDate.getMinutes();
-			var newDate = oDate.getFullYear()+"-"+monate[oDate.getMonth()]+"-"+date+" "+hours+":"+minutes+":00";
-			return newDate;
-		}
+		// function convertDate(oDate) {
+		// 	oDate = oDate || new Date();
+		// 	var monate = Array("01","02","03","04","05","06","07","08","09","10","11","12");
+		// 	var date = (oDate.getDate() < 10) ? "0"+oDate.getDate() : oDate.getDate();
+		// 	var hours = (oDate.getHours() < 10) ? "0"+oDate.getHours() : oDate.getHours();
+		// 	var minutes = (oDate.getMinutes() < 10) ? "0"+oDate.getMinutes() : oDate.getMinutes();
+		// 	var newDate = oDate.getFullYear()+"-"+monate[oDate.getMonth()]+"-"+date+" "+hours+":"+minutes+":00";
+		// 	return newDate;
+		// }
 
 	});
 

@@ -232,7 +232,7 @@ class Te_Calendar_Admin {
 				'meta_query' => array(
 					array(
 						'key' => 'tecal_events_begin',
-						'value' => $start->format('U'),
+						'value' => $start->format('U') - 60 * 60 * 24, // minus 1 day
 						'type' => 'numeric',
 						'compare' => '>='
 					),
@@ -327,6 +327,42 @@ class Te_Calendar_Admin {
       $post->post_content = esc_attr( $_POST['tecal_events_description'] );
 
       wp_update_post( $post );
+
+      return 1;
+    }
+
+    return 0;
+	}
+
+	/**
+		* Move an event.
+		*
+		* @since 		1.0.0
+		*/
+	public function ajax_save_move_event() {
+		$post_id = $_POST['tecal_events_post_id'];
+
+    // Check permissions
+    if ( !current_user_can( 'edit_post', $post_id ) ) {
+    	echo "Current user can't edit this kind of posts.";
+      return;
+    }
+
+    // OK, we're authenticated: we need to find and save the data
+    $post = get_post( $post_id );
+    if ( $post && $post->post_type == 'tecal_events' ) {
+
+    	if( isset( $_POST['tecal_events_begin'] ) && isset( $_POST['tecal_events_begin_time'] ) ) {
+    		$begin_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_begin'] ) . " " . esc_attr( $_POST['tecal_events_begin_time'] ) ) );
+    		$begin_date = ( $begin_date == false ) ? date_create() : $begin_date;
+    		update_post_meta( $post_id, 'tecal_events_begin', $begin_date->format('U') );
+    	}
+
+    	if( isset( $_POST['tecal_events_end'] ) && isset( $_POST['tecal_events_end_time'] ) ) {
+	    	$end_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_end'] ) . " " . esc_attr( $_POST['tecal_events_end_time'] ) ) );
+	    	$end_date = ( $end_date == false ) ? date_create() : $end_date;
+	    	update_post_meta( $post_id, 'tecal_events_end', $end_date->format('U') );
+	    }
 
       return 1;
     }
