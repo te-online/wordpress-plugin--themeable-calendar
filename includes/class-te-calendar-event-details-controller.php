@@ -29,10 +29,12 @@ class Te_Calendar_Event_Details_Controller {
 		$end_string = date_i18n( 'Y-m-d', $end );
 		$end_time = ( $end == $today->format('U') ) ? date_i18n( 'H:00', ( $end + 60 * 60 ) ) : date_i18n( 'H:i', $end );
 		$allday = get_post_meta( $post->ID, 'tecal_events_allday', true );
+		$has_end = get_post_meta( $post->ID, 'tecal_events_has_end', true );
 		$location = get_post_meta( $post->ID, 'tecal_events_location', true );
 		$repeat_mode = get_post_meta( $post->ID, 'tecal_events_repeat_mode', true );
 
-		$disabled = ( $allday == 1 ) ? 'disabled="disabled"' : '';
+		$disabled = ( $allday == 1 || $allday == "" ) ? 'disabled="disabled"' : '';
+		$disabled_end = ( $has_end == 0 ) ? 'disabled="disabled"' : '';
 	    ?>
 
 	    <input type="hidden" name="tecal_events_noncename" id="tecal_events_noncename" value="<?php echo wp_create_nonce( 'tecal_events'.$post->ID );?>" />
@@ -44,8 +46,11 @@ class Te_Calendar_Event_Details_Controller {
 			<input class="widefat" id="tecal_events_allday" name="tecal_events_allday" type="checkbox" <?php echo ($allday == "0") ? "" : "checked='checked'" ; ?> /></p>
 
 	    <p><label for="tecal_events_begin"><?php _e('Begin:'); ?></label>
-			<input class="widefat" id="tecal_events_begin" name="tecal_events_begin" type="date" value="<?php echo esc_attr($begin_string); ?>" <?php echo $disabled; ?> />
+			<input class="widefat" id="tecal_events_begin" name="tecal_events_begin" type="date" value="<?php echo esc_attr($begin_string); ?>" />
 			<input class="widefat" id="tecal_events_begin_time" name="tecal_events_begin_time" type="time" value="<?php echo esc_attr($begin_time); ?>" <?php echo $disabled; ?> /></p>
+
+			<p><label for="tecal_events_has_end"><?php _e('Specify an end:'); ?></label>
+			<input class="widefat" id="tecal_events_has_end" name="tecal_events_has_end" type="checkbox" <?php echo ($has_end == "1") ? "checked='checked'" : "" ; ?> <?php echo $disabled; ?> /></p>
 
 			<p><label for="tecal_events_end"><?php _e('End:'); ?></label>
 			<input class="widefat" id="tecal_events_end" name="tecal_events_end" type="date" value="<?php echo esc_attr($end_string); ?>" <?php echo $disabled; ?> />
