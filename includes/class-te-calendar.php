@@ -129,6 +129,11 @@ class Te_Calendar {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-te-calendar-event-details-controller.php';
 
 		/**
+		 * The class responsible for overriding the WP_List_Table.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-te-calendar-custom-list-table.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
@@ -178,6 +183,7 @@ class Te_Calendar {
 		$this->loader->add_action( 'init', $plugin_admin, 'calendars_custom_taxonomy' );
 		$this->loader->add_action( 'widgets_init', $plugin_admin, 'widget_register' );
 		$this->loader->add_action( 'init', $plugin_admin, 'shortcode_register' );
+		$this->loader->add_action( 'views_edit-tecal_events', $plugin_admin, 'custom_list_table_register' );
 
 		$this->loader->add_action( 'admin_init', $event_controller, 'event_metaboxes_register' );
 		$this->loader->add_action( 'save_post', $event_controller, 'event_details_save' );
