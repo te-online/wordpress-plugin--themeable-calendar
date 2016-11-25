@@ -185,6 +185,9 @@ class Te_Calendar {
 		$this->loader->add_action( 'init', $plugin_admin, 'shortcode_register' );
 		$this->loader->add_action( 'views_edit-tecal_events', $plugin_admin, 'custom_list_table_register' );
 		$this->loader->add_action( 'wp_ajax_te_calendar_fetch_events', $plugin_admin, 'ajax_answer_fetch_events' );
+		$this->loader->add_action( 'wp_ajax_te_calendar_save_edited_event', $plugin_admin, 'ajax_save_edit_event' );
+		$this->loader->add_action( 'wp_ajax_te_calendar_save_new_event', $plugin_admin, 'ajax_save_new_event' );
+		$this->loader->add_action( 'wp_ajax_te_calendar_delete_event', $plugin_admin, 'ajax_delete_event' );
 
 		$this->loader->add_action( 'admin_init', $event_controller, 'event_metaboxes_register' );
 		$this->loader->add_action( 'save_post', $event_controller, 'event_details_save' );

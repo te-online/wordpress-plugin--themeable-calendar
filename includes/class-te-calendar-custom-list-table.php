@@ -47,9 +47,13 @@ class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
 						<textarea class="widefat tecal_events_description" id="tecal_events_description" name="tecal_events_description"></textarea></p>
 
 						<div class="tecal_edit-modal__submit">
-							<input type="button" name="tecal_edit-modal_cancel" value="<?php _e( 'Cancel', 'te-calendar' ); ?>" class="button-secondary">
+							<input type="hidden" name="tecal_events_edit_id" value="" />
 
-							<input type="submit" name="tecal_edit-modal_save" value="<?php _e( 'Save', 'te-calendar' ); ?>" class="button-primary">
+							<input type="button" name="tecal_edit-modal_cancel" value="<?php _e( 'Cancel', 'te-calendar' ); ?>" class="button-secondary" />
+
+							<input type="button" name="tecal_edit-modal_delete" value="<?php _e( 'Delete', 'te-calendar' ); ?>" data-defaultcaption="<?php _e( 'Delete', 'te-calendar' ); ?>" data-busycaption="<?php _e( 'Deleting...', 'te-calendar' ); ?>" class="button-secondary" />
+
+							<input type="submit" name="tecal_edit-modal_save" value="<?php _e( 'Save', 'te-calendar' ); ?>" data-defaultcaption="<?php _e( 'Save', 'te-calendar' ); ?>" data-busycaption="<?php _e( 'Saving...', 'te-calendar' ); ?>" class="button-primary" />
 						</div>
 
 					</form>

@@ -217,6 +217,11 @@ class Te_Calendar_Admin {
     $wp_list_table = $custom_list_table ;
 	}
 
+	/**
+		* Answer the AJAX request for a list of events.
+		*
+		* @since 		1.0.0
+		*/
 	public function ajax_answer_fetch_events() {
 		$start = ( isset( $_POST['start'] ) ) ? date_create_from_format( 'Y-m-d', $_POST['start'] ) : date_create();
 		$end = ( isset( $_POST['end'] ) ) ? date_create_from_format( 'Y-m-d', $_POST['end'] ) : date_create();
@@ -240,9 +245,6 @@ class Te_Calendar_Admin {
 				)
 			)
 		);
-
-		// print_r($events);
-		// wp_die();
 
 		$response_events = [];
 
@@ -268,6 +270,138 @@ class Te_Calendar_Admin {
 		}
 
 		wp_die();
+	}
+
+	/**
+		* Save an edit event.
+		*
+		* @since 		1.0.0
+		*/
+	public function ajax_save_edit_event() {
+		$post_id = $_POST['tecal_events_post_id'];
+
+		// verify this came from the our screen and with proper authorization.
+    // if ( !isset($_POST['tecal_events_noncename']) || !wp_verify_nonce( $_POST['tecal_events_noncename'], 'tecal_events'.$post_id )) {
+    //   return $post_id;
+    // }
+
+    // verify if this is an auto save routine. If it is our form has not been submitted, so we dont want to do anything
+    // if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) {
+    //   return $post_id;
+    // }
+
+    // Check permissions
+    if ( !current_user_can( 'edit_post', $post_id ) ) {
+    	echo "Current user can't edit this kind of posts.";
+      return;
+    }
+
+    // OK, we're authenticated: we need to find and save the data
+    $post = get_post( $post_id );
+    if ( $post->post_type == 'tecal_events' ) {
+    	echo esc_attr( $_POST['tecal_events_begin'] ) . " " . esc_attr( $_POST['tecal_events_begin_time'] );
+
+    	if( isset( $_POST['tecal_events_begin'] ) && isset( $_POST['tecal_events_begin_time'] ) ) {
+    		$begin_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_begin'] ) . " " . esc_attr( $_POST['tecal_events_begin_time'] ) ) );
+    		$begin_date = ( $begin_date == false ) ? date_create() : $begin_date;
+    		update_post_meta( $post_id, 'tecal_events_begin', $begin_date->format('U') );
+    	}
+
+    	if( isset( $_POST['tecal_events_end'] ) && isset( $_POST['tecal_events_end_time'] ) ) {
+	    	$end_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_end'] ) . " " . esc_attr( $_POST['tecal_events_end_time'] ) ) );
+	    	$end_date = ( $end_date == false ) ? date_create() : $end_date;
+	    	update_post_meta( $post_id, 'tecal_events_end', $end_date->format('U') );
+	    }
+
+	    if( isset( $_POST['tecal_events_location'] ) ) {
+	    	update_post_meta( $post_id, 'tecal_events_location', esc_attr( $_POST['tecal_events_location'] ) );
+	    }
+
+      update_post_meta( $post_id, 'tecal_events_allday', ( $_POST['tecal_events_allday'] == "true" ) ? "1" : "0" );
+
+      echo "allday is " . $_POST['tecal_events_allday'];
+
+      update_post_meta( $post_id, 'tecal_events_has_end', ( $_POST['tecal_events_has_end'] == "true" ) ? "1" : "0" );
+
+      $post->post_title = esc_attr( $_POST['tecal_events_title'] );
+      $post->post_content = esc_attr( $_POST['tecal_events_description'] );
+
+      wp_update_post( $post );
+
+      return 1;
+    }
+
+    return 0;
+	}
+
+	/**
+		* Save a new event.
+		*
+		* @since 		1.0.0
+		*/
+	public function ajax_save_new_event() {
+		if ( !current_user_can( 'edit_posts' ) ) {
+      echo "Error, user can't edit posts";
+      return;
+    }
+
+    // OK, we're authenticated: we need to find and save the data
+    $post_id = wp_insert_post(
+			array(
+				'post_title' => esc_attr( $_POST['tecal_events_title'] ),
+				'post_content' => esc_attr( $_POST['tecal_events_description'] ),
+				'post_type' => 'tecal_events',
+				'post_status' => 'publish'
+    	)
+    );
+
+    $post = get_post( $post_id );
+    if ( $post ) {
+    	if( isset( $_POST['tecal_events_begin'] ) && isset( $_POST['tecal_events_begin_time'] ) ) {
+    		$begin_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_begin'] ) . " " . esc_attr( $_POST['tecal_events_begin_time'] ) ) );
+    		$begin_date = ( $begin_date == false ) ? date_create() : $begin_date;
+    		update_post_meta( $post_id, 'tecal_events_begin', $begin_date->format('U') );
+    	}
+
+    	if( isset( $_POST['tecal_events_end'] ) && isset( $_POST['tecal_events_end_time'] ) ) {
+	    	$end_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_end'] ) . " " . esc_attr( $_POST['tecal_events_end_time'] ) ) );
+	    	$end_date = ( $end_date == false ) ? date_create() : $end_date;
+	    	update_post_meta( $post_id, 'tecal_events_end', $end_date->format('U') );
+	    }
+
+	    if( isset( $_POST['tecal_events_location'] ) ) {
+	    	update_post_meta( $post_id, 'tecal_events_location', esc_attr( $_POST['tecal_events_location'] ) );
+	    }
+
+      update_post_meta( $post_id, 'tecal_events_allday', ( $_POST['tecal_events_allday'] == "true" ) ? "1" : "0" );
+
+      update_post_meta( $post_id, 'tecal_events_has_end', ( $_POST['tecal_events_has_end'] == "true" ) ? "1" : "0" );
+
+      return 1;
+    }
+
+    echo "Post is" . $post->ID;
+    print_r($post);
+    wp_die();
+	}
+
+	/**
+		* Save a new event.
+		*
+		* @since 		1.0.0
+		*/
+	public function ajax_delete_event() {
+		$post_id = $_POST['tecal_events_post_id'];
+
+		if ( !current_user_can( 'delete_post', $post_id ) ) {
+      echo "Error, user can't delete this post.";
+      return;
+    }
+
+    wp_delete_post( $post_id );
+    echo "Deleted";
+
+    wp_die();
 	}
 
 }

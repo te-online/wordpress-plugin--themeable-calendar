@@ -90,155 +90,155 @@
 
 		// Zeige das Datum in einem lesbaren Format im Container "#datum-lesbar" an
 		// Erwartet als Eingabe ("getDate") von DateTimePicker
-		function renderDate(date,checkfield,destinationfield,expected) {
-			var Wochentag = new Array("Sonntag", "Montag", "Dienstag", "Mittwoch",
-						  "Donnerstag", "Freitag", "Samstag");
-			var Monat = new Array("Januar", "Februar", "März", "April", "Mai", "Juni",
-							"Juli", "August", "September", "Oktober", "November","Dezember");
-			var readable = Wochentag[date.getDay()]+', '+date.getDate()+'. '+Monat[date.getMonth()]+' '+date.getFullYear();
-			if($(checkfield).prop('checked') == expected) {
-				var hours = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours());
-				var minutes = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
-				readable += ' / '+hours+'.'+minutes+' Uhr';
-			}
-			$(destinationfield).html(readable);
-		}
+		// function renderDate(date,checkfield,destinationfield,expected) {
+		// 	var Wochentag = new Array("Sonntag", "Montag", "Dienstag", "Mittwoch",
+		// 				  "Donnerstag", "Freitag", "Samstag");
+		// 	var Monat = new Array("Januar", "Februar", "März", "April", "Mai", "Juni",
+		// 					"Juli", "August", "September", "Oktober", "November","Dezember");
+		// 	var readable = Wochentag[date.getDay()]+', '+date.getDate()+'. '+Monat[date.getMonth()]+' '+date.getFullYear();
+		// 	if($(checkfield).prop('checked') == expected) {
+		// 		var hours = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours());
+		// 		var minutes = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+		// 		readable += ' / '+hours+'.'+minutes+' Uhr';
+		// 	}
+		// 	$(destinationfield).html(readable);
+		// }
 
-		$('#ohne_uhrzeit').on("change", function() {
-			var oDate = $('.datum').datetimepicker("getDate");
-			renderDate(oDate,'#ohne_uhrzeit','#datum-lesbar',false);
-		});
+		// $('#ohne_uhrzeit').on("change", function() {
+		// 	var oDate = $('.datum').datetimepicker("getDate");
+		// 	renderDate(oDate,'#ohne_uhrzeit','#datum-lesbar',false);
+		// });
 
 
-		$('.delete-termin').live("click", function() {
-			$(this).parent().parent().parent().parent().parent().fadeOut( function() {
-				$(this).remove();
-			});
-		});
+		// $('.delete-termin').live("click", function() {
+		// 	$(this).parent().parent().parent().parent().parent().fadeOut( function() {
+		// 		$(this).remove();
+		// 	});
+		// });
 
-		$('#delete-all-button').on("click", function() {
-			$('.duplicated-termine').html('');
-			$(this).fadeOut();
-		});
+		// $('#delete-all-button').on("click", function() {
+		// 	$('.duplicated-termine').html('');
+		// 	$(this).fadeOut();
+		// });
 
-		function registerRendering(number) {
-			$('#ohne_uhrzeit-'+number+', #datum-'+number).live("change", function() {
-				renderDate($('#datum-'+number).datetimepicker("getDate"),'#ohne_uhrzeit-'+number,'#datum-lesbar-'+number,false);
-			});
-		}
+		// function registerRendering(number) {
+		// 	$('#ohne_uhrzeit-'+number+', #datum-'+number).live("change", function() {
+		// 		renderDate($('#datum-'+number).datetimepicker("getDate"),'#ohne_uhrzeit-'+number,'#datum-lesbar-'+number,false);
+		// 	});
+		// }
 
-		function strip_tags(input, allowed) {
-		  allowed = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
-		  var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
-			commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
-		  return input.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
-			return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
-		  });
-		}
+		// function strip_tags(input, allowed) {
+		//   allowed = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+		//   var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+		// 	commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+		//   return input.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+		// 	return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+		//   });
+		// }
 
-		$('#duplicate-termine-button').on("click", function() {
-			if($('#repeat-each-day-true').prop("checked") || $('#repeat-each-true').prop("checked")) {
-				$('#ajax-loading-duplicate').css("visibility","visible");
-				$('#delete-all-button').show();
+		// $('#duplicate-termine-button').on("click", function() {
+		// 	if($('#repeat-each-day-true').prop("checked") || $('#repeat-each-true').prop("checked")) {
+		// 		$('#ajax-loading-duplicate').css("visibility","visible");
+		// 		$('#delete-all-button').show();
 
-				// Prepare Dates to add
-				var oDate = $("#datum").datetimepicker("getDate");
+		// 		// Prepare Dates to add
+		// 		var oDate = $("#datum").datetimepicker("getDate");
 
-				var times = parseInt($('#repeat-times').val());
+		// 		var times = parseInt($('#repeat-times').val());
 
-				var dates = Array();
+		// 		var dates = Array();
 
-				if($('#repeat-each-true').prop("checked")) {
-					// {Jede Woche} wiederholen
-					var value = parseInt($('#repeat-each').val());
-					var current = oDate;
-					for(A = 0; A <= times-1; A++) {
-						New = new Date(current.getFullYear(), current.getMonth(), (current.getDate() + (7 * (value))), current.getHours(), current.getMinutes());
-						dates.push(New);
-						current = New;
-					}
-				}
+		// 		if($('#repeat-each-true').prop("checked")) {
+		// 			// {Jede Woche} wiederholen
+		// 			var value = parseInt($('#repeat-each').val());
+		// 			var current = oDate;
+		// 			for(A = 0; A <= times-1; A++) {
+		// 				New = new Date(current.getFullYear(), current.getMonth(), (current.getDate() + (7 * (value))), current.getHours(), current.getMinutes());
+		// 				dates.push(New);
+		// 				current = New;
+		// 			}
+		// 		}
 
-				if($('#repeat-each-day-true').prop("checked")) {
-					// {Jeden 1.} wiederholen
-					var value = parseInt($('#repeat-each-day').val());
-					var current = oDate;
-					for(A = 0; A <= times-1; A++) {
-						var New = current;
-						// Solange der Monat gleich ist, gehe eine Woche vor.
-						while(current.getMonth() == New.getMonth()) {
-							New = new Date(New.getFullYear(), New.getMonth(), (New.getDate() + 7), New.getHours(), New.getMinutes());
-						}
-						// Im neuen Monat suche den 1., 2., 3. oder 4. Tag raus
-						if(value > 1) {
-							New = new Date(New.getFullYear(), New.getMonth(), (New.getDate() + (7 * (value-1))), New.getHours(), New.getMinutes());
-						}
-						dates.push(New);
-						current = New;
-					}
-				}
+		// 		if($('#repeat-each-day-true').prop("checked")) {
+		// 			// {Jeden 1.} wiederholen
+		// 			var value = parseInt($('#repeat-each-day').val());
+		// 			var current = oDate;
+		// 			for(A = 0; A <= times-1; A++) {
+		// 				var New = current;
+		// 				// Solange der Monat gleich ist, gehe eine Woche vor.
+		// 				while(current.getMonth() == New.getMonth()) {
+		// 					New = new Date(New.getFullYear(), New.getMonth(), (New.getDate() + 7), New.getHours(), New.getMinutes());
+		// 				}
+		// 				// Im neuen Monat suche den 1., 2., 3. oder 4. Tag raus
+		// 				if(value > 1) {
+		// 					New = new Date(New.getFullYear(), New.getMonth(), (New.getDate() + (7 * (value-1))), New.getHours(), New.getMinutes());
+		// 				}
+		// 				dates.push(New);
+		// 				current = New;
+		// 			}
+		// 		}
 
-				$('.keep').live("click", function() {
-					var itemid = $(this).attr("item-id");
-					var shown = $(this).attr("shown");
-					if(shown == "true") {
-						$("#"+itemid).fadeOut();
-						$(this).html("ändern");
-						$(this).attr("shown","false");
-						$("#"+itemid).val($("#"+itemid).attr("ocontent"));
-					} else {
-						$("#"+itemid).fadeIn();
-						$(this).html("beibehalten");
-						$(this).attr("shown","true");
-					}
-				});
+		// 		$('.keep').live("click", function() {
+		// 			var itemid = $(this).attr("item-id");
+		// 			var shown = $(this).attr("shown");
+		// 			if(shown == "true") {
+		// 				$("#"+itemid).fadeOut();
+		// 				$(this).html("ändern");
+		// 				$(this).attr("shown","false");
+		// 				$("#"+itemid).val($("#"+itemid).attr("ocontent"));
+		// 			} else {
+		// 				$("#"+itemid).fadeIn();
+		// 				$(this).html("beibehalten");
+		// 				$(this).attr("shown","true");
+		// 			}
+		// 		});
 
-				//dates.push(oDate);
-				if(dates.length > 0) {
-					var ort = $('#ort').val();
-					var infos = $('#infos').val();
-					for(I = 0; I <= dates.length-1; I++){
-						var number = parseInt($('#lastnumber').val())+parseInt(1+I);
-						$element = '<div class="duplicated-date" id="'+number+'"><table><tbody>';
-						$element += '<tr>';
-						$element += '		<td><label for="datum-'+number+'" class="termine-label">Datum</label></td>';
-						var checked = ($('#ohne_uhrzeit').prop("checked") == true) ? "checked='checked' " : "";
-						$element += '		<td><span id="datum-lesbar-'+number+'" style="font-weight: bold;"></span><br /><input type="checkbox" id="ohne_uhrzeit-'+number+'" name="ohne_uhrzeit-'+number+'" '+checked+'/> <label style="font-style: italic" for="ohne_uhrzeit-'+number+'">Uhrzeit nicht beachten</label><br /><input type="text" id="datum-'+number+'" autocomplete="off" value="" size="30" name="datum-'+number+'" class="datum" /> <a href="#/" class="delete-termin">Löschen</a></td>';
-						$element += '	</tr>';
-						$element += '	<tr>';
-						$element += '		<td><label for="ort-'+number+'" class="termine-label">Ort</label></td>';
-						$element += '		<td><a href="#/" class="keep" item-id="ort-'+number+'" shown="false">ändern</a> <input ocontent="'+strip_tags(ort)+'" class="termine-no-show termine-input" type="text" id="ort-'+number+'" value="'+ort+'" size="30" name="ort-'+number+'" /></td>';
-						$element += '	</tr>';
-						$element += '	<tr>';
-						$element += '		<td><label for="infos-'+number+'" class="termine-label">Zusatzinformationen</label></td>';
-						$element += '		<td><a href="#/" class="keep" item-id="infos-'+number+'" shown="false">ändern</a> <textarea ocontent="'+strip_tags(infos)+'" id="infos-'+number+'" name="infos-'+number+'" class="termine-no-show infos">'+infos+'</textarea></td>';
-						$element += '	</tr>';
-						$element += '</tbody></table>';
-						$element += '</div>';
-						$('.duplicated-termine').append($($element));
-						$('#datum-'+number).datetimepicker();
-						$('#datum-'+number).datetimepicker("option", "dateFormat", "yy-mm-dd");
-						$('#datum-'+number).datepicker("setDate", dates[I]);
-						renderDate($('#datum-'+number).datetimepicker("getDate"),'#ohne_uhrzeit-'+number,'#datum-lesbar-'+number,false);
-						registerRendering(number);
-					}
-					$('#lastnumber').val(number);
-				}
+		// 		//dates.push(oDate);
+		// 		if(dates.length > 0) {
+		// 			var ort = $('#ort').val();
+		// 			var infos = $('#infos').val();
+		// 			for(I = 0; I <= dates.length-1; I++){
+		// 				var number = parseInt($('#lastnumber').val())+parseInt(1+I);
+		// 				$element = '<div class="duplicated-date" id="'+number+'"><table><tbody>';
+		// 				$element += '<tr>';
+		// 				$element += '		<td><label for="datum-'+number+'" class="termine-label">Datum</label></td>';
+		// 				var checked = ($('#ohne_uhrzeit').prop("checked") == true) ? "checked='checked' " : "";
+		// 				$element += '		<td><span id="datum-lesbar-'+number+'" style="font-weight: bold;"></span><br /><input type="checkbox" id="ohne_uhrzeit-'+number+'" name="ohne_uhrzeit-'+number+'" '+checked+'/> <label style="font-style: italic" for="ohne_uhrzeit-'+number+'">Uhrzeit nicht beachten</label><br /><input type="text" id="datum-'+number+'" autocomplete="off" value="" size="30" name="datum-'+number+'" class="datum" /> <a href="#/" class="delete-termin">Löschen</a></td>';
+		// 				$element += '	</tr>';
+		// 				$element += '	<tr>';
+		// 				$element += '		<td><label for="ort-'+number+'" class="termine-label">Ort</label></td>';
+		// 				$element += '		<td><a href="#/" class="keep" item-id="ort-'+number+'" shown="false">ändern</a> <input ocontent="'+strip_tags(ort)+'" class="termine-no-show termine-input" type="text" id="ort-'+number+'" value="'+ort+'" size="30" name="ort-'+number+'" /></td>';
+		// 				$element += '	</tr>';
+		// 				$element += '	<tr>';
+		// 				$element += '		<td><label for="infos-'+number+'" class="termine-label">Zusatzinformationen</label></td>';
+		// 				$element += '		<td><a href="#/" class="keep" item-id="infos-'+number+'" shown="false">ändern</a> <textarea ocontent="'+strip_tags(infos)+'" id="infos-'+number+'" name="infos-'+number+'" class="termine-no-show infos">'+infos+'</textarea></td>';
+		// 				$element += '	</tr>';
+		// 				$element += '</tbody></table>';
+		// 				$element += '</div>';
+		// 				$('.duplicated-termine').append($($element));
+		// 				$('#datum-'+number).datetimepicker();
+		// 				$('#datum-'+number).datetimepicker("option", "dateFormat", "yy-mm-dd");
+		// 				$('#datum-'+number).datepicker("setDate", dates[I]);
+		// 				renderDate($('#datum-'+number).datetimepicker("getDate"),'#ohne_uhrzeit-'+number,'#datum-lesbar-'+number,false);
+		// 				registerRendering(number);
+		// 			}
+		// 			$('#lastnumber').val(number);
+		// 		}
 
-				$('#speichern').on("click", function() {
-					// Übergebe Ids der Inputs an HTML Form
-					var entries = new Array();
-					$('.duplicated-date').each(function(i,item) {
-						entries.push($(this).attr("id"));
-					});
-					entries = entries.join(',');
-					$('#numbers').val(entries);
-					return true;
-				});
+		// 		$('#speichern').on("click", function() {
+		// 			// Übergebe Ids der Inputs an HTML Form
+		// 			var entries = new Array();
+		// 			$('.duplicated-date').each(function(i,item) {
+		// 				entries.push($(this).attr("id"));
+		// 			});
+		// 			entries = entries.join(',');
+		// 			$('#numbers').val(entries);
+		// 			return true;
+		// 		});
 
-				$('#ajax-loading-duplicate').fadeOut();
-			}
-		});
+		// 		$('#ajax-loading-duplicate').fadeOut();
+		// 	}
+		// });
 
 		// var date = new Date();
 		// var d = date.getDate();
@@ -264,14 +264,14 @@
 		}
 
 		// Add the functionality of the cancel-button
-		$('.calendar-edit-cancel').live("click", function() {
-			$('#calendar-edit').slideUp( function() {
-				// disable editing
-				$(this).html('');
-				// Activating calendar
-				changeCalendarState(true);
-			});
-		});
+		// $('.calendar-edit-cancel').live("click", function() {
+		// 	$('#calendar-edit').slideUp( function() {
+		// 		// disable editing
+		// 		$(this).html('');
+		// 		// Activating calendar
+		// 		changeCalendarState(true);
+		// 	});
+		// });
 
 		// Refresh the human readable date
 		$('.datum-edit, .ohne_uhrzeit-edit').live("change", function() {
@@ -316,6 +316,8 @@
 				tecal_showModal( calEvent, null, null, jsEvent, view, 'edit' );
 			},
 			eventDrop: function( calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view ) {
+				return false;
+
 				// If the calendar is active
 				if($('#calendar-active').attr("active") == "true") {
 					// Disabling calendar for saving
@@ -350,7 +352,7 @@
 				$('.fc-header-left').append('<span id="refreshing-calendar"><img alt="Loading" id="ajax-loading" class="ajax-loading" src="' + WPURLS.siteurl + '/wp-admin/images/wpspin_light.gif" style="vertical-align: middle; visibility: visible;"> Aktualisiere...</span>');
 			},
 			dayClick: function( date, allDay, jsEvent, view ) {
-				tecal_showModal( date, allDay, jsEvent, view, 'new' );
+				tecal_showModal( null, date, allDay, jsEvent, view, 'new' );
 			},
 			disableDragging: false,
 			disableResizing: true,
@@ -361,6 +363,7 @@
 			var modal = document.querySelector('.tecal__edit-modal__container');
 			var cancel_button = document.querySelector('[name="tecal_edit-modal_cancel"]');
 			var save_button = document.querySelector('[name="tecal_edit-modal_save"]');
+			var delete_button = document.querySelector('[name="tecal_edit-modal_delete"]');
 
 			modal.classList.add('is-visible');
 
@@ -377,19 +380,21 @@
 			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
 			var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
 			var description_input = document.querySelector('[name="tecal_events_description"]');
+			var edit_id_hidden = document.querySelector('[name="tecal_events_edit_id"]');
 
 			if( mode == 'edit' ) {
 				modal.classList.add('is-edit');
 				save_button.addEventListener('click', tecal_modalSaveEditEvent, true);
+				delete_button.addEventListener('click', tecal_modalDeleteEvent, true);
 
 				title_input.value = calEvent.title;
 				location_input.value = calEvent.location;
 				begin_date_input.value = calEvent.start.format('YYYY-MM-DD');
 				allday_input.checked = calEvent.allDay;
-				if( calEvent.allDay === false ) {
-					end_date_input.value = calEvent.end.format('YYYY-MM-DD');
-					end_time_input.value = calEvent.end.format('HH:mm');
-					begin_time_input.value = calEvent.start.format('HH:mm');
+				if( calEvent.allDay === false || calEvent.allDay === "0" ) {
+					end_date_input.value = moment(calEvent.end).format('YYYY-MM-DD');
+					end_time_input.value = moment(calEvent.end).format('HH:mm');
+					begin_time_input.value = moment(calEvent.start).format('HH:mm');
 					has_end_input.checked = calEvent.hasEnd;
 				} else {
 					end_date_input.disabled = true;
@@ -398,22 +403,25 @@
 					begin_time_input.disabled = true;
 				}
 				description_input.value = calEvent.description;
+				edit_id_hidden.value = calEvent.id;
 			} else {
 				modal.classList.add('is-new');
 				save_button.addEventListener('click', tecal_modalSaveNewEvent, true);
 
+				console.log("date", date);
+
 				// Reset all inputs.
 				title_input.value = "";
 				location_input.value = "";
-				begin_date_input.value = "";
+				begin_date_input.value = date.format('YYYY-MM-DD');
 				begin_time_input.value = "";
-				begin_time_input.disabled = false;
-				allday_input.selected = false;
+				begin_time_input.disabled = true;
+				allday_input.checked = true;
 				end_date_input.value = "";
 				end_time_input.value = "";
-				end_date_input.disabled = false;
-				end_time_input.disabled = false;
-				has_end_input.seleted = false;
+				end_date_input.disabled = true;
+				end_time_input.disabled = true;
+				has_end_input.checked = false;
 				has_end_input.disabled = false;
 				description_input.value = "";
 			}
@@ -424,6 +432,7 @@
 			var modal = document.querySelector('.tecal__edit-modal__container');
 			var cancel_button = document.querySelector('[name="tecal_edit-modal_cancel"]');
 			var save_button = document.querySelector('[name="tecal_edit-modal_save"]');
+			var delete_button = document.querySelector('[name="tecal_edit-modal_delete"]');
 
 			modal.classList.remove('is-visible');
 			// Incorporate that an animation is taking place.
@@ -435,6 +444,7 @@
 			cancel_button.removeEventListener('click', tecal_modalCancelEvent);
 			save_button.removeEventListener('click', tecal_modalSaveEditEvent);
 			save_button.removeEventListener('click', tecal_modalSaveNewEvent);
+			delete_button.removeEventListener('click', tecal_modalDeleteEvent);
 		}
 
 		var tecal_modalCancelEvent = function(e) {
@@ -445,19 +455,97 @@
 		}
 
 		var tecal_modalSaveEditEvent = function(e) {
-			// Post AJAX here.
-			tecal_modalUnregisterEventListener();
+			var title_input = document.querySelector('[name="tecal_events_title"]');
+			var location_input = document.querySelector('[name="tecal_events_location"]');
+			var begin_date_input = document.querySelector('[name="tecal_events_begin"]');
+			var begin_time_input = document.querySelector('[name="tecal_events_begin_time"]');
+			var allday_input = document.querySelector('[name="tecal_events_allday"]');
+			var end_date_input = document.querySelector('[name="tecal_events_end"]');
+			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
+			var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
+			var description_input = document.querySelector('[name="tecal_events_description"]');
+			var edit_id_hidden = document.querySelector('[name="tecal_events_edit_id"]');
+
+			console.log("is checked", allday_input.checked);
+			console.log("is date", begin_date_input.value);
+
+			var data = {
+				tecal_events_title: title_input.value,
+				tecal_events_location: location_input.value,
+				tecal_events_begin: begin_date_input.value,
+				tecal_events_begin_time: begin_time_input.value,
+				tecal_events_allday: allday_input.checked,
+				tecal_events_end: end_date_input.value,
+				tecal_events_end_time: end_time_input.value,
+				tecal_events_has_end: has_end_input.checked,
+				tecal_events_description: description_input.value,
+				tecal_events_post_id: edit_id_hidden.value,
+				action: 'te_calendar_save_edited_event'
+			};
+
+			e.target.value = e.target.getAttribute('data-busycaption');
+
+			$.post(ajaxurl, data, function(response) {
+				tecal_modalUnregisterEventListener();
+				e.target.value = e.target.getAttribute('data-defaultcaption');
+				$( '#calendar' ).fullCalendar( 'refetchEvents' );
+			});
 
 			e.preventDefault();
 			return false;
 		}
 
 		var tecal_modalSaveNewEvent = function(e) {
-			// Post AJAX here.
-			tecal_modalUnregisterEventListener();
+			var title_input = document.querySelector('[name="tecal_events_title"]');
+			var location_input = document.querySelector('[name="tecal_events_location"]');
+			var begin_date_input = document.querySelector('[name="tecal_events_begin"]');
+			var begin_time_input = document.querySelector('[name="tecal_events_begin_time"]');
+			var allday_input = document.querySelector('[name="tecal_events_allday"]');
+			var end_date_input = document.querySelector('[name="tecal_events_end"]');
+			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
+			var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
+			var description_input = document.querySelector('[name="tecal_events_description"]');
+
+			var data = {
+				tecal_events_title: title_input.value,
+				tecal_events_location: location_input.value,
+				tecal_events_begin: begin_date_input.value,
+				tecal_events_begin_time: begin_time_input.value,
+				tecal_events_allday: allday_input.checked,
+				tecal_events_end: end_date_input.value,
+				tecal_events_end_time: end_time_input.value,
+				tecal_events_has_end: has_end_input.checked,
+				tecal_events_description: description_input.value,
+				action: 'te_calendar_save_new_event'
+			};
+
+			e.target.value = e.target.getAttribute('data-busycaption');
+
+			$.post(ajaxurl, data, function(response) {
+				tecal_modalUnregisterEventListener();
+				e.target.value = e.target.getAttribute('data-defaultcaption');
+				$( '#calendar' ).fullCalendar( 'refetchEvents' );
+			});
 
 			e.preventDefault();
 			return false;
+		}
+
+		var tecal_modalDeleteEvent = function(e) {
+			var edit_id_hidden = document.querySelector('[name="tecal_events_edit_id"]');
+
+			var data = {
+				tecal_events_post_id: edit_id_hidden.value,
+				action: 'te_calendar_delete_event'
+			};
+
+			e.target.value = e.target.getAttribute('data-busycaption');
+
+			$.post(ajaxurl, data, function(response) {
+				tecal_modalUnregisterEventListener();
+				e.target.value = e.target.getAttribute('data-defaultcaption');
+				$( '#calendar' ).fullCalendar( 'refetchEvents' );
+			});
 		}
 
 		function changeCalendarState(onoff) {
