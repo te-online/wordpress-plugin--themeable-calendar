@@ -157,6 +157,22 @@ class Te_Calendar_Global_Functions {
 
 		return false;
 	}
+
+	/**
+	 * Know if the event has an end specified.
+	 *
+	 * @since 		1.0.0
+	 */
+	static function get_event_has_end() {
+		global $post;
+
+		$has_end = get_post_meta( $post->ID, 'tecal_events_has_end', true );
+		if( $has_end ) {
+			return true;
+		}
+
+		return false;
+	}
 }
 
 // Event begin functions.
@@ -199,5 +215,7 @@ if( !function_exists('get_event_location') ) { function get_event_location() { r
 if( !function_exists('the_event_location') ) { function the_event_location() { echo Te_Calendar_Global_Functions::get_event_location(); } }
 
 if( !function_exists('get_event_is_allday') ) { function get_event_is_allday() { return Te_Calendar_Global_Functions::get_event_is_allday(); } }
+
+if( !function_exists('get_event_has_end') ) { function get_event_has_end() { return Te_Calendar_Global_Functions::get_event_has_end(); } }
 
 ?>

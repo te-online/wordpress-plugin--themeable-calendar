@@ -50,10 +50,10 @@
 							<?php the_event_begin( 'd. F Y'); ?>
 						</span>
 						<span class="calendar__item__time">
-							<?php if( !get_event_is_allday() ) { ?>
+							<?php if( !get_event_is_allday() && get_event_has_end() ) { ?>
 								&middot; <?php the_event_begin_time(); ?> – <?php the_event_end_time(); ?>
 							<?php } else { ?>
-								&middot; <?php the_event_begin_time(); ?>
+								&middot; <?php the_event_begin_time(); // Gets time or "all day" ?>
 							<?php } ?>
 						</span>
 					</div>
