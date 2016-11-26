@@ -26,11 +26,13 @@ class Te_Calendar_Widget extends WP_Widget {
 	 * @param array $args
 	 * @param array $instance
 	 */
-	public function widget( $args, $instance = array( 'title' => '', 'num_events' => 5 ) ) {
+	public function widget( $args, $instance = array( 'title' => '', 'num_events' => 5, 'template' => 'default' ) ) {
 		// outputs the content of the widget
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
 
 		$num_events = intval( $instance['num_events'] );
+
+		$template = stripslashes( empty( $instance['template'] ) ? '' : $instance['template'] );
 
 		$today = strtotime( 'today midnight' );
 
@@ -55,7 +57,11 @@ class Te_Calendar_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'templates/te-calendar-default-template-sidebar.php';
+		if( $template != 'default' && !empty( $template ) ) {
+			require_once get_template_directory() . '/' . $template;
+		} else {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'templates/te-calendar-default-template-sidebar.php';
+		}
 
 		wp_reset_query();
 	}
@@ -66,8 +72,9 @@ class Te_Calendar_Widget extends WP_Widget {
 	 * @param array $instance The widget options
 	 */
 	public function form( $instance ) {
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'num_events' => 3 ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'num_events' => 3, 'template' => '' ) );
 		$title = sanitize_text_field( $instance['title'] );
+		$template = sanitize_text_field( $instance['template'] );
 		$num_events = intval( $instance['num_events'] );
 		?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
@@ -75,6 +82,9 @@ class Te_Calendar_Widget extends WP_Widget {
 
 		<p><label for="<?php echo $this->get_field_id('num_events'); ?>"><?php _e('Number of events to display:'); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('num_events'); ?>" name="<?php echo $this->get_field_name('num_events'); ?>" type="text" value="<?php echo esc_attr($num_events); ?>" /></p>
+
+		<p><label for="<?php echo $this->get_field_id('template'); ?>"><?php _e('Name of template file in theme directory <em>(optional)</em>:'); ?></label>
+		<input class="widefat" id="<?php echo $this->get_field_id('template'); ?>" name="<?php echo $this->get_field_name('template'); ?>" type="text" value="<?php echo esc_attr($template); ?>" /></p>
 
 		<!-- <p>Here goes a setting for future/past events</p>
 
@@ -94,6 +104,7 @@ class Te_Calendar_Widget extends WP_Widget {
 		$instance = $old_instance;
 		$instance['title'] = sanitize_text_field( $new_instance['title'] );
 		$instance['num_events'] = intval( sanitize_text_field( $new_instance['num_events'] ) );
+		$instance['template'] = stripslashes( sanitize_text_field( $new_instance['template'] ) );
 		return $instance;
 	}
 }

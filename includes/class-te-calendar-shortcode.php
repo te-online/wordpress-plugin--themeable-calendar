@@ -34,6 +34,8 @@ class Te_Calendar_Shortcode {
 			'calendar'
 		);
 
+		$template = stripslashes( $atts['template'] );
+
 		$num_events = intval( $atts['num_events'] );
 
 		$today = strtotime( 'today midnight' );
@@ -58,7 +60,11 @@ class Te_Calendar_Shortcode {
 			)
 		);
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'templates/te-calendar-default-template-archive.php';
+		if( $template != 'default' && !empty( $template ) ) {
+			require_once get_template_directory() . '/' . $template;
+		} else {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'templates/te-calendar-default-template-archive.php';
+		}
 
 		wp_reset_query();
 	}
