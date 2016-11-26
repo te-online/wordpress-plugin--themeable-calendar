@@ -33,6 +33,10 @@
 
 	 jQuery(document).ready(function($) {
 
+	 	if(!document.querySelector('#calendar')) {
+	 		return;
+	 	}
+
 		var localOptions = {
 			buttonText: {
 				today: 'Heute',
