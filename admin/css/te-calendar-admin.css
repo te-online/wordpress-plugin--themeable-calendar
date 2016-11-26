@@ -7,10 +7,10 @@
 	/* display: none; */
 }
 
-.duplicate-termine {
+/* .duplicate-termine {
 	padding: 5px 15px;
 	background-color: #f1f1f1;
-}
+} */
 
 /* Put rome on top of the modal */
 .rd-container {
@@ -79,6 +79,10 @@
 	min-height: 100px;
 }
 
+/* .tecal__edit-modal__inner input[disabled] {
+	display: none;
+}
+ */
 input.halffat {
 	width: 50%;
 }
@@ -100,7 +104,7 @@ textarea.infos {
 	height: 200px;
 }
 
-.duplicated-date {
+/* .duplicated-date {
     border-bottom: 2px solid #FFFFFF;
     padding: 10px 0;
 }
@@ -119,7 +123,7 @@ textarea.infos {
 
 .datum, .date-input {
 	color: #aaa !important;
-}
+} */
 
 #calendar {
 	margin-top: 10px;
@@ -132,16 +136,16 @@ textarea.infos {
 #refreshing-calendar {
 	display: inline-block;
 	padding-left: 10px;
-    padding-top: 15px;
+  padding-top: 15px;
 }
 
-.wp-list-table .column-col_term_ohne_uhrzeit {
+/* .wp-list-table .column-col_term_ohne_uhrzeit {
 	width: 10% !important;
 }
 
 .termin-inline-input {
 	width: 100%;
-}
+} */
 
 .event-object {
 	cursor: pointer !important;
@@ -151,7 +155,7 @@ textarea.infos {
 	cursor: default !important;
 }
 
-#calendar-edit {
+/* #calendar-edit {
 	padding: 10px;
 	background-color: #f1f1f1;
 	display: none;
@@ -166,7 +170,7 @@ textarea.infos {
 
 .ui-datepicker {
 	/* über die Admin-Leiste */
-	z-index: 99999 !important;
+	/* z-index: 99999 !important;
 }
 
 .calendar-edit-label {
@@ -176,14 +180,14 @@ textarea.infos {
 
 .termin-calendar-input {
 	width: 250px;
-}
+} */
 
 .fc-view {
 	background-color: #FFFFFF;
 }
 
 /* css for timepicker */
-.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+/* .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
 .ui-timepicker-div dl { text-align: left; }
 .ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
 .ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
@@ -192,4 +196,4 @@ textarea.infos {
 
 .ui-timepicker-rtl{ direction: rtl; }
 .ui-timepicker-rtl dl { text-align: right; }
-.ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; }
+.ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; } */

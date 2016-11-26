@@ -30,15 +30,15 @@ class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
 						<input class="widefat" id="tecal_events_allday" name="tecal_events_allday" type="checkbox" /></p>
 
 				    <p class="tecal_multi-input"><label for="tecal_events_begin"><?php _e('Begin:', 'te-calendar'); ?>&nbsp;</label>
-						<input class="threethirdfat" id="tecal_events_begin" name="tecal_events_begin" type="date" value="" />
-						<input class="thirdfat" id="tecal_events_begin_time" name="tecal_events_begin_time" type="time" value="" /></p>
+						<input class="threethirdfat" id="tecal_events_begin" name="tecal_events_begin" type="text" value="" />
+						<input class="thirdfat" id="tecal_events_begin_time" name="tecal_events_begin_time" type="text" value="" /></p>
 
 						<p><label for="tecal_events_has_end"><?php _e('Specify an end:', 'te-calendar'); ?></label>
 						<input class="widefat" id="tecal_events_has_end" name="tecal_events_has_end" type="checkbox" /></p>
 
 						<p class="tecal_multi-input"><label for="tecal_events_end"><?php _e('End:', 'te-calendar'); ?>&nbsp;</label>
-						<input class="threethirdfat" id="tecal_events_end" name="tecal_events_end" type="date" value="" />
-						<input class="thirdfat" id="tecal_events_end_time" name="tecal_events_end_time" type="time" value="" /></p>
+						<input class="threethirdfat" id="tecal_events_end" name="tecal_events_end" type="text" value="" />
+						<input class="thirdfat" id="tecal_events_end_time" name="tecal_events_end_time" type="text" value="" /></p>
 
 				    <p><label for="tecal_events_location"><?php _e('Location:', 'te-calendar'); ?></label>
 						<input class="widefat" id="tecal_events_location" name="tecal_events_location" type="text" value="" /></p>
@@ -62,11 +62,13 @@ class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
 
 			<div id="calendar"></div>
 
-			<br /><br />
-			<h2>Alle Datensätze</h2>
+			<div class="tecal_list_table">
 		<?php
 
 			// parent::search_box();
       parent::display();
+     ?>
+     	</div>
+     	<?php
     }
 }

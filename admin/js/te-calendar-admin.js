@@ -1,3 +1,5 @@
+/* global moment, rome, jQuery, ajaxurl, WPURLS */
+/* eslint-env es5 */
 (function( $ ) {
 	'use strict';
 
@@ -75,12 +77,14 @@
 					// Disabling calendar for saving
 					changeCalendarState(false);
 
+					console.log( "has end", ( calEvent.hasEnd === "1" ) ? "true" : "false" );
+
 					var data = {
 						tecal_events_post_id: calEvent.id,
 						tecal_events_begin: moment(calEvent.start).format('YYYY-MM-DD'),
 						tecal_events_begin_time: moment(calEvent.start).format('HH:mm'),
-						tecal_events_end: moment(calEvent.end).format('YYYY-MM-DD'),
-						tecal_events_end_time: moment(calEvent.end).format('HH:mm'),
+						tecal_events_end: ( calEvent.hasEnd === "1" ) ? moment(calEvent.end).format('YYYY-MM-DD') : moment(calEvent.start).format('YYYY-MM-DD'),
+						tecal_events_end_time: ( calEvent.hasEnd === "1" ) ? moment(calEvent.end).format('HH:mm') : moment(calEvent.start).format('HH:mm'),
 						action: 'te_calendar_move_event'
 					};
 
@@ -144,11 +148,34 @@
 				save_button.addEventListener('click', tecal_modalSaveEditEvent, true);
 				delete_button.addEventListener('click', tecal_modalDeleteEvent, true);
 
+				var now = moment();
+				var begin = calEvent.start;
+				if( begin.hasHours ) {
+					var begin_time = (calEvent.start).format('HH:mm');
+				} else {
+					var begin_time = now.format('HH:00');
+				}
+				end = calEvent.end;
+				if( moment.isMoment( end ) ) {
+					if( calEvent.allDay ) {
+						var end_time = now.add('1', 'hours').format('HH:00');
+					} else {
+						var end_time = (calEvent.end).format('HH:mm');
+					}
+				} else {
+					end = begin.add('1', 'hours');
+					var end_time = end.format('HH:00')
+				}
+
+
 				title_input.value = calEvent.title;
 				location_input.value = calEvent.location;
-				begin_date_input.value = calEvent.start.format('YYYY-MM-DD');
+				begin_date_input.value = begin.format('YYYY-MM-DD');
 				has_end_input.checked = ( calEvent.hasEnd === true || calEvent.hasEnd === "1" ) ? true : false;
 				has_end_input.disabled = false;
+				end_date_input.value = end.format('YYYY-MM-DD');
+				end_time_input.value = end_time
+				begin_time_input.value = begin_time;
 				if( calEvent.hasEnd === true || calEvent.hasEnd === "1" ) {
 					end_date_input.disabled = false;
 					end_time_input.disabled = false;
@@ -158,38 +185,46 @@
 				}
 				allday_input.checked = ( calEvent.allDay === true || calEvent.allDay === "1" ) ? true : false;
 				if( calEvent.allDay === false || calEvent.allDay === "0" ) {
-					end_date_input.value = moment(calEvent.end).format('YYYY-MM-DD');
-					end_time_input.value = moment(calEvent.end).format('HH:mm');
-					begin_time_input.value = moment(calEvent.start).format('HH:mm');
 					begin_time_input.disabled = false;
 				} else {
-					end_date_input.value = moment(calEvent.end).format('YYYY-MM-DD');
 					end_time_input.disabled = true;
 					begin_time_input.disabled = true;
 				}
 				description_input.value = calEvent.description;
 				edit_id_hidden.value = calEvent.id;
+				delete_button.disabled = false;
 			} else {
 				modal.classList.add('is-new');
 				save_button.addEventListener('click', tecal_modalSaveNewEvent, true);
 
-				console.log("date", date);
+				var now = moment();
+				date.hour(now.get('hour'));
+				var this_hour = date.format('HH:00');
+				var end = date.add('1', 'hours');
+				var next_hour = end.format('HH:00');
+				var end_date = end.format('YYYY-MM-DD');
 
 				// Reset all inputs.
 				title_input.value = "";
 				location_input.value = "";
 				begin_date_input.value = date.format('YYYY-MM-DD');
-				begin_time_input.value = "";
+				begin_time_input.value = this_hour;
 				begin_time_input.disabled = true;
 				allday_input.checked = true;
-				end_date_input.value = date.format('YYYY-MM-DD');
-				end_time_input.value = "";
+				end_date_input.value = end_date;
+				end_time_input.value = next_hour;
 				end_date_input.disabled = true;
 				end_time_input.disabled = true;
 				has_end_input.checked = false;
 				has_end_input.disabled = false;
 				description_input.value = "";
+				delete_button.disabled = true;
 			}
+
+			rome(begin_date_input, { time: false, initialValue: begin_date_input.value, dateValidator: rome.val.beforeEq( end_date_input) });
+			rome(begin_time_input, { date: false, initialValue: begin_time_input.value });
+			rome(end_date_input, { time: false, initialValue: end_date_input.value, dateValidator: rome.val.afterEq( begin_date_input ) });
+			rome(end_time_input, { date: false, initialValue: end_time_input.value });
 		}
 
 
@@ -208,24 +243,31 @@
 				modal.classList.remove('is-new');
 			}, 300);
 
-			cancel_button.removeEventListener('click', tecal_modalCancelEvent);
-			save_button.removeEventListener('click', tecal_modalSaveEditEvent);
-			save_button.removeEventListener('click', tecal_modalSaveNewEvent);
-			delete_button.removeEventListener('click', tecal_modalDeleteEvent);
-			allday_input.removeEventListener('click', tecal_alldayClicked);
-			has_end_input.removeEventListener('click', tecal_hasEndClicked);
+			// cancel_button.removeEventListener('click', tecal_modalCancelEvent);
+			// save_button.removeEventListener('click', tecal_modalSaveEditEvent);
+			var save_clone = save_button.cloneNode( true );
+			save_button.parentNode.replaceChild( save_clone, save_button );
+			// save_button.removeEventListener('click', tecal_modalSaveNewEvent);
+			// delete_button.removeEventListener('click', tecal_modalDeleteEvent);
+			var delete_clone = delete_button.cloneNode( true );
+			delete_button.parentNode.replaceChild( delete_clone, delete_button );
+			// allday_input.removeEventListener('click', tecal_alldayClicked);
+			// has_end_input.removeEventListener('click', tecal_hasEndClicked);
 		}
 
 		var tecal_alldayClicked = function(e) {
 			var begin_time_input = document.querySelector('[name="tecal_events_begin_time"]');
 			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
+			var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
 
 			if( e.target.checked ) {
 				begin_time_input.disabled = true;
 				end_time_input.disabled = true;
 			} else {
 				begin_time_input.disabled = false;
-				end_time_input.disabled = false;
+				if( has_end_input.checked ) {
+					end_time_input.disabled = false;
+				}
 			}
 		}
 
@@ -254,6 +296,8 @@
 		}
 
 		var tecal_modalSaveEditEvent = function(e) {
+			console.log("Editing...");
+
 			var title_input = document.querySelector('[name="tecal_events_title"]');
 			var location_input = document.querySelector('[name="tecal_events_location"]');
 			var begin_date_input = document.querySelector('[name="tecal_events_begin"]');
@@ -265,17 +309,14 @@
 			var description_input = document.querySelector('[name="tecal_events_description"]');
 			var edit_id_hidden = document.querySelector('[name="tecal_events_edit_id"]');
 
-			console.log("is checked", allday_input.checked);
-			console.log("is date", begin_date_input.value);
-
 			var data = {
 				tecal_events_title: title_input.value,
 				tecal_events_location: location_input.value,
 				tecal_events_begin: begin_date_input.value,
 				tecal_events_begin_time: begin_time_input.value,
 				tecal_events_allday: allday_input.checked,
-				tecal_events_end: end_date_input.value,
-				tecal_events_end_time: end_time_input.value,
+				tecal_events_end: ( !has_end_input.checked ) ? begin_date_input.value : end_date_input.value,
+				tecal_events_end_time: ( !has_end_input.checked ) ? begin_time_input.value : end_time_input.value,
 				tecal_events_has_end: has_end_input.checked,
 				tecal_events_description: description_input.value,
 				tecal_events_post_id: edit_id_hidden.value,
@@ -285,8 +326,8 @@
 			e.target.value = e.target.getAttribute('data-busycaption');
 
 			$.post(ajaxurl, data, function(response) {
-				tecal_modalUnregisterEventListener();
 				e.target.value = e.target.getAttribute('data-defaultcaption');
+				tecal_modalUnregisterEventListener();
 				$( '#calendar' ).fullCalendar( 'refetchEvents' );
 			});
 
@@ -295,6 +336,8 @@
 		}
 
 		var tecal_modalSaveNewEvent = function(e) {
+			console.log("Saving new...");
+
 			var title_input = document.querySelector('[name="tecal_events_title"]');
 			var location_input = document.querySelector('[name="tecal_events_location"]');
 			var begin_date_input = document.querySelector('[name="tecal_events_begin"]');
@@ -321,8 +364,8 @@
 			e.target.value = e.target.getAttribute('data-busycaption');
 
 			$.post(ajaxurl, data, function(response) {
-				tecal_modalUnregisterEventListener();
 				e.target.value = e.target.getAttribute('data-defaultcaption');
+				tecal_modalUnregisterEventListener();
 				$( '#calendar' ).fullCalendar( 'refetchEvents' );
 			});
 
@@ -341,8 +384,8 @@
 			e.target.value = e.target.getAttribute('data-busycaption');
 
 			$.post(ajaxurl, data, function(response) {
-				tecal_modalUnregisterEventListener();
 				e.target.value = e.target.getAttribute('data-defaultcaption');
+				tecal_modalUnregisterEventListener();
 				$( '#calendar' ).fullCalendar( 'refetchEvents' );
 			});
 		}
@@ -366,10 +409,21 @@
 			}
 		}
 
-		rome(document.querySelector('#tecal_events_begin'), { time: false });
-		rome(document.querySelector('#tecal_events_begin_time'), { date: false });
-		rome(document.querySelector('#tecal_events_end'), { time: false });
-		rome(document.querySelector('#tecal_events_end_time'), { date: false });
+		$('.tecal_list_table').hide();
+
+		document.querySelector('.page-title-action').addEventListener('click', function(e) {
+			var today = $('td.fc-today');
+	    var down = new $.Event("mousedown");
+	    var up = new $.Event("mouseup");
+	    down.which = up.which = 1;
+	    down.pageX = up.pageX = today.offset().left;
+	    down.pageY = up.pageY = today.offset().top;
+	    today.trigger(down);
+	    today.trigger(up);
+
+			e.preventDefault();
+			return false;
+		});
 
 	});
 
