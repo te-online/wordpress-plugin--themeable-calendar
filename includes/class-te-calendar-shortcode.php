@@ -61,9 +61,9 @@ class Te_Calendar_Shortcode {
 		);
 
 		if( $template != 'default' && !empty( $template ) ) {
-			require_once get_template_directory() . '/' . $template;
+			require get_template_directory() . '/' . $template;
 		} else {
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'templates/te-calendar-default-template-archive.php';
+			require plugin_dir_path( dirname( __FILE__ ) ) . 'templates/te-calendar-default-template-archive.php';
 		}
 
 		wp_reset_query();

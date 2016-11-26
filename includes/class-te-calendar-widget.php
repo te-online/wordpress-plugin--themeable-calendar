@@ -58,9 +58,9 @@ class Te_Calendar_Widget extends WP_Widget {
 		}
 
 		if( $template != 'default' && !empty( $template ) ) {
-			require_once get_template_directory() . '/' . $template;
+			require get_template_directory() . '/' . $template;
 		} else {
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'templates/te-calendar-default-template-sidebar.php';
+			require plugin_dir_path( dirname( __FILE__ ) ) . 'templates/te-calendar-default-template-sidebar.php';
 		}
 
 		wp_reset_query();
