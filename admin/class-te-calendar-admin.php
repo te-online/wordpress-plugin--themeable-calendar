@@ -187,7 +187,37 @@ class Te_Calendar_Admin {
 			'rewrite'               => array( 'slug' => 'calendar' ),
 		);
 
-		register_taxonomy( 'calendars', 'tecal_events', $args );
+		register_taxonomy( 'tecal_calendars', 'tecal_events', $args );
+
+		// Check if default calendar exists
+		if( !is_array( term_exists( 'calendar', 'tecal_calendars' )) ) {
+			// Create a default calendar
+			wp_insert_term(
+			  __( 'Default Calendar', $this->plugin_name ), // term name
+			  'tecal_calendars', // taxonomy
+			  array(
+			    'description'=> __( 'Your default calendar that stores all the events.', $this->plugin_name ),
+			    'slug' => 'calendar'
+			  )
+			);
+		}
+	}
+
+	/**
+	 * Make sure the default calendar is assigned to all new posts.
+	 *
+	 * @since 		1.0.0
+	 */
+	public function post_status_transition_add_calendar( $new_status, $old_status, $post ) {
+		// Only applies when the status has changed.
+		if ( $new_status != $old_status ) {
+			// Get the current terms of the event in terms of calendars (pun intended).
+			$post_terms = wp_get_post_terms( $post->ID, 'tecal_calendars' );
+			// If doesn't have terms, then add the default one.
+			if( count( $post_terms ) < 1 ) {
+				wp_set_post_terms( $post->ID, 'calendar', 'tecal_calendars', false );
+			}
+    }
 	}
 
 	/**

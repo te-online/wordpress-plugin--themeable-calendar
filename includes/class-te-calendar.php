@@ -69,7 +69,7 @@ class Te_Calendar {
 	public function __construct() {
 
 		$this->plugin_name = 'te-calendar';
-		$this->version = '1.0.0';
+		$this->version = '0.1';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -193,6 +193,8 @@ class Te_Calendar {
 		$this->loader->add_action( 'admin_init', $event_controller, 'event_metaboxes_register' );
 		$this->loader->add_action( 'save_post', $event_controller, 'event_details_save' );
 
+		// Add filter to assign default calendar to all events at least.
+		$this->loader->add_action( 'transition_post_status', $plugin_admin, 'post_status_transition_add_calendar', 10, 3 );
 	}
 
 	/**

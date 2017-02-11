@@ -1,114 +1,115 @@
-=== Plugin Name ===
-Contributors: (this should be a list of wordpress.org userid's)
+=== Calendar With Custom Themes BETA ===
+Contributors: thomas.ebert
 Donate link: https://thomas-ebert.design
-Tags: comments, spam
-Requires at least: 3.0.1
-Tested up to: 3.4
-Stable tag: 4.3
+Tags: calendar, events, theme, template
+Requires at least: 4.7.2
+Tested up to: 4.7.2
+Stable tag: 4.7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+Note: This a BETA plugin. A Really Simple™ Calendar with beautiful default templates and a way to create your own themes for your events.
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+**Note: This is a BETA plugin. This plugin is *not* ready for production websites. If you don't know what “beta” means, you should consider looking for a different plugin for the time beeing. If you want to test this plugin and give feedback on the currently implemented functionality, you're more than welcome in the support forum!**
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+When finished, this is supposed to be a really simple calendar plugin with beautiful default templates and the possibility for developers to create themes for the eventlists that can be shipped with WordPress themes.
 
-A few notes about the sections above:
+### Implemented Features
 
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
+- Visual calendar to create events
+- Two default templates
+- A widget for displaying events
+- A shortcode for displaying events
+- Possibility to use a custom php-file in your themes directory as a template
+- Events support
+	- Event title
+	- Start/Begin date and time
+	- End date and time
+	- All day parameter that omits times
+	- Specify end parameter that omits the end
+	- Location
+	- Description
+- Use a default calendar or create as many calendars as you want (distinguished by color)
 
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
+### Currently Planned Features
 
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+- Have a UI for specifying which template to use (dropdowns and display names for templates)
+- Use external calendars for displaying (ical/caldav)
+- Event features
+	- Custom fields
+	- Repeatable events (just like in every normal calendar)
+- Translation to German
+
+### Template Tags you can use today!
+
+For an example of how to create a template see the files in the `templates` folder of the plugin. *Or just trust your intuition and do it the same way you would do it for normal posts.*
+
+Detailed descriptions for the functions will follow.
+All functions can be used with echo (the_...) or silently (get_...).
+
+#### get_event_begin( $format )
+Get the event begin in a given format.
+
+#### get_event_begin_day
+Get the weekday of the event begin.
+
+#### get_event_begin_date
+Get the short form date of the event begin.
+
+#### get_event_begin_year
+Get the year of the event begin.
+
+#### get_event_begin_time
+Get the time of the event begin.
+
+#### get_event_end( $format )
+Get the event end in a given format.
+
+#### get_event_end_day
+Get the weekday of the event end.
+
+#### get_event_end_date
+Get the short form date of the event end.
+
+#### get_event_end_year
+Get the year of the event end.
+
+#### get_event_end_time
+Get the time of the event end.
+
+#### get_event_location
+Get the location of the event.
+
+#### get_event_is_allday
+Know if the event is an allday-event.
+
+#### get_event_has_end
+Know if the event has an end specified.
+
+### External libraries
+
+This plugin currently uses the following external libraries:
+
+- FullCalendar by xxx, link
+- Rome by xxx, link
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
+Honestly: Use the plugin directory to install the plugin.
 
-e.g.
-
-1. Upload `te-calendar.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
+For unconvincibles: Download the zip and put the content into your wp-content/plugins folder.
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
-
-An answer to that question.
-
-= What about foo bar? =
-
-Answer to foo bar dilemma.
+No frequently asked questions, yet. *Go ahead...*
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+Screenshots are to follow.
 
 == Changelog ==
 
-= 1.0 =
-* A change since the previous version.
-* Another change.
-
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
-
-== Upgrade Notice ==
-
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
-
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
-
-== Arbitrary section ==
-
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
-
-== A brief Markdown Example ==
-
-Ordered list:
-
-1. Some feature
-1. Another feature
-1. Something else about the plugin
-
-Unordered list:
-
-* something
-* something else
-* third thing
-
-Here's a link to [WordPress](http://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
-
-[markdown syntax]: http://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
-
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
-
-`<?php code(); // goes in backticks ?>`
+= 0.1 =
+* Initial version.

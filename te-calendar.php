@@ -13,10 +13,10 @@
  * @package           Te_Calendar
  *
  * @wordpress-plugin
- * Plugin Name:       Themeable Calendar
+ * Plugin Name:       Calendar with Templates
  * Plugin URI:        https://thomas-ebert.design/te-calendar
  * Description:       Another calendar plugin, but with a simplistic default template and themeability.
- * Version:           1.0.0 Alpha
+ * Version:           0.1 Beta
  * Author:            Thomas Ebert, te-online.net
  * Author URI:        https://thomas-ebert.design
  * License:           GPL-2.0+
