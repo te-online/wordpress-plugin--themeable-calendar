@@ -4,7 +4,7 @@
  * The admin-specific functionality of the plugin.
  *
  * @link       https://thomas-ebert.design
- * @since      1.0.0
+ * @since      0.1.0
  *
  * @package    Te_Calendar
  * @subpackage Te_Calendar/admin
@@ -25,7 +25,7 @@ class Te_Calendar_Admin {
 	/**
 	 * The ID of this plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
@@ -34,7 +34,7 @@ class Te_Calendar_Admin {
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
@@ -43,7 +43,7 @@ class Te_Calendar_Admin {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
@@ -57,7 +57,7 @@ class Te_Calendar_Admin {
 	/**
 	 * Register the stylesheets for the admin area.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 */
 	public function enqueue_styles() {
 
@@ -86,7 +86,7 @@ class Te_Calendar_Admin {
 	/**
 	 * Register the JavaScript for the admin area.
 	 *
-	 * @since    1.0.0
+	 * @since    0.1.0
 	 */
 	public function enqueue_scripts() {
 
@@ -120,7 +120,7 @@ class Te_Calendar_Admin {
 	/**
 	 * Register a new custom post type for the events to be stored in.
 	 *
-	 * @since 		1.0.0
+	 * @since 		0.1.0
 	 */
 	public function events_custom_post_type() {
 		register_post_type( 'tecal_events',
@@ -154,7 +154,7 @@ class Te_Calendar_Admin {
 	/**
 	 * Register a new custom taxonomy for the calendars to be stored in.
 	 *
-	 * @since 		1.0.0
+	 * @since 		0.1.0
 	 */
 	public function calendars_custom_taxonomy() {
 		// Add new taxonomy, NOT hierarchical (like tags)
@@ -190,7 +190,7 @@ class Te_Calendar_Admin {
 		register_taxonomy( 'tecal_calendars', 'tecal_events', $args );
 
 		// Check if default calendar exists
-		if( !is_array( term_exists( 'calendar', 'tecal_calendars' )) ) {
+		if( !is_array( term_exists( 'calendar', 'tecal_calendars' ) ) ) {
 			// Create a default calendar
 			wp_insert_term(
 			  __( 'Default Calendar', $this->plugin_name ), // term name
@@ -206,7 +206,7 @@ class Te_Calendar_Admin {
 	/**
 	 * Make sure the default calendar is assigned to all new posts.
 	 *
-	 * @since 		1.0.0
+	 * @since 		0.1.0
 	 */
 	public function post_status_transition_add_calendar( $new_status, $old_status, $post ) {
 		// Only applies when the status has changed.
@@ -223,7 +223,7 @@ class Te_Calendar_Admin {
 	/**
 	 * Register a new widget.
 	 *
-	 * @since 		1.0.0
+	 * @since 		0.1.0
 	 */
 	public function widget_register() {
 		register_widget( 'Te_Calendar_Widget' );
@@ -232,7 +232,7 @@ class Te_Calendar_Admin {
 	/**
 		* Register a new shortcode.
 		*
-		* @since 		1.0.0
+		* @since 		0.1.0
 		*/
 	public function shortcode_register() {
 		$shortcode = new Te_Calendar_Shortcode();
@@ -242,7 +242,7 @@ class Te_Calendar_Admin {
 	/**
 		* Override WP_List_Table for a custom view.
 		*
-		* @since 		1.0.0
+		* @since 		0.1.0
 		*/
 	public function custom_list_table_register() {
 		global $wp_list_table;
@@ -252,17 +252,47 @@ class Te_Calendar_Admin {
 	}
 
 	/**
+		* Answer the AJAX request for a list of calendars.
+		*
+		* @since 		0.1.0
+		*/
+	public function ajax_answer_fetch_calendars() {
+		$calendars = get_terms( 'tecal_calendars' );
+
+		$calendar_slugs = array();
+
+		if( count( $calendars ) > 0 ) {
+			foreach( $calendars as $calendar ) {
+				$calendar_slugs[] = $calendar->slug;
+			}
+		}
+
+		echo json_encode( $calendar_slugs );
+
+		wp_die();
+	}
+
+	/**
 		* Answer the AJAX request for a list of events.
 		*
-		* @since 		1.0.0
+		* @since 		0.1.0
 		*/
 	public function ajax_answer_fetch_events() {
 		$start = ( isset( $_POST['start'] ) ) ? date_create_from_format( 'Y-m-d', $_POST['start'] ) : date_create();
 		$end = ( isset( $_POST['end'] ) ) ? date_create_from_format( 'Y-m-d', $_POST['end'] ) : date_create();
+		$calendar = ( isset( $_POST['calendar'] ) ) ? sanitize_sql_orderby( $_POST['calendar'] ) : 'calendar';
 
 		$events = get_posts( array(
 				'posts_per_page' => -1,
 				'post_type' => 'tecal_events',
+				'tax_query' => array(
+			    array(
+			      'taxonomy' => 'tecal_calendars',
+			      'field' => 'slug',
+			      'terms' => $calendar,
+			      'operator' => 'IN',
+			    )
+			  ),
 				'meta_query' => array(
 					array(
 						'key' => 'tecal_events_begin',
@@ -292,7 +322,8 @@ class Te_Calendar_Admin {
 					'allDay' => ( get_post_meta( $event->ID, 'tecal_events_allday', true ) ) ? true : false,
 					'location' => get_post_meta( $event->ID, 'tecal_events_location', true ),
 					'description' => $event->post_content,
-					'hasEnd' => get_post_meta( $event->ID, 'tecal_events_has_end', true )
+					'hasEnd' => get_post_meta( $event->ID, 'tecal_events_has_end', true ),
+					'calendar' => $calendar
 				);
 
 				$response_events[] = $prep_event;
@@ -309,7 +340,7 @@ class Te_Calendar_Admin {
 	/**
 		* Save an edit event.
 		*
-		* @since 		1.0.0
+		* @since 		0.1.0
 		*/
 	public function ajax_save_edit_event() {
 		$post_id = $_POST['tecal_events_post_id'];
@@ -371,7 +402,7 @@ class Te_Calendar_Admin {
 	/**
 		* Move an event.
 		*
-		* @since 		1.0.0
+		* @since 		0.1.0
 		*/
 	public function ajax_save_move_event() {
 		$post_id = $_POST['tecal_events_post_id'];
@@ -407,7 +438,7 @@ class Te_Calendar_Admin {
 	/**
 		* Save a new event.
 		*
-		* @since 		1.0.0
+		* @since 		0.1.0
 		*/
 	public function ajax_save_new_event() {
 		if ( !current_user_can( 'edit_posts' ) ) {
@@ -458,7 +489,7 @@ class Te_Calendar_Admin {
 	/**
 		* Save a new event.
 		*
-		* @since 		1.0.0
+		* @since 		0.1.0
 		*/
 	public function ajax_delete_event() {
 		$post_id = $_POST['tecal_events_post_id'];
