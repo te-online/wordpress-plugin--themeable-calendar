@@ -92,12 +92,12 @@ Know if the event has an end specified.
 
 This plugin currently uses the following external libraries:
 
-- FullCalendar by xxx, link
-- Rome by xxx, link
+- [FullCalendar](https://fullcalendar.io)
+- Rome by [Nicolás Bevacqua](https://github.com/bevacqua/rome)
 
 == Installation ==
 
-Honestly: Use the plugin directory to install the plugin.
+Honestly: Use the [GitHub Updater](https://github.com/te-online/wordpress-plugin--themeable-calendar) to install the plugin.
 
 For unconvincibles: Download the zip and put the content into your wp-content/plugins folder.
 
