@@ -29,6 +29,7 @@ class Te_Calendar_Shortcode {
 				'num_events' => '5',
 				'template' => 'default',
 				'archive' => 'false',
+				'calendar' => 'calendar'
 			),
 			$atts,
 			'calendar'
@@ -37,6 +38,9 @@ class Te_Calendar_Shortcode {
 		$template = stripslashes( $atts['template'] );
 
 		$num_events = intval( $atts['num_events'] );
+
+		$calendars = sanitize_text_field( $atts['calendar'] );
+		$calendars = explode( ',', $calendars );
 
 		$today = strtotime( 'today midnight' );
 
@@ -49,6 +53,14 @@ class Te_Calendar_Shortcode {
 				'orderby' => 'meta_value',
 				'meta_key' => 'tecal_events_begin',
 				'order' => $order,
+				'tax_query' => array(
+			    array(
+			      'taxonomy' => 'tecal_calendars',
+			      'field' => 'slug',
+			      'terms' => $calendars,
+			      'operator' => 'IN'
+			    )
+			  ),
 				'meta_query' => array(
 					array(
 						'key' => 'tecal_events_begin',

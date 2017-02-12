@@ -150,8 +150,6 @@
 
 			cancel_button.addEventListener('click', tecal_modalCancelEvent, true);
 
-			console.log(calEvent);
-
 			var title_input = document.querySelector('[name="tecal_events_title"]');
 			var location_input = document.querySelector('[name="tecal_events_location"]');
 			var begin_date_input = document.querySelector('[name="tecal_events_begin"]');
@@ -161,6 +159,8 @@
 			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
 			var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
 			var description_input = document.querySelector('[name="tecal_events_description"]');
+			var calendar_input = document.querySelector('[name="tecal_events_calendar"]');
+
 			var edit_id_hidden = document.querySelector('[name="tecal_events_edit_id"]');
 
 			allday_input.addEventListener('click', tecal_alldayClicked, true);
@@ -214,6 +214,7 @@
 					begin_time_input.disabled = true;
 				}
 				description_input.value = calEvent.description;
+				calendar_input.value = calEvent.calendar;
 				edit_id_hidden.value = calEvent.id;
 				delete_button.disabled = false;
 			} else {
@@ -241,6 +242,7 @@
 				has_end_input.checked = false;
 				has_end_input.disabled = false;
 				description_input.value = "";
+				calendar_input.value = "";
 				delete_button.disabled = true;
 			}
 
@@ -320,69 +322,16 @@
 
 		var tecal_modalSaveEditEvent = function(e) {
 			console.log("Editing...");
-
-			var title_input = document.querySelector('[name="tecal_events_title"]');
-			var location_input = document.querySelector('[name="tecal_events_location"]');
-			var begin_date_input = document.querySelector('[name="tecal_events_begin"]');
-			var begin_time_input = document.querySelector('[name="tecal_events_begin_time"]');
-			var allday_input = document.querySelector('[name="tecal_events_allday"]');
-			var end_date_input = document.querySelector('[name="tecal_events_end"]');
-			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
-			var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
-			var description_input = document.querySelector('[name="tecal_events_description"]');
-			var edit_id_hidden = document.querySelector('[name="tecal_events_edit_id"]');
-
-			var data = {
-				tecal_events_title: title_input.value,
-				tecal_events_location: location_input.value,
-				tecal_events_begin: begin_date_input.value,
-				tecal_events_begin_time: begin_time_input.value,
-				tecal_events_allday: allday_input.checked,
-				tecal_events_end: ( !has_end_input.checked ) ? begin_date_input.value : end_date_input.value,
-				tecal_events_end_time: ( !has_end_input.checked ) ? begin_time_input.value : end_time_input.value,
-				tecal_events_has_end: has_end_input.checked,
-				tecal_events_description: description_input.value,
-				tecal_events_post_id: edit_id_hidden.value,
-				action: 'te_calendar_save_edited_event'
-			};
-
-			e.target.value = e.target.getAttribute('data-busycaption');
-
-			$.post(ajaxurl, data, function(response) {
-				e.target.value = e.target.getAttribute('data-defaultcaption');
-				tecal_modalUnregisterEventListener();
-				$( '#calendar' ).fullCalendar( 'refetchEvents' );
-			});
-
-			e.preventDefault();
-			return false;
+			modalActionButtonPressed('edit', e);
 		}
 
 		var tecal_modalSaveNewEvent = function(e) {
 			console.log("Saving new...");
+			modalActionButtonPressed('new', e);
+		}
 
-			var title_input = document.querySelector('[name="tecal_events_title"]');
-			var location_input = document.querySelector('[name="tecal_events_location"]');
-			var begin_date_input = document.querySelector('[name="tecal_events_begin"]');
-			var begin_time_input = document.querySelector('[name="tecal_events_begin_time"]');
-			var allday_input = document.querySelector('[name="tecal_events_allday"]');
-			var end_date_input = document.querySelector('[name="tecal_events_end"]');
-			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
-			var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
-			var description_input = document.querySelector('[name="tecal_events_description"]');
-
-			var data = {
-				tecal_events_title: title_input.value,
-				tecal_events_location: location_input.value,
-				tecal_events_begin: begin_date_input.value,
-				tecal_events_begin_time: begin_time_input.value,
-				tecal_events_allday: allday_input.checked,
-				tecal_events_end: end_date_input.value,
-				tecal_events_end_time: end_time_input.value,
-				tecal_events_has_end: has_end_input.checked,
-				tecal_events_description: description_input.value,
-				action: 'te_calendar_save_new_event'
-			};
+		function modalActionButtonPressed(modalCase, e) {
+			var data = prepareInputData(modalCase);
 
 			e.target.value = e.target.getAttribute('data-busycaption');
 
@@ -430,6 +379,44 @@
 				// Trying to make clear that the calender should not work
 				$('#calendar-active').attr("active", "false");
 			}
+		}
+
+		function prepareInputData(modalCase) {
+			var title_input = document.querySelector('[name="tecal_events_title"]');
+			var location_input = document.querySelector('[name="tecal_events_location"]');
+			var begin_date_input = document.querySelector('[name="tecal_events_begin"]');
+			var begin_time_input = document.querySelector('[name="tecal_events_begin_time"]');
+			var allday_input = document.querySelector('[name="tecal_events_allday"]');
+			var end_date_input = document.querySelector('[name="tecal_events_end"]');
+			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
+			var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
+			var description_input = document.querySelector('[name="tecal_events_description"]');
+			var calendar_input = document.querySelector('[name="tecal_events_calendar"]');
+			if( modalCase === 'edit' ) {
+				var edit_id_hidden = document.querySelector('[name="tecal_events_edit_id"]');
+			}
+
+			var data = {
+				tecal_events_title: title_input.value,
+				tecal_events_location: location_input.value,
+				tecal_events_begin: begin_date_input.value,
+				tecal_events_begin_time: begin_time_input.value,
+				tecal_events_allday: allday_input.checked,
+				tecal_events_end: ( !has_end_input.checked ) ? begin_date_input.value : end_date_input.value,
+				tecal_events_end_time: ( !has_end_input.checked ) ? begin_time_input.value : end_time_input.value,
+				tecal_events_has_end: has_end_input.checked,
+				tecal_events_description: description_input.value,
+				tecal_events_calendar: ( calendar_input.options[calendar_input.selectedIndex] ) ? calendar_input.options[calendar_input.selectedIndex].value : 'calendar'
+			};
+
+			if( modalCase === 'edit' ) {
+				data.tecal_events_post_id = edit_id_hidden.value;
+				data.action = 'te_calendar_save_edited_event';
+			} else if( modalCase === 'new' ) {
+				data.action = 'te_calendar_save_new_event';
+			}
+
+			return data;
 		}
 
 		$('.tecal_list_table').hide();

@@ -15,6 +15,8 @@ class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
 
     // Your custom list table is here
     public function display() {
+    	$calendars = get_terms( 'tecal_calendars' );
+
     	?>
     	<div class="tecal__edit-modal__container">
 	    	<div class="tecal__edit-modal__inner">
@@ -45,6 +47,14 @@ class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
 
 						<p><label for="tecal_events_description"><?php _e('Description:', 'te-calendar'); ?></label>
 						<textarea class="widefat tecal_events_description" id="tecal_events_description" name="tecal_events_description"></textarea></p>
+
+						<p><label for="tecal_events_calendar"><?php _e('Calendar:', 'te-calendar'); ?></label>
+						<select class="widefat" id="tecal_events_calendar" name="tecal_events_calendar">
+							<?php foreach( $calendars as $calendar ) { ?>
+								<option value="<?php echo $calendar->slug; ?>"><?php echo $calendar->name; ?></option>
+							<?php } ?>
+						</select>
+						</p>
 
 						<div class="tecal_edit-modal__submit">
 							<input type="hidden" name="tecal_events_edit_id" value="" />

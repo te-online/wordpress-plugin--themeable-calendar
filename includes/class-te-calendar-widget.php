@@ -34,7 +34,7 @@ class Te_Calendar_Widget extends WP_Widget {
 
 		$template = stripslashes( empty( $instance['template'] ) ? '' : $instance['template'] );
 
-		$calendars = sanitize_sql_orderby( $instance['calendar'] );
+		$calendars = sanitize_text_field( $instance['calendar'] );
 		$calendars = explode( ',', $calendars );
 
 		$today = strtotime( 'today midnight' );

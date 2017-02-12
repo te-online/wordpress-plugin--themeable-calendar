@@ -280,7 +280,8 @@ class Te_Calendar_Admin {
 	public function ajax_answer_fetch_events() {
 		$start = ( isset( $_POST['start'] ) ) ? date_create_from_format( 'Y-m-d', $_POST['start'] ) : date_create();
 		$end = ( isset( $_POST['end'] ) ) ? date_create_from_format( 'Y-m-d', $_POST['end'] ) : date_create();
-		$calendar = ( isset( $_POST['calendar'] ) ) ? sanitize_sql_orderby( $_POST['calendar'] ) : 'calendar';
+		$calendar = ( isset( $_POST['calendar'] ) ) ? sanitize_text_field( $_POST['calendar'] ) : 'calendar';
+		$color = get_term_meta( $calendar, 'tecal_calendar_color', true );
 
 		$events = get_posts( array(
 				'posts_per_page' => -1,
@@ -289,8 +290,8 @@ class Te_Calendar_Admin {
 			    array(
 			      'taxonomy' => 'tecal_calendars',
 			      'field' => 'slug',
-			      'terms' => $calendar,
-			      'operator' => 'IN',
+			      'terms' => array( $calendar ),
+			      'operator' => 'IN'
 			    )
 			  ),
 				'meta_query' => array(
@@ -323,7 +324,8 @@ class Te_Calendar_Admin {
 					'location' => get_post_meta( $event->ID, 'tecal_events_location', true ),
 					'description' => $event->post_content,
 					'hasEnd' => get_post_meta( $event->ID, 'tecal_events_has_end', true ),
-					'calendar' => $calendar
+					'calendar' => $calendar,
+					'color' => $color
 				);
 
 				$response_events[] = $prep_event;
@@ -364,7 +366,6 @@ class Te_Calendar_Admin {
     // OK, we're authenticated: we need to find and save the data
     $post = get_post( $post_id );
     if ( $post->post_type == 'tecal_events' ) {
-    	echo esc_attr( $_POST['tecal_events_begin'] ) . " " . esc_attr( $_POST['tecal_events_begin_time'] );
 
     	if( isset( $_POST['tecal_events_begin'] ) && isset( $_POST['tecal_events_begin_time'] ) ) {
     		$begin_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_begin'] ) . " " . esc_attr( $_POST['tecal_events_begin_time'] ) ) );
@@ -384,14 +385,16 @@ class Te_Calendar_Admin {
 
       update_post_meta( $post_id, 'tecal_events_allday', ( $_POST['tecal_events_allday'] == "true" ) ? "1" : "0" );
 
-      echo "allday is " . $_POST['tecal_events_allday'];
-
       update_post_meta( $post_id, 'tecal_events_has_end', ( $_POST['tecal_events_has_end'] == "true" ) ? "1" : "0" );
 
       $post->post_title = esc_attr( $_POST['tecal_events_title'] );
       $post->post_content = esc_attr( $_POST['tecal_events_description'] );
 
       wp_update_post( $post );
+
+	    if( isset( $_POST['tecal_events_calendar'] ) ) {
+	    	wp_set_post_terms( $post_id, esc_attr( $_POST['tecal_events_calendar'] ), 'tecal_calendars', false );
+	    }
 
       return 1;
     }
