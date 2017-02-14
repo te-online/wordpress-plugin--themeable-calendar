@@ -194,6 +194,12 @@ class Te_Calendar {
 		$this->loader->add_action( 'admin_init', $event_controller, 'event_metaboxes_register' );
 		$this->loader->add_action( 'save_post', $event_controller, 'event_details_save' );
 
+		// Add color picker to calendar new and edit
+		$this->loader->add_action( 'tecal_calendars_add_form_fields', $plugin_admin, 'tecal_calendars_add_color_field' );
+		$this->loader->add_action( 'tecal_calendars_edit_form_fields', $plugin_admin, 'tecal_calendars_edit_color_field' );
+		$this->loader->add_action( 'edited_tecal_calendars', $plugin_admin, 'tecal_calendars_save_color_field', 10, 2 );
+		$this->loader->add_action( 'create_tecal_calendars', $plugin_admin, 'tecal_calendars_save_color_field', 10, 2 );
+
 		// Add filter to assign default calendar to all events at least.
 		$this->loader->add_action( 'transition_post_status', $plugin_admin, 'post_status_transition_add_calendar', 10, 3 );
 	}

@@ -281,7 +281,8 @@ class Te_Calendar_Admin {
 		$start = ( isset( $_POST['start'] ) ) ? date_create_from_format( 'Y-m-d', $_POST['start'] ) : date_create();
 		$end = ( isset( $_POST['end'] ) ) ? date_create_from_format( 'Y-m-d', $_POST['end'] ) : date_create();
 		$calendar = ( isset( $_POST['calendar'] ) ) ? sanitize_text_field( $_POST['calendar'] ) : 'calendar';
-		$color = get_term_meta( $calendar, 'tecal_calendar_color', true );
+		$term = get_term_by( 'slug', $calendar, 'tecal_calendars' );
+		$color = get_term_meta( $term->term_id, 'tecal_calendar_color', true );
 
 		$events = get_posts( array(
 				'posts_per_page' => -1,
@@ -484,13 +485,11 @@ class Te_Calendar_Admin {
       return 1;
     }
 
-    echo "Post is" . $post->ID;
-    print_r($post);
     wp_die();
 	}
 
 	/**
-		* Save a new event.
+		* Delete an event.
 		*
 		* @since 		0.1.0
 		*/
@@ -503,9 +502,57 @@ class Te_Calendar_Admin {
     }
 
     wp_delete_post( $post_id );
-    echo "Deleted";
 
     wp_die();
+	}
+
+	/**
+		* Add color field to new calendar page.
+		*
+		* @since 		0.1.0
+		*/
+	public function tecal_calendars_add_color_field() {
+
+		?>
+			<div class="form-field">
+				<label for="term_meta[tecal_calendar_color]"><?php _e( 'Color', $this->plugin_name ); ?></label>
+				<input type="color" name="term_meta[tecal_calendar_color]" id="term_meta[tecal_calendar_color]" value="<?php echo sprintf('#%06X', mt_rand(0, 0xFFFFFF)); ?>">
+				<p class="description"><?php _e( 'Choose a color for your calendar', $this->plugin_name ); ?></p>
+			</div>
+		<?php
+	}
+
+	/**
+		* Add color field to edit calendar page.
+		*
+		* @since 		0.1.0
+		*/
+	public function tecal_calendars_edit_color_field( $term ) {
+		// put the term ID into a variable
+		$t_id = $term->term_id;
+
+		// retrieve the existing value(s) for this meta field. This returns an array
+		$term_meta = get_term_meta( $t_id, 'tecal_calendar_color', true ); ?>
+		<tr class="form-field">
+		<th scope="row" valign="top"><label for="term_meta[tecal_calendar_color]"><?php _e( 'Color', $this->plugin_name ); ?></label></th>
+			<td>
+				<input type="color" name="term_meta[tecal_calendar_color]" id="term_meta[tecal_calendar_color]" value="<?php echo esc_attr( $term_meta ) ? esc_attr( $term_meta ) : ''; ?>">
+				<p class="description"><?php _e( 'Choose a color for your calendar', $this->plugin_name ); ?></p>
+			</td>
+		</tr>
+	<?php
+	}
+
+	/**
+		* Add saving of color field.
+		*
+		* @since 		0.1.0
+		*/
+	public function tecal_calendars_save_color_field( $term_id ) {
+		if ( isset( $_POST['term_meta'] ) && isset( $_POST['term_meta']['tecal_calendar_color'] ) ) {
+			$t_id = $term_id;
+			update_term_meta( $t_id, 'tecal_calendar_color', $_POST['term_meta']['tecal_calendar_color'] );
+		}
 	}
 
 }
