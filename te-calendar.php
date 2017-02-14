@@ -16,7 +16,7 @@
  * Plugin Name:       Calendar with Templates
  * Plugin URI:        https://thomas-ebert.design/te-calendar
  * Description:       Another calendar plugin, but with a simplistic default template and theme-ability.
- * Version:           0.1.1 Beta
+ * Version:           0.1.1
  * Author:            Thomas Ebert, te-online.net
  * Author URI:        https://thomas-ebert.design
  * License:           GPL-2.0+
