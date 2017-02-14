@@ -57,8 +57,12 @@
   width: 300px;
   background: #fff;
   border-radius: 4px;
-  padding: 10px;
+  padding: 10px 16px;
   box-shadow: 0 0 10px 5px #aaa;
+}
+
+.tecal__edit-modal__inner h3 {
+	margin-top: 12px;
 }
 
 .tecal_edit-modal__submit {
