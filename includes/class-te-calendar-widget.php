@@ -28,13 +28,14 @@ class Te_Calendar_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance = array( 'title' => '', 'num_events' => 5, 'template' => 'default', 'calendar' => 'calendar' ) ) {
 		// outputs the content of the widget
+
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
 
 		$num_events = intval( $instance['num_events'] );
 
 		$template = stripslashes( empty( $instance['template'] ) ? '' : $instance['template'] );
 
-		$calendars = sanitize_text_field( $instance['calendar'] );
+		$calendars = sanitize_text_field( empty( $instance['calendar'] ) ? 'calendar' : $instance['calendar'] );
 		$calendars = explode( ',', $calendars );
 
 		$today = strtotime( 'today midnight' );
