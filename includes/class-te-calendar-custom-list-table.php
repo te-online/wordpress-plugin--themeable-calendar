@@ -70,7 +70,10 @@ class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
 				</div>
 			</div>
 
-			<div id="calendar"></div>
+			<?php if('list' != get_query_var('view')): ?>
+				<div id="calendar"></div>
+			<?php endif; ?>
+
 
 			<div class="tecal_list_table">
 		<?php

@@ -202,6 +202,10 @@ class Te_Calendar {
 
 		// Add filter to assign default calendar to all events at least.
 		$this->loader->add_action( 'transition_post_status', $plugin_admin, 'post_status_transition_add_calendar', 10, 3 );
+
+		// Add query var to admin view to switch to list view
+		$this->loader->add_action( 'query_vars', $plugin_admin, 'add_query_vars' );
+		// $this->loader->add_action( 'admin_init', $plugin_admin, 'add_screen_options' );
 	}
 
 	/**
