@@ -72,6 +72,9 @@ class Te_Calendar_Shortcode {
 			)
 		);
 
+		// Stream template.
+		ob_start();
+
 		if( $template != 'default' && !empty( $template ) ) {
 			require get_template_directory() . '/' . $template;
 		} else {
@@ -79,5 +82,8 @@ class Te_Calendar_Shortcode {
 		}
 
 		wp_reset_query();
+
+		// Return required stream.
+		return ob_get_clean();
 	}
 }
