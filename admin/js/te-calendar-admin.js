@@ -368,7 +368,6 @@
 		/*
 		**/
 		var tecal_modalSaveEditEvent = function(e) {
-			console.log("Editing...");
 			modalActionButtonPressed('edit', e);
 		}
 
@@ -377,7 +376,6 @@
 		/*
 		**/
 		var tecal_modalSaveNewEvent = function(e) {
-			console.log("Saving new...");
 			modalActionButtonPressed('new', e);
 		}
 
@@ -387,10 +385,23 @@
 		/*
 		**/
 		function modalActionButtonPressed(modalCase, e) {
+			// Hide errors.
+			tecal_hideModalErrors();
+			// Validate inputs.
+			var validationResult = tecal_validateModalInput();
+			// Show errors if not valid.
+			if(!validationResult.valid) {
+				tecal_displayModalErrors(validationResult.message);
+				e.preventDefault();
+				return false;
+			}
+			// Prepare data.
 			var data = prepareInputData(modalCase);
 
+			// Show within the button caption that we are working on it.
 			e.target.value = e.target.getAttribute('data-busycaption');
 
+			// Post data.
 			$.post(ajaxurl, data, function() {
 				e.target.value = e.target.getAttribute('data-defaultcaption');
 				tecal_modalUnregisterEventListener();
@@ -399,6 +410,81 @@
 
 			e.preventDefault();
 			return false;
+		}
+
+		/**
+		/*	Validates user input from edit modal.
+		/*
+		**/
+		var tecal_validateModalInput = function() {
+			var begin_date_input = document.querySelector('[name="tecal_events_begin"]');
+			var begin_time_input = document.querySelector('[name="tecal_events_begin_time"]');
+			var end_date_input = document.querySelector('[name="tecal_events_end"]');
+			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
+
+			// Check if all dates are valid.
+			if(!moment(begin_date_input.value).isValid()) {
+				return {
+					valid: false,
+					message: 'Begin date has to be a valid date.'
+				};
+			}
+
+			if(!moment(begin_date_input.value + 'T' + begin_time_input.value).isValid()) {
+				return {
+					valid: false,
+					message: 'Begin time has to be a valid time.'
+				};
+			}
+
+			if(!moment(end_date_input.value).isValid()) {
+				return {
+					valid: false,
+					message: 'End date has to be a valid date.'
+				};
+			}
+
+			if(!moment(end_date_input.value + 'T' + end_time_input.value).isValid()) {
+				return {
+					valid: false,
+					message: 'End time has to be a valid time.'
+				};
+			}
+
+			// Check if end date is after begin date.
+			if(moment(end_date_input.value + 'T' + end_time_input.value).isBefore(
+				moment(begin_date_input.value + 'T' + begin_time_input.value)
+			)) {
+				return {
+					valid: false,
+					message: 'End has to be later than begin.'
+				};
+			}
+
+			return {
+				valid: true
+			};
+
+		}
+
+		/**
+		/*	Show error message in modal.
+		/*
+		**/
+		var tecal_displayModalErrors = function(message) {
+			var errorContainer = document.querySelector('.tecal__edit-modal__error');
+			errorContainer.innerText = message;
+			errorContainer.classList.add('is-visible');
+		}
+
+		/**
+		/*	Hide error message in modal.
+		/*
+		**/
+		var tecal_hideModalErrors = function() {
+			var errorContainer = document.querySelector('.tecal__edit-modal__error');
+			errorContainer.innerText = '';
+			errorContainer.classList.remove('is-visible');
 		}
 
 		/**
@@ -477,8 +563,6 @@
 				tecal_events_description: description_input.value,
 				tecal_events_calendar: ( calendar_input.options[calendar_input.selectedIndex] ) ? calendar_input.options[calendar_input.selectedIndex].value : 'calendar'
 			};
-
-			console.log("saving data", data);
 
 			if( modalCase === 'edit' ) {
 				data.tecal_events_post_id = edit_id_hidden.value;

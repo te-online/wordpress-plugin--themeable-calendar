@@ -83,6 +83,18 @@
 	min-height: 100px;
 }
 
+.tecal__edit-modal__error {
+	opacity: 0;
+	height: 0;
+	transition: opacity .3s ease, height .4s ease;
+	color: #85144b;
+}
+
+.tecal__edit-modal__error.is-visible {
+	opacity: 1;
+	height: auto;
+}
+
 /* .tecal__edit-modal__inner input[disabled] {
 	display: none;
 }

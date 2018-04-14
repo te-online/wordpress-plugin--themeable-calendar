@@ -20,9 +20,9 @@ class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
     	?>
     	<div class="tecal__edit-modal__container">
 	    	<div class="tecal__edit-modal__inner">
-	    	<!-- <div class="new"> -->
 					<h3 class="tecal__edit-modal__new-title"><?php _e( 'New event', 'te-calendar' ); ?></h3>
 					<h3 class="tecal__edit-modal__edit-title"><?php _e( 'Edit event', 'te-calendar' ); ?></h3>
+					<p class="tecal__edit-modal__error"></p>
 					<form action="" method="post" id="edit-event-form">
 
 						<p><label for="tecal_events_title"><?php _e('Title:', 'te-calendar'); ?></label>
