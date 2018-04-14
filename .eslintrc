@@ -1,0 +1,13 @@
+{
+	"globals": {
+    "moment": true,
+    "rome": true,
+    "jQuery": true,
+    "ajaxurl": true,
+    "WPURLS": true,
+  },
+  "env": {
+      "browser": true
+  },
+  "extends": "eslint:recommended"
+}

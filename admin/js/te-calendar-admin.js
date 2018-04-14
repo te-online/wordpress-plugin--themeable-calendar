@@ -1,5 +1,3 @@
-/* global moment, rome, jQuery, ajaxurl, WPURLS */
-/* eslint-env es5 */
 (function( $ ) {
 	'use strict';
 
@@ -31,11 +29,15 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
-	 jQuery(document).ready(function($) {
+	$(function() {
 
-	 	if(!document.querySelector('#calendar')) {
-	 		return;
-	 	}
+		/**
+		/*	Takes actions necessary when “has end” checkbox was selected.
+		/*
+		**/
+		if(!document.querySelector('#calendar')) {
+			return;
+		}
 
 		// var localOptions = {
 		// 	buttonText: {
@@ -80,6 +82,10 @@
 			initCalendar();
 		} );
 
+		/**
+		/*	Initializes the full calendar.
+		/*
+		**/
 		function initCalendar() {
 
 			$('#calendar').fullCalendar($.extend({
@@ -119,11 +125,11 @@
 				},
 				loading: function(bool) {
 					if(bool) {
-						// Wenn der Kalender geladen wird... (nichts für Ungeduldige...)
+						// When the calendar is loading.
 						$('.fc-header-left').append('<span id="refreshing-calendar"><img alt="Loading" id="ajax-loading" class="ajax-loading" src="' + WPURLS.siteurl + '/wp-admin/images/wpspin_light.gif" style="vertical-align: middle; visibility: visible;"> Aktualisiere...</span>');
 						changeCalendarState(false);
 					} else {
-						// Wenn alles fertig ist
+						// When everything is ready.
 						changeCalendarState(true);
 						$('#refreshing-calendar').fadeOut(function(){$(this).remove();});
 					}
@@ -140,6 +146,10 @@
 			}));
 		}
 
+		/**
+		/*	Displays the edit modal. This modal is used for creating and editing events.
+		/*
+		**/
 		function tecal_showModal( calEvent, date, allDay, jsEvent, view, mode ) {
 			var modal = document.querySelector('.tecal__edit-modal__container');
 			var cancel_button = document.querySelector('[name="tecal_edit-modal_cancel"]');
@@ -253,6 +263,10 @@
 		}
 
 
+		/**
+		/*	Unregisters event listeners when closing the modal.
+		/*
+		**/
 		function tecal_modalUnregisterEventListener() {
 			var modal = document.querySelector('.tecal__edit-modal__container');
 			var cancel_button = document.querySelector('[name="tecal_edit-modal_cancel"]');
@@ -280,6 +294,10 @@
 			// has_end_input.removeEventListener('click', tecal_hasEndClicked);
 		}
 
+		/**
+		/*	Takes actions necessary when “all day” checkbox was selected.
+		/*
+		**/
 		var tecal_alldayClicked = function(e) {
 			var begin_time_input = document.querySelector('[name="tecal_events_begin_time"]');
 			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
@@ -296,6 +314,10 @@
 			}
 		}
 
+		/**
+		/*	Takes actions necessary when “has end” checkbox was selected.
+		/*
+		**/
 		var tecal_hasEndClicked = function(e) {
 			var end_date_input = document.querySelector('[name="tecal_events_end"]');
 			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
@@ -313,6 +335,10 @@
 			}
 		}
 
+		/**
+		/*	Cancels editing an event. Closes the modal.
+		/*
+		**/
 		var tecal_modalCancelEvent = function(e) {
 			tecal_modalUnregisterEventListener();
 
@@ -320,16 +346,29 @@
 			return false;
 		}
 
+		/**
+		/*	Saves an edited event.
+		/*
+		**/
 		var tecal_modalSaveEditEvent = function(e) {
 			console.log("Editing...");
 			modalActionButtonPressed('edit', e);
 		}
 
+		/**
+		/*	Saves a new event from data from the edit modal.
+		/*
+		**/
 		var tecal_modalSaveNewEvent = function(e) {
 			console.log("Saving new...");
 			modalActionButtonPressed('new', e);
 		}
 
+		/**
+		/*	Reloads the calendar when submit button of
+		/*	edit modal was pressed.
+		/*
+		**/
 		function modalActionButtonPressed(modalCase, e) {
 			var data = prepareInputData(modalCase);
 
@@ -345,6 +384,10 @@
 			return false;
 		}
 
+		/**
+		/*	Deletes the event that is currently viewed in the edit modal.
+		/*
+		**/
 		var tecal_modalDeleteEvent = function(e) {
 			var edit_id_hidden = document.querySelector('[name="tecal_events_edit_id"]');
 
@@ -362,6 +405,10 @@
 			});
 		}
 
+		/**
+		/*	Toggles calendar active state for loading scenarios.
+		/*
+		**/
 		function changeCalendarState(onoff) {
 			//onoff = onoff || true;
 			if(onoff == true) {
@@ -381,6 +428,11 @@
 			}
 		}
 
+		/**
+		/*	Prepares data to be sent to the storage API.
+		/* 	@return object 	contains all input data and config
+		/*
+		**/
 		function prepareInputData(modalCase) {
 			var title_input = document.querySelector('[name="tecal_events_title"]');
 			var location_input = document.querySelector('[name="tecal_events_location"]');
@@ -423,13 +475,13 @@
 
 		document.querySelector('.page-title-action').addEventListener('click', function(e) {
 			var today = $('td.fc-today');
-	    var down = new $.Event("mousedown");
-	    var up = new $.Event("mouseup");
-	    down.which = up.which = 1;
-	    down.pageX = up.pageX = today.offset().left;
-	    down.pageY = up.pageY = today.offset().top;
-	    today.trigger(down);
-	    today.trigger(up);
+			var down = new $.Event("mousedown");
+			var up = new $.Event("mouseup");
+			down.which = up.which = 1;
+			down.pageX = up.pageX = today.offset().left;
+			down.pageY = up.pageY = today.offset().top;
+			today.trigger(down);
+			today.trigger(up);
 
 			e.preventDefault();
 			return false;
