@@ -88,6 +88,7 @@
 	height: 0;
 	transition: opacity .3s ease, height .4s ease;
 	color: #85144b;
+	font-weight: 600;
 }
 
 .tecal__edit-modal__error.is-visible {
