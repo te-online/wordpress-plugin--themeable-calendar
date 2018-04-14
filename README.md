@@ -1,6 +1,6 @@
 === Calendar With Custom Themes BETA ===
 Contributors: thomas.ebert
-Donate link: https://thomas-ebert.design
+Donate link: https://thomasebert.net
 Tags: calendar, events, theme, template
 Requires at least: 4.7.2
 Tested up to: 4.7.2
@@ -49,43 +49,43 @@ For an example of how to create a template see the files in the `templates` fold
 Detailed descriptions for the functions will follow.
 All functions can be used with echo (the_...) or silently (get_...).
 
-#### get_event_begin( $format )
-Get the event begin in a given format.
+#### `get_event_begin( $format )`
+Get the event begin in a given format. Format string uses the format seen here: https://codex.wordpress.org/Formatting_Date_and_Time
 
-#### get_event_begin_day
+#### `get_event_begin_day`
 Get the weekday of the event begin.
 
-#### get_event_begin_date
+#### `get_event_begin_date`
 Get the short form date of the event begin.
 
-#### get_event_begin_year
+#### `get_event_begin_year`
 Get the year of the event begin.
 
-#### get_event_begin_time
+#### `get_event_begin_time`
 Get the time of the event begin.
 
-#### get_event_end( $format )
+#### `get_event_end( $format )`
 Get the event end in a given format.
 
-#### get_event_end_day
+#### `get_event_end_day`
 Get the weekday of the event end.
 
-#### get_event_end_date
+#### `get_event_end_date`
 Get the short form date of the event end.
 
-#### get_event_end_year
+#### `get_event_end_year`
 Get the year of the event end.
 
-#### get_event_end_time
+#### `get_event_end_time`
 Get the time of the event end.
 
-#### get_event_location
+#### `get_event_location`
 Get the location of the event.
 
-#### get_event_is_allday
+#### `get_event_is_allday`
 Know if the event is an allday-event.
 
-#### get_event_has_end
+#### `get_event_has_end`
 Know if the event has an end specified.
 
 ### External libraries
@@ -97,9 +97,11 @@ This plugin currently uses the following external libraries:
 
 == Installation ==
 
-Honestly: Use the [GitHub Updater](https://github.com/te-online/wordpress-plugin--themeable-calendar) to install the plugin.
+=== Currently recommended ===
+Use the [GitHub Updater](https://github.com/te-online/wordpress-plugin--themeable-calendar) to install the plugin.
 
-For unconvincibles: Download the zip and put the content into your wp-content/plugins folder.
+=== Manual ===
+Download the zip file and put the contents into your wp-content/plugins folder.
 
 == Frequently Asked Questions ==
 
@@ -111,5 +113,20 @@ Screenshots are to follow.
 
 == Changelog ==
 
+= 0.2 =
+- Fixed: Shortcode display position was broken.
+- Fixed: When no calendar was configured, the widget didn't show the default calendar.
+- Added: Switch between WordPress-style list of events and JavaScript based calendar view.
+
+= 0.1.1 =
+- Fixed: Visual improvements to add-event modal.
+- Fixed: Fix calendar data not loading correctly due to too much sanitization.
+- Fixed: Template can be used multiple times now.
+- Added: Color setting for calendars.
+- Added: Choose calendar to save event in.
+- Added: Chosse calendar for display in widget.
+- Added: Use multiple calendars and have one default calendar.
+- Added: Enable templating with files from themes directory.
+
 = 0.1 =
-* Initial version.
+- Initial version.
