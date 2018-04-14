@@ -274,9 +274,9 @@
 				delete_button.disabled = true;
 			}
 
-			rome(begin_date_input, { time: false, initialValue: begin_date_input.value, dateValidator: rome.val.beforeEq( end_date_input) });
+			rome(begin_date_input, { time: false, initialValue: begin_date_input.value });
 			rome(begin_time_input, { date: false, initialValue: begin_time_input.value });
-			rome(end_date_input, { time: false, initialValue: end_date_input.value, dateValidator: rome.val.afterEq( begin_date_input ) });
+			rome(end_date_input, { time: false, initialValue: end_date_input.value });
 			rome(end_time_input, { date: false, initialValue: end_time_input.value });
 		}
 
