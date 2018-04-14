@@ -116,7 +116,7 @@
 							action: 'te_calendar_move_event'
 						};
 
-						$.post(ajaxurl, data, function(response) {
+						$.post(ajaxurl, data, function() {
 							$( '#calendar' ).fullCalendar( 'refetchEvents' );
 							// Make the calendar work again
 							// changeCalendarState(true);
@@ -176,30 +176,32 @@
 			allday_input.addEventListener('click', tecal_alldayClicked, true);
 			has_end_input.addEventListener('click', tecal_hasEndClicked, true);
 
+			var now = moment();
+
 			if( mode == 'edit' ) {
 				modal.classList.add('is-edit');
 				save_button.addEventListener('click', tecal_modalSaveEditEvent, true);
 				delete_button.addEventListener('click', tecal_modalDeleteEvent, true);
 
-				var now = moment();
 				var begin = calEvent.start;
+				var begin_time = '';
 				if( begin.hasHours ) {
-					var begin_time = (calEvent.start).format('HH:mm');
+					begin_time = (calEvent.start).format('HH:mm');
 				} else {
-					var begin_time = now.format('HH:00');
+					begin_time = now.format('HH:00');
 				}
 				end = calEvent.end;
+				var end_time = '';
 				if( moment.isMoment( end ) ) {
 					if( calEvent.allDay ) {
-						var end_time = now.add('1', 'hours').format('HH:00');
+						end_time = now.add('1', 'hours').format('HH:00');
 					} else {
-						var end_time = (calEvent.end).format('HH:mm');
+						end_time = (calEvent.end).format('HH:mm');
 					}
 				} else {
 					end = begin.add('1', 'hours');
-					var end_time = end.format('HH:00')
+					end_time = end.format('HH:00')
 				}
-
 
 				title_input.value = calEvent.title;
 				location_input.value = calEvent.location;
@@ -231,7 +233,6 @@
 				modal.classList.add('is-new');
 				save_button.addEventListener('click', tecal_modalSaveNewEvent, true);
 
-				var now = moment();
 				date.hour(now.get('hour'));
 				var this_hour = date.format('HH:00');
 				var end = date.add('1', 'hours');
@@ -269,11 +270,11 @@
 		**/
 		function tecal_modalUnregisterEventListener() {
 			var modal = document.querySelector('.tecal__edit-modal__container');
-			var cancel_button = document.querySelector('[name="tecal_edit-modal_cancel"]');
+			// var cancel_button = document.querySelector('[name="tecal_edit-modal_cancel"]');
 			var save_button = document.querySelector('[name="tecal_edit-modal_save"]');
 			var delete_button = document.querySelector('[name="tecal_edit-modal_delete"]');
-			var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
-			var allday_input = document.querySelector('[name="tecal_events_allday"]');
+			// var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
+			// var allday_input = document.querySelector('[name="tecal_events_allday"]');
 
 			modal.classList.remove('is-visible');
 			// Incorporate that an animation is taking place.
@@ -321,7 +322,7 @@
 		var tecal_hasEndClicked = function(e) {
 			var end_date_input = document.querySelector('[name="tecal_events_end"]');
 			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
-			var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
+			// var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
 			var allday_input = document.querySelector('[name="tecal_events_allday"]');
 
 			if( e.target.checked ) {
@@ -374,7 +375,7 @@
 
 			e.target.value = e.target.getAttribute('data-busycaption');
 
-			$.post(ajaxurl, data, function(response) {
+			$.post(ajaxurl, data, function() {
 				e.target.value = e.target.getAttribute('data-defaultcaption');
 				tecal_modalUnregisterEventListener();
 				$( '#calendar' ).fullCalendar( 'refetchEvents' );
@@ -398,7 +399,7 @@
 
 			e.target.value = e.target.getAttribute('data-busycaption');
 
-			$.post(ajaxurl, data, function(response) {
+			$.post(ajaxurl, data, function() {
 				e.target.value = e.target.getAttribute('data-defaultcaption');
 				tecal_modalUnregisterEventListener();
 				$( '#calendar' ).fullCalendar( 'refetchEvents' );
