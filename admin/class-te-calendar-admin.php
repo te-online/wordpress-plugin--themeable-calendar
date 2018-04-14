@@ -146,7 +146,8 @@ class Te_Calendar_Admin {
 				'slug' => __('events')
 				),
 			'supports' => array('title', 'editor', 'taxonomy'),
-			'menu_position' => 100
+			'menu_position' => 100,
+			'menu_icon' => 'dashicons-calendar'
 			)
 		);
 	}
