@@ -566,16 +566,49 @@ class Te_Calendar_Admin {
 	}
 
 	/**
-		* Add a screen option for switching views.
+		* Add more columns to list view in admin.
 		*
-		* @since 		0.1.2
+		* @since 		0.2.0
 		*/
-	// public function add_screen_options() {
-	// 	add_screen_option(
-	// 		'view_type',
-	// 		array(
-	// 			'label' => _x( 'Comments', 'comments per page (screen options)' )
-	// 		)
-	// 	);
-	// }
+	public function add_event_columns( $columns ) {
+		unset( $columns['date'] );
+	  return array_merge(
+	  	$columns,
+	    array(
+    		'begin' => __( 'Begin', 'te-calendar' ),
+    		'end' => __( 'End', 'te-calendar' ),
+    		'allday' => __( 'All day', 'te-calendar' )
+	    )
+	  );
+	}
+
+	/**
+		* Add content to the custom columns of list view in admin.
+		*
+		* @since 		0.2.0
+		*/
+	public function display_event_columns( $column, $post_id ) {
+		switch ( $column ) {
+			case 'begin':
+				$begin_date = get_post_meta( $post_id, 'tecal_events_begin', true );
+				if(!empty($begin_date)) {
+					echo date_i18n( _x( 'l, F j, Y h:i a', 'Full date format', 'te-calendar' ), $begin_date ); // DE: l, j. F Y H:i
+				}
+				break;
+
+			case 'end':
+				$end_date = get_post_meta( $post_id, 'tecal_events_end', true );
+				$has_end = ( get_post_meta( $post_id, 'tecal_events_has_end', true ) ) ? true : false;
+				if(!empty($end_date) && $has_end) {
+					echo date_i18n( _x( 'l, F j, Y h:i a', 'Full date format', 'te-calendar' ), $end_date );
+				} else if(!$has_end) {
+					_e( 'No end specified', 'te-calendar' );
+				}
+				break;
+
+			case 'allday':
+				$allday = ( get_post_meta( $post_id, 'tecal_events_allday', true ) ) ? true : false;
+				echo ($allday) ? __( 'all day', 'Full date format', 'te-calendar' ) : __( '-', 'Full date format', 'te-calendar' );
+		}
+	}
 }

@@ -206,6 +206,10 @@ class Te_Calendar {
 		// Add query var to admin view to switch to list view
 		$this->loader->add_action( 'query_vars', $plugin_admin, 'add_query_vars' );
 		// $this->loader->add_action( 'admin_init', $plugin_admin, 'add_screen_options' );
+
+		// Add custom columns to admin list view
+		$this->loader->add_filter( 'manage_tecal_events_posts_columns', $plugin_admin, 'add_event_columns');
+		$this->loader->add_action( 'manage_tecal_events_posts_custom_column' , $plugin_admin, 'display_event_columns', 10, 2 );
 	}
 
 	/**
