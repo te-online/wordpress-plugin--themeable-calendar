@@ -354,9 +354,9 @@ class Te_Calendar_Admin {
 		// }
 
 		// verify if this is an auto save routine. If it is our form has not been submitted, so we dont want to do anything
-		// if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) {
-		//   return $post_id;
-		// }
+		if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) {
+		  return $post_id;
+		}
 
 		// Check permissions
 		if ( !current_user_can( 'edit_post', $post_id ) ) {
