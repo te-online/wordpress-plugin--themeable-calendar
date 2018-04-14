@@ -269,7 +269,8 @@
 				has_end_input.checked = false;
 				has_end_input.disabled = false;
 				description_input.value = "";
-				calendar_input.value = "";
+				// Select default calendar by default.
+				calendar_input.value = "calendar";
 				delete_button.disabled = true;
 			}
 
