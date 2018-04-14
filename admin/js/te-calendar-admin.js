@@ -251,7 +251,7 @@
 
 				date.hour(now.get('hour'));
 				var this_hour = date.format('HH:00');
-				end = date.add('1', 'hours');
+				end = date.clone().add('1', 'hours');
 				var next_hour = end.format('HH:00');
 				var end_date = end.format('YYYY-MM-DD');
 
