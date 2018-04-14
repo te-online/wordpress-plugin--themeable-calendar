@@ -100,28 +100,21 @@
 					tecal_showModal( calEvent, null, null, jsEvent, view, 'edit' );
 				},
 				eventDrop: function( calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view ) {
-					// If the calendar is active
-					// if($('#calendar-active').attr("active") == "true") {
-						// Disabling calendar for saving
-						changeCalendarState(false);
+					// Disabling calendar for saving
+					changeCalendarState(false);
 
-						console.log( "has end", ( calEvent.hasEnd === "1" ) ? "true" : "false" );
+					var data = {
+						tecal_events_post_id: calEvent.id,
+						tecal_events_begin: moment(calEvent.start).format('YYYY-MM-DD'),
+						tecal_events_begin_time: moment(calEvent.start).format('HH:mm'),
+						tecal_events_end: ( calEvent.hasEnd === true || calEvent.hasEnd === "1" ) ? moment(calEvent.end).format('YYYY-MM-DD') : moment(calEvent.start).format('YYYY-MM-DD'),
+						tecal_events_end_time: ( calEvent.hasEnd === true || calEvent.hasEnd === "1" ) ? moment(calEvent.end).format('HH:mm') : moment(calEvent.start).format('HH:mm'),
+						action: 'te_calendar_move_event'
+					};
 
-						var data = {
-							tecal_events_post_id: calEvent.id,
-							tecal_events_begin: moment(calEvent.start).format('YYYY-MM-DD'),
-							tecal_events_begin_time: moment(calEvent.start).format('HH:mm'),
-							tecal_events_end: ( calEvent.hasEnd === "1" ) ? moment(calEvent.end).format('YYYY-MM-DD') : moment(calEvent.start).format('YYYY-MM-DD'),
-							tecal_events_end_time: ( calEvent.hasEnd === "1" ) ? moment(calEvent.end).format('HH:mm') : moment(calEvent.start).format('HH:mm'),
-							action: 'te_calendar_move_event'
-						};
-
-						$.post(ajaxurl, data, function() {
-							$( '#calendar' ).fullCalendar( 'refetchEvents' );
-							// Make the calendar work again
-							// changeCalendarState(true);
-						});
-					// }
+					$.post(ajaxurl, data, function() {
+						$( '#calendar' ).fullCalendar( 'refetchEvents' );
+					});
 				},
 				loading: function(bool) {
 					if(bool) {
@@ -140,9 +133,22 @@
 				dayClick: function( date, allDay, jsEvent, view ) {
 					tecal_showModal( null, date, allDay, jsEvent, view, 'new' );
 				},
+				eventDataTransform: function( eventData ) {
+					// Full calendar has a problem, when an all day event's end
+					// is not timed at 00:00 hours.
+					if(eventData.allDay) {
+						// Make a copy of the actual end time for our edit dialog.
+						eventData.realEnd = moment(eventData.end).utc()
+						// Replace given time on end date with start of day (midnight).
+						var end = moment(eventData.end).hours(0).minutes(0);
+						eventData.end = end.format();
+					}
+
+					return eventData;
+				},
 				disableDragging: false,
 				disableResizing: true,
-				height: 700
+				height: Math.min((window.innerHeight - 200), 900)
 			}));
 		}
 
@@ -156,6 +162,7 @@
 			var save_button = document.querySelector('[name="tecal_edit-modal_save"]');
 			var delete_button = document.querySelector('[name="tecal_edit-modal_delete"]');
 
+			// Show modal.
 			modal.classList.add('is-visible');
 
 			cancel_button.addEventListener('click', tecal_modalCancelEvent, true);
@@ -177,32 +184,40 @@
 			has_end_input.addEventListener('click', tecal_hasEndClicked, true);
 
 			var now = moment();
+			var end = null;
 
 			if( mode == 'edit' ) {
+				// Set modal mode to EDIT.
 				modal.classList.add('is-edit');
+
+				// Add event listeners for buttons.
 				save_button.addEventListener('click', tecal_modalSaveEditEvent, true);
 				delete_button.addEventListener('click', tecal_modalDeleteEvent, true);
 
+				// Prepare begin time.
 				var begin = calEvent.start;
 				var begin_time = '';
-				if( begin.hasHours ) {
-					begin_time = (calEvent.start).format('HH:mm');
+				// When the event is not set to allday, we will display hours.
+				if( !calEvent.allDay ) {
+					begin_time = begin.format('HH:mm');
 				} else {
+					// Let's just use the current hour with 0 minutes.
 					begin_time = now.format('HH:00');
 				}
-				end = calEvent.end;
+				// Prepare end time. Use backup of endtime when event is all day.
+				end = (calEvent.allDay) ? calEvent.realEnd : calEvent.end;
 				var end_time = '';
 				if( moment.isMoment( end ) ) {
-					if( calEvent.allDay ) {
-						end_time = now.add('1', 'hours').format('HH:00');
-					} else {
-						end_time = (calEvent.end).format('HH:mm');
-					}
+					end_time = end.format('HH:mm');
+				} else if( calEvent.allDay ) {
+					end = now
+					end_time = now.clone().add('1', 'hours').format('HH:00');
 				} else {
-					end = begin.add('1', 'hours');
+					end = begin.clone().add('1', 'hours');
 					end_time = end.format('HH:00')
 				}
 
+				// Configure input fields to show edit values.
 				title_input.value = calEvent.title;
 				location_input.value = calEvent.location;
 				begin_date_input.value = begin.format('YYYY-MM-DD');
@@ -230,12 +245,13 @@
 				edit_id_hidden.value = calEvent.id;
 				delete_button.disabled = false;
 			} else {
+				// Set modal mode to NEW.
 				modal.classList.add('is-new');
 				save_button.addEventListener('click', tecal_modalSaveNewEvent, true);
 
 				date.hour(now.get('hour'));
 				var this_hour = date.format('HH:00');
-				var end = date.add('1', 'hours');
+				end = date.add('1', 'hours');
 				var next_hour = end.format('HH:00');
 				var end_date = end.format('YYYY-MM-DD');
 
@@ -462,6 +478,8 @@
 				tecal_events_calendar: ( calendar_input.options[calendar_input.selectedIndex] ) ? calendar_input.options[calendar_input.selectedIndex].value : 'calendar'
 			};
 
+			console.log("saving data", data);
+
 			if( modalCase === 'edit' ) {
 				data.tecal_events_post_id = edit_id_hidden.value;
 				data.action = 'te_calendar_save_edited_event';
@@ -472,8 +490,17 @@
 			return data;
 		}
 
+		/**
+		/*	Hide the events list, because calendar will be appearing in a second.
+		/*
+		**/
 		$('.tecal_list_table').hide();
 
+		/**
+		/*	Add event listener to clicks on the “add” button at the top of the screen.
+		/* 	On click this opens the create modal with the current date and hour.
+		/*
+		**/
 		document.querySelector('.page-title-action').addEventListener('click', function(e) {
 			var today = $('td.fc-today');
 			var down = new $.Event("mousedown");

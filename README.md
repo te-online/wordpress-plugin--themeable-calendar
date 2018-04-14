@@ -116,6 +116,7 @@ Screenshots are to follow.
 = 0.2 =
 - Fixed: Shortcode display position was broken.
 - Fixed: When no calendar was configured, the widget didn't show the default calendar.
+- Fixed: Data inconsistencies in edit dialog. Making sure you edit the correct data and don't have to start over.
 - Added: Switch between WordPress-style list of events and JavaScript based calendar view.
 
 = 0.1.1 =

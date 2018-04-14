@@ -107,7 +107,7 @@ class Te_Calendar_Admin {
 		// Make variables available globally.
 		wp_localize_script( $this->plugin_name, 'WPURLS', array( 'siteurl' => get_option('siteurl') ) );
 
-		wp_enqueue_script( $this->plugin_name . "moment", plugin_dir_url( __FILE__ ) . 'lib/fullcalendar/moment.min.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name . "moment", plugin_dir_url( __FILE__ ) . 'lib/fullcalendar/lib/moment.min.js', array( 'jquery' ), $this->version, false );
 
 		// wp_enqueue_script( $this->plugin_name . "fullcalendar_locale", plugin_dir_url( __FILE__ ) . 'lib/fullcalendar/locale-all.js', array( 'jquery' ), $this->version, false );
 
@@ -324,7 +324,7 @@ class Te_Calendar_Admin {
 					'allDay' => ( get_post_meta( $event->ID, 'tecal_events_allday', true ) ) ? true : false,
 					'location' => get_post_meta( $event->ID, 'tecal_events_location', true ),
 					'description' => $event->post_content,
-					'hasEnd' => get_post_meta( $event->ID, 'tecal_events_has_end', true ),
+					'hasEnd' => ( get_post_meta( $event->ID, 'tecal_events_has_end', true ) ) ? true : false,
 					'calendar' => $calendar,
 					'color' => $color
 				);
