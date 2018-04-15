@@ -118,6 +118,8 @@ Screenshots are to follow.
 - Fixed: When no calendar was configured, the widget didn't show the default calendar.
 - Fixed: Data inconsistencies in edit dialog. Making sure you edit the correct data and don't have to start over.
 - Added: Switch between WordPress-style list of events and JavaScript based calendar view.
+- Added: Nice menu icon from dashicons.
+- Added: Neat JavaScript enhancements for the WordPress style event edit screen.
 
 = 0.1.1 =
 - Fixed: Visual improvements to add-event modal.
