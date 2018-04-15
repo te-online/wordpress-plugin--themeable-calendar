@@ -93,6 +93,11 @@
 						eventData.end = end.format();
 					}
 
+					// Convert HTML entities in fields.
+					eventData.title = convertHTMLEntity(eventData.title);
+					eventData.location = convertHTMLEntity(eventData.location);
+					eventData.description = convertHTMLEntity(eventData.description);
+
 					return eventData;
 				},
 				disableDragging: false,
@@ -588,6 +593,21 @@
 			}
 
 			return data;
+		}
+
+		/**
+		/*	Decodes HTML entities.
+		/*	See https://stackoverflow.com/questions/5796718/html-entity-decode
+		/*
+		**/
+		function convertHTMLEntity(text) {
+			var span = document.createElement('span');
+
+			return text
+			.replace(/&[#A-Za-z0-9]+;/gi, function(entity) {
+					span.innerHTML = entity;
+					return span.innerText;
+			});
 		}
 
 		/**
