@@ -10,6 +10,10 @@ if(!class_exists('WP_Posts_List_Table')){
 }
 
 class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
+		public function _construct() {
+			parent::_construct();
+		}
+
     // remove search box
     public function search_box( $text, $input_id ) { return false; }
 

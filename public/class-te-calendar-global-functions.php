@@ -58,11 +58,11 @@ class Te_Calendar_Global_Functions {
 
 		$allday = get_post_meta( $post->ID, 'tecal_events_allday', true );
 		if( $allday ) {
-			return __( "ganztägig", 'te-calendar' );
+			return __( "all day", 'te-calendar' );
 		}
 
 		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
-		return date_i18n( 'H.i', $begin ) . _x( " Uhr", 'te-calendar', "Wie in 12.00 Uhr" );
+		return sprintf( _x( '%s', 'Time. Other languages use some kind of unit for time like "12.00 Uhr"', 'te-calendar' ), date_i18n( 'H.i', $begin ) );
 	}
 
 	/**
@@ -127,7 +127,7 @@ class Te_Calendar_Global_Functions {
 		}
 
 		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
-		return date_i18n( 'H.i', $end ) . _x( " Uhr", 'te-calendar', "Wie in 12.00 Uhr" );
+		return sprintf( _x( '%s', 'Time. Other languages use some kind of unit for time like "12.00 Uhr"', 'te-calendar' ), date_i18n( 'H.i', $end ) );
 	}
 
 	/**

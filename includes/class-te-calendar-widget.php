@@ -15,9 +15,9 @@ class Te_Calendar_Widget extends WP_Widget {
 	public function __construct() {
 		$widget_ops = array(
 			'classname' => 'te_calendar_widget',
-			'description' => 'Widget for display of calendar events.',
+			'description' => __('Widget for display of calendar events.', 'te-calendar'),
 		);
-		parent::__construct( 'te_calendar_widget', 'Calendar Events', $widget_ops );
+		parent::__construct( 'te_calendar_widget', __('Calendar Events', 'te-calendar'), $widget_ops );
 	}
 
 	/**
@@ -90,16 +90,16 @@ class Te_Calendar_Widget extends WP_Widget {
 		$num_events = intval( $instance['num_events'] );
 		$calendar = sanitize_text_field( $instance['calendar'] );
 		?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'te-calendar'); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>
 
-		<p><label for="<?php echo $this->get_field_id('num_events'); ?>"><?php _e('Number of events to display:'); ?></label>
+		<p><label for="<?php echo $this->get_field_id('num_events'); ?>"><?php _e('Number of events to display:', 'te-calendar'); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('num_events'); ?>" name="<?php echo $this->get_field_name('num_events'); ?>" type="text" value="<?php echo esc_attr($num_events); ?>" /></p>
 
-		<p><label for="<?php echo $this->get_field_id('template'); ?>"><?php _e('Name of template file in theme directory <em>(optional)</em>:'); ?></label>
+		<p><label for="<?php echo $this->get_field_id('template'); ?>"><?php _e('Name of template file in theme directory <em>(optional)</em>:', 'te-calendar'); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('template'); ?>" name="<?php echo $this->get_field_name('template'); ?>" type="text" value="<?php echo esc_attr($template); ?>" /></p>
 
-		<p><label for="<?php echo $this->get_field_id('calendar'); ?>"><?php _e('Slug of calendar to show <em>(omitting shows default, multiple comma-separated)</em>:'); ?></label>
+		<p><label for="<?php echo $this->get_field_id('calendar'); ?>"><?php _e('Slug of calendar to show <em>(omitting shows default, multiple comma-separated)</em>:', 'te-calendar'); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('calendar'); ?>" name="<?php echo $this->get_field_name('calendar'); ?>" type="text" value="<?php echo esc_attr($calendar); ?>" /></p>
 
 		<!-- <p>Here goes a setting for future/past events</p>

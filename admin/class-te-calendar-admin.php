@@ -106,12 +106,13 @@ class Te_Calendar_Admin {
 
 		// Make variables available globally.
 		wp_localize_script( $this->plugin_name, 'WPURLS', array( 'siteurl' => get_option('siteurl') ) );
+		wp_localize_script( $this->plugin_name, 'TE_CAL', array( 'locale' => get_user_locale() ) );
 
-		wp_enqueue_script( $this->plugin_name . "moment", plugin_dir_url( __FILE__ ) . 'lib/fullcalendar/lib/moment.min.js', array( 'jquery' ), $this->version, false );
-
-		// wp_enqueue_script( $this->plugin_name . "fullcalendar_locale", plugin_dir_url( __FILE__ ) . 'lib/fullcalendar/locale-all.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name . "moment", plugin_dir_url( __FILE__ ) . 'lib/fullcalendar/lib/moment-with-locales.min.js', array( 'jquery' ), $this->version, false );
 
 		wp_enqueue_script( $this->plugin_name . "fullcalendar", plugin_dir_url( __FILE__ ) . 'lib/fullcalendar/fullcalendar.min.js', array( 'jquery' ), $this->version, false );
+
+		wp_enqueue_script( $this->plugin_name . "fullcalendar_locale", plugin_dir_url( __FILE__ ) . 'lib/fullcalendar/locale-all.js', array( 'jquery' ), $this->version, false );
 
 		wp_enqueue_script( $this->plugin_name . "rome", plugin_dir_url( __FILE__ ) . 'lib/rome/rome.min.js', $this->version, false );
 
@@ -126,28 +127,28 @@ class Te_Calendar_Admin {
 		register_post_type( 'tecal_events',
 			array(
 				'labels' => array(
-					'name' => __( 'Events', $this->plugin_name ),
-					'singular_name' => __( 'Event', $this->plugin_name ),
-					'add_new' => __('Add', $this->plugin_name),
-					'menu_name' => __('Events', $this->plugin_name),
-					'add_new_item' => __('Add event', $this->plugin_name),
-					'edit_item' => __('Edit event', $this->plugin_name),
-					'new_item' => __('New event', $this->plugin_name),
-					'all_items' => __('Events', $this->plugin_name),
-					'view_item' => __('View event', $this->plugin_name),
-					'search_items' => __('Search events', $this->plugin_name),
-					'not_found' =>  __('Looks like there are no events, yet.', $this->plugin_name),
-					'not_found_in_trash' => __('There are no trashed events.', $this->plugin_name),
+					'name' => __( 'Events', 'te-calendar' ),
+					'singular_name' => __( 'Event', 'te-calendar' ),
+					'add_new' => __('Add', 'te-calendar'),
+					'menu_name' => __('Events', 'te-calendar'),
+					'add_new_item' => __('Add event', 'te-calendar'),
+					'edit_item' => __('Edit event', 'te-calendar'),
+					'new_item' => __('New event', 'te-calendar'),
+					'all_items' => __('Events', 'te-calendar'),
+					'view_item' => __('View event', 'te-calendar'),
+					'search_items' => __('Search events', 'te-calendar'),
+					'not_found' =>  __('Looks like there are no events, yet.', 'te-calendar'),
+					'not_found_in_trash' => __('There are no trashed events.', 'te-calendar'),
 					'parent_item_colon' => ''
 				),
-			'public' => true,
-			'has_archive' => false,
-			'rewrite' => array(
-				'slug' => __('events')
+				'public' => true,
+				'has_archive' => false,
+				'rewrite' => array(
+					'slug' => __('events', 'te-calendar')
 				),
-			'supports' => array('title', 'editor', 'taxonomy'),
-			'menu_position' => 100,
-			'menu_icon' => 'dashicons-calendar'
+				'supports' => array('title', 'editor', 'taxonomy'),
+				'menu_position' => 100,
+				'menu_icon' => 'dashicons-calendar'
 			)
 		);
 	}
@@ -160,22 +161,22 @@ class Te_Calendar_Admin {
 	public function calendars_custom_taxonomy() {
 		// Add new taxonomy, NOT hierarchical (like tags)
 		$labels = array(
-			'name'                       => _x( 'Calendars', 'taxonomy general name', $this->plugin_name ),
-			'singular_name'              => _x( 'Calendar', 'taxonomy singular name', $this->plugin_name ),
-			'search_items'               => __( 'Search Calendars', $this->plugin_name ),
-			'popular_items'              => __( 'Popular Calendars', $this->plugin_name ),
-			'all_items'                  => __( 'All Calendars', $this->plugin_name ),
+			'name'                       => _x( 'Calendars', 'taxonomy general name', 'te-calendar' ),
+			'singular_name'              => _x( 'Calendar', 'taxonomy singular name', 'te-calendar' ),
+			'search_items'               => __( 'Search Calendars', 'te-calendar' ),
+			'popular_items'              => __( 'Popular Calendars', 'te-calendar' ),
+			'all_items'                  => __( 'All Calendars', 'te-calendar' ),
 			'parent_item'                => null,
 			'parent_item_colon'          => null,
-			'edit_item'                  => __( 'Edit Calendar', $this->plugin_name ),
-			'update_item'                => __( 'Update Calendar', $this->plugin_name ),
-			'add_new_item'               => __( 'Add New Calendar', $this->plugin_name ),
-			'new_item_name'              => __( 'New Calendar Name', $this->plugin_name ),
-			'separate_items_with_commas' => __( 'Separate calendars with commas', $this->plugin_name ),
-			'add_or_remove_items'        => __( 'Add or remove calendars', $this->plugin_name ),
-			'choose_from_most_used'      => __( 'Choose from the most used calendars', $this->plugin_name ),
-			'not_found'                  => __( 'No calendars found.', $this->plugin_name ),
-			'menu_name'                  => __( 'Calendars', $this->plugin_name ),
+			'edit_item'                  => __( 'Edit Calendar', 'te-calendar' ),
+			'update_item'                => __( 'Update Calendar', 'te-calendar' ),
+			'add_new_item'               => __( 'Add New Calendar', 'te-calendar' ),
+			'new_item_name'              => __( 'New Calendar Name', 'te-calendar' ),
+			'separate_items_with_commas' => __( 'Separate calendars with commas', 'te-calendar' ),
+			'add_or_remove_items'        => __( 'Add or remove calendars', 'te-calendar' ),
+			'choose_from_most_used'      => __( 'Choose from the most used calendars', 'te-calendar' ),
+			'not_found'                  => __( 'No calendars found.', 'te-calendar' ),
+			'menu_name'                  => __( 'Calendars', 'te-calendar' ),
 		);
 
 		$args = array(
@@ -194,10 +195,10 @@ class Te_Calendar_Admin {
 		if( !is_array( term_exists( 'calendar', 'tecal_calendars' ) ) ) {
 			// Create a default calendar
 			wp_insert_term(
-				__( 'Default Calendar', $this->plugin_name ), // term name
+				__( 'Default Calendar', 'te-calendar' ), // term name
 				'tecal_calendars', // taxonomy
 				array(
-					'description'=> __( 'Your default calendar that stores all the events.', $this->plugin_name ),
+					'description'=> __( 'Your default calendar that stores all the events.', 'te-calendar' ),
 					'slug' => 'calendar'
 				)
 			);
@@ -516,9 +517,9 @@ class Te_Calendar_Admin {
 
 		?>
 			<div class="form-field">
-				<label for="term_meta[tecal_calendar_color]"><?php _e( 'Color', $this->plugin_name ); ?></label>
+				<label for="term_meta[tecal_calendar_color]"><?php _e( 'Color', 'te-calendar' ); ?></label>
 				<input type="color" name="term_meta[tecal_calendar_color]" id="term_meta[tecal_calendar_color]" value="<?php echo sprintf('#%06X', mt_rand(0, 0xFFFFFF)); ?>">
-				<p class="description"><?php _e( 'Choose a color for your calendar', $this->plugin_name ); ?></p>
+				<p class="description"><?php _e( 'Choose a color for your calendar', 'te-calendar' ); ?></p>
 			</div>
 		<?php
 	}
@@ -535,10 +536,10 @@ class Te_Calendar_Admin {
 		// retrieve the existing value(s) for this meta field. This returns an array
 		$term_meta = get_term_meta( $t_id, 'tecal_calendar_color', true ); ?>
 		<tr class="form-field">
-		<th scope="row" valign="top"><label for="term_meta[tecal_calendar_color]"><?php _e( 'Color', $this->plugin_name ); ?></label></th>
+		<th scope="row" valign="top"><label for="term_meta[tecal_calendar_color]"><?php _e( 'Color', 'te-calendar' ); ?></label></th>
 			<td>
 				<input type="color" name="term_meta[tecal_calendar_color]" id="term_meta[tecal_calendar_color]" value="<?php echo esc_attr( $term_meta ) ? esc_attr( $term_meta ) : ''; ?>">
-				<p class="description"><?php _e( 'Choose a color for your calendar', $this->plugin_name ); ?></p>
+				<p class="description"><?php _e( 'Choose a color for your calendar', 'te-calendar' ); ?></p>
 			</td>
 		</tr>
 	<?php
@@ -593,7 +594,7 @@ class Te_Calendar_Admin {
 			case 'begin':
 				$begin_date = get_post_meta( $post_id, 'tecal_events_begin', true );
 				if(!empty($begin_date)) {
-					echo date_i18n( _x( 'l, F j, Y h:i a', 'Full date format', 'te-calendar' ), $begin_date ); // DE: l, j. F Y H:i
+					echo date_i18n( _x( 'l, F j, Y h:i a', 'Full date format', 'te-calendar' ), $begin_date );
 				}
 				break;
 
@@ -609,7 +610,7 @@ class Te_Calendar_Admin {
 
 			case 'allday':
 				$allday = ( get_post_meta( $post_id, 'tecal_events_allday', true ) ) ? true : false;
-				echo ($allday) ? __( 'all day', 'Full date format', 'te-calendar' ) : __( '-', 'Full date format', 'te-calendar' );
+				echo ($allday) ? __( 'all day', 'te-calendar' ) : _x( '-', 'List: all day n/a', 'te-calendar' );
 		}
 	}
 }

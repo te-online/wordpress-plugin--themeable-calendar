@@ -6,7 +6,7 @@ class Te_Calendar_Event_Details_Controller {
 	 * @since 		1.0.0
 	 */
 	public function event_metaboxes_register() {
-		add_meta_box( 'event-details', __('Eventdetails'), array( $this, 'event_details_metabox'), 'tecal_events', 'normal', 'high' );
+		add_meta_box( 'event-details', __('Eventdetails', 'te-calendar'), array( $this, 'event_details_metabox'), 'tecal_events', 'normal', 'high' );
 	}
 
 	/**
@@ -40,21 +40,21 @@ class Te_Calendar_Event_Details_Controller {
     <input type="hidden" id="tecal_legacy_event_edit" name="tecal_legacy_event_edit" />
 
     <p><label for="tecal_events_location"><?php _e('Location:', 'te-calendar'); ?></label>
-		<input class="widefat" id="tecal_events_location" name="tecal_events_location" type="text" value="<?php echo sanitize_text_field($location); ?>" /></p>
+		<input class="widefat" id="tecal_events_location" name="tecal_events_location" type="text" value="<?php echo esc_attr($location); ?>" /></p>
 
     <p><label for="tecal_events_allday"><?php _e('All day:', 'te-calendar'); ?></label>
 		<input class="widefat" id="tecal_events_allday" name="tecal_events_allday" type="checkbox" <?php echo ($allday === "0") ? "" : "checked='checked'" ; ?> /></p>
 
     <p><label for="tecal_events_begin"><?php _e('Begin:', 'te-calendar'); ?></label>
-		<input class="widefat" id="tecal_events_begin" name="tecal_events_begin" type="date" value="<?php echo sanitize_text_field($begin_string); ?>" />
-		<input class="widefat" id="tecal_events_begin_time" name="tecal_events_begin_time" type="time" value="<?php echo sanitize_text_field($begin_time); ?>" /></p>
+		<input class="widefat" id="tecal_events_begin" name="tecal_events_begin" type="date" value="<?php echo esc_attr($begin_string); ?>" />
+		<input class="widefat" id="tecal_events_begin_time" name="tecal_events_begin_time" type="time" value="<?php echo esc_attr($begin_time); ?>" /></p>
 
 		<p><label for="tecal_events_has_end"><?php _e('Specify an end:', 'te-calendar'); ?></label>
 		<input class="widefat" id="tecal_events_has_end" name="tecal_events_has_end" type="checkbox" <?php echo ($has_end === "1") ? "checked='checked'" : "" ; ?> /></p>
 
 		<p><label for="tecal_events_end"><?php _e('End:', 'te-calendar'); ?></label>
-		<input class="widefat" id="tecal_events_end" name="tecal_events_end" type="date" value="<?php echo sanitize_text_field($end_string); ?>" />
-		<input class="widefat" id="tecal_events_end_time" name="tecal_events_end_time" type="time" value="<?php echo sanitize_text_field($end_time); ?>" /></p>
+		<input class="widefat" id="tecal_events_end" name="tecal_events_end" type="date" value="<?php echo esc_attr($end_string); ?>" />
+		<input class="widefat" id="tecal_events_end_time" name="tecal_events_end_time" type="time" value="<?php echo esc_attr($end_time); ?>" /></p>
 
     <?php
 	}

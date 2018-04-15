@@ -5,6 +5,7 @@
     "jQuery": true,
     "ajaxurl": true,
     "WPURLS": true,
+    "TE_CAL": true
   },
   "env": {
       "browser": true
