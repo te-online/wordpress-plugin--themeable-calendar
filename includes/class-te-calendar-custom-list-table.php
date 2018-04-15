@@ -18,11 +18,26 @@ class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
     	// Load calendars.
     	$calendars = get_terms( 'tecal_calendars' );
     	// See if we are in list view or calendar view.
-    	$listView = ('list' === get_query_var('view')) ? true : false;
+    	$setListView = ('list' === get_query_var('view')) ? true : false;
+    	$setCalendarView = ('calendar' === get_query_var('view')) ? true : false;
+
+    	global $current_user;
+    	// Get current user preference.
+    	$current_view = get_user_meta($current_user->ID, 'tecal_current_view', true);
+    	// Save user preference.
+    	if($setListView && $current_view !== 'list') {
+    		update_user_meta( $current_user->ID, 'tecal_current_view', 'list');
+    		$current_view = 'list';
+    	} else if($setCalendarView && $current_view !== 'calendar') {
+    		update_user_meta( $current_user->ID, 'tecal_current_view', 'calendar');
+    		$current_view = 'calendar';
+    	}
+    	// Set view to display.
+    	$listView = ($current_view === 'list') ? true : false;
 
     	?>
     	<h2 class="nav-tab-wrapper">
-		    <a href="?post_type=tecal_events" class="nav-tab<?php echo (!$listView) ? ' nav-tab-active' : ''; ?>">
+		    <a href="?post_type=tecal_events&view=calendar" class="nav-tab<?php echo (!$listView) ? ' nav-tab-active' : ''; ?>">
 		    	<?php _e('Calendar view', 'te-calendar'); ?>
 		    </a>
 		    <a href="?post_type=tecal_events&view=list" class="nav-tab<?php echo ($listView) ? ' nav-tab-active' : ''; ?>">
