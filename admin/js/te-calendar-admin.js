@@ -32,63 +32,12 @@
 	$(function() {
 
 		/**
-		/*	Takes actions necessary when “has end” checkbox was selected.
-		/*
-		**/
-		if(!document.querySelector('#calendar')) {
-			return;
-		}
-
-		// var localOptions = {
-		// 	buttonText: {
-		// 		today: 'Heute',
-		// 		month: 'Monat',
-		// 		day: 'Tag',
-		// 		week: 'Woche'
-		// 	},
-		// 	monthNames: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
-		// 	monthNamesShort: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sept','Okt','Nov','Dez'],
-		// 	dayNames: ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],
-		// 	dayNamesShort: ['So','Mo','Di','Mi','Do','Fr','Sa']
-		// }
-
-		// If the calendar div exists we will add a refresh-update-message
-		if($('.fc-header-left').length) {
-			$('.fc-header-left').append('<span id="refreshing-calendar"><img alt="Loading" id="ajax-loading" class="ajax-loading" src="' + WPURLS.siteurl + '/wp-admin/images/wpspin_light.gif" style="vertical-align: middle; visibility: visible;"> Aktualisiere...</span>');
-		}
-
-		// Fetch all calendars first.
-		var eventSources = [];
-		var data = {
-			action: 'te_calendar_fetch_calendars'
-		};
-
-		$.post(ajaxurl, data, function( response ) {
-			response = JSON.parse( response );
-			// Prepare event sources for each calendar.
-			response.forEach( function( calendar ) {
-				var eventSource = {
-					url: ajaxurl,
-					type: 'POST',
-					data: {
-						action: 'te_calendar_fetch_events',
-						calendar: calendar
-					},
-					className: 'event-object'
-				};
-
-				eventSources.push( eventSource );
-			});
-			initCalendar();
-		} );
-
-		/**
 		/*	Initializes the full calendar.
 		/*
 		**/
 		function initCalendar() {
 
-			$('#calendar').fullCalendar($.extend({
+			$('#tecal_calendar').fullCalendar($.extend({
 				editable: true,
 				firstDay: 1,
 				// Loading real events here will be the next challenge
@@ -113,7 +62,7 @@
 					};
 
 					$.post(ajaxurl, data, function() {
-						$( '#calendar' ).fullCalendar( 'refetchEvents' );
+						$( '#tecal_calendar' ).fullCalendar( 'refetchEvents' );
 					});
 				},
 				loading: function(bool) {
@@ -280,6 +229,72 @@
 			rome(end_time_input, { date: false, initialValue: end_time_input.value });
 		}
 
+		/**
+		/*	Displays the edit modal. This modal is used for creating and editing events.
+		/*
+		**/
+		function tecal_enhanceMetaBox() {
+			var begin_date_input = document.querySelector('[name="tecal_events_begin"]');
+			var begin_time_input = document.querySelector('[name="tecal_events_begin_time"]');
+			var allday_input = document.querySelector('[name="tecal_events_allday"]');
+			var end_date_input = document.querySelector('[name="tecal_events_end"]');
+			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
+			var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
+
+			allday_input.addEventListener('change', tecal_alldayClicked);
+			has_end_input.addEventListener('click', tecal_hasEndClicked);
+
+			var now = moment();
+			var end = null;
+
+			// Prepare begin time.
+			var begin = moment(begin_date_input.value + 'T' + begin_time_input.value);
+			var begin_time = '';
+			// When the event is not set to allday, we will display hours.
+			if( !allday_input.checked  ) {
+				begin_time = begin.format('HH:mm');
+			} else {
+				// Let's just use the current hour with 0 minutes.
+				begin_time = now.format('HH:00');
+			}
+			// Prepare end time. Use backup of endtime when event is all day.
+			end = moment(end_date_input.value + 'T' + end_time_input.value);
+			var end_time = '';
+			if( moment.isMoment( end ) ) {
+				end_time = end.format('HH:mm');
+			} else if( allday_input.checked  ) {
+				end = now
+				end_time = now.clone().add('1', 'hours').format('HH:00');
+			} else {
+				end = begin.clone().add('1', 'hours');
+				end_time = end.format('HH:00')
+			}
+
+			// Configure input fields to show edit values.
+			begin_date_input.value = begin.format('YYYY-MM-DD');
+			end_date_input.value = end.format('YYYY-MM-DD');
+			end_time_input.value = end_time
+			begin_time_input.value = begin_time;
+			if( has_end_input.checked ) {
+				end_date_input.disabled = false;
+				end_time_input.disabled = false;
+			} else {
+				end_date_input.disabled = true;
+				end_time_input.disabled = true;
+			}
+			if( !allday_input.checked ) {
+				begin_time_input.disabled = false;
+			} else {
+				end_time_input.disabled = true;
+				begin_time_input.disabled = true;
+			}
+
+			rome(begin_date_input, { time: false, initialValue: begin_date_input.value });
+			rome(begin_time_input, { date: false, initialValue: begin_time_input.value });
+			rome(end_date_input, { time: false, initialValue: end_date_input.value });
+			rome(end_time_input, { date: false, initialValue: end_time_input.value });
+		}
+
 
 		/**
 		/*	Unregisters event listeners when closing the modal.
@@ -406,7 +421,7 @@
 			$.post(ajaxurl, data, function() {
 				e.target.value = e.target.getAttribute('data-defaultcaption');
 				tecal_modalUnregisterEventListener();
-				$( '#calendar' ).fullCalendar( 'refetchEvents' );
+				$( '#tecal_calendar' ).fullCalendar( 'refetchEvents' );
 			});
 
 			e.preventDefault();
@@ -505,7 +520,7 @@
 			$.post(ajaxurl, data, function() {
 				e.target.value = e.target.getAttribute('data-defaultcaption');
 				tecal_modalUnregisterEventListener();
-				$( '#calendar' ).fullCalendar( 'refetchEvents' );
+				$( '#tecal_calendar' ).fullCalendar( 'refetchEvents' );
 			});
 		}
 
@@ -519,16 +534,16 @@
 				// We append the cursor
 				$('.event-object').removeClass('event-object-disabled');
 				// We make it look like it was working ;-)
-				$('#calendar').removeClass('opaque');
+				$('#tecal_calendar').removeClass('opaque');
 				// Trying to make clear that the calender should work
-				$('#calendar-active').attr("active", "true");
+				$('#tecal_calendar-active').attr("active", "true");
 			} else {
 				// We remove the cursor
 				$('.event-object').addClass('event-object-disabled');
 				// We make it look like it was not working
-				$('#calendar').addClass('opaque');
+				$('#tecal_calendar').addClass('opaque');
 				// Trying to make clear that the calender should not work
-				$('#calendar-active').attr("active", "false");
+				$('#tecal_calendar-active').attr("active", "false");
 			}
 		}
 
@@ -576,10 +591,61 @@
 		}
 
 		/**
-		/*	Hide the events list, because calendar will be appearing in a second.
+		/*	Enable calendar if we have a container for it.
 		/*
 		**/
-		$('.tecal_list_table').hide();
+		if(document.querySelector('#tecal_calendar')) {
+			// var localOptions = {
+			// 	buttonText: {
+			// 		today: 'Heute',
+			// 		month: 'Monat',
+			// 		day: 'Tag',
+			// 		week: 'Woche'
+			// 	},
+			// 	monthNames: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+			// 	monthNamesShort: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sept','Okt','Nov','Dez'],
+			// 	dayNames: ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],
+			// 	dayNamesShort: ['So','Mo','Di','Mi','Do','Fr','Sa']
+			// }
+
+			// If the calendar div exists we will add a refresh-update-message
+			if($('.fc-header-left').length) {
+				$('.fc-header-left').append('<span id="refreshing-calendar"><img alt="Loading" id="ajax-loading" class="ajax-loading" src="' + WPURLS.siteurl + '/wp-admin/images/wpspin_light.gif" style="vertical-align: middle; visibility: visible;"> Aktualisiere...</span>');
+			}
+
+			// Fetch all calendars first.
+			var eventSources = [];
+			var data = {
+				action: 'te_calendar_fetch_calendars'
+			};
+
+			$.post(ajaxurl, data, function( response ) {
+				response = JSON.parse( response );
+				// Prepare event sources for each calendar.
+				response.forEach( function( calendar ) {
+					var eventSource = {
+						url: ajaxurl,
+						type: 'POST',
+						data: {
+							action: 'te_calendar_fetch_events',
+							calendar: calendar
+						},
+						className: 'event-object'
+					};
+
+					eventSources.push( eventSource );
+				});
+				initCalendar();
+			} );
+		}
+
+		/**
+		/*	Enable enhancements for legacy edit view.
+		/*
+		**/
+		if(document.querySelector('#tecal_legacy_event_edit')) {
+			tecal_enhanceMetaBox();
+		}
 
 		/**
 		/*	Add event listener to clicks on the “add” button at the top of the screen.

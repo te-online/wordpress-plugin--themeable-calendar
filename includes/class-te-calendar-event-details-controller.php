@@ -6,7 +6,7 @@ class Te_Calendar_Event_Details_Controller {
 	 * @since 		1.0.0
 	 */
 	public function event_metaboxes_register() {
-		add_meta_box( 'event-details', __('Eventdetails'), array( $this, 'event_details_metabox'), 'tecal_events', 'side', 'default' );
+		add_meta_box( 'event-details', __('Eventdetails'), array( $this, 'event_details_metabox'), 'tecal_events', 'normal', 'high' );
 	}
 
 	/**
@@ -33,30 +33,30 @@ class Te_Calendar_Event_Details_Controller {
 		$location = get_post_meta( $post->ID, 'tecal_events_location', true );
 		$repeat_mode = get_post_meta( $post->ID, 'tecal_events_repeat_mode', true );
 
-		$disabled = ( $allday == 1 || $allday == "" ) ? 'disabled="disabled"' : '';
-		$disabled_end = ( $has_end == 0 ) ? 'disabled="disabled"' : '';
-	    ?>
+		// Add nonce for security and authentication.
+    wp_nonce_field( 'tecal_events_legacy_edit_nonce_action', 'tecal_events_legacy_edit_nonce' );
+    ?>
 
-	    <input type="hidden" name="tecal_events_noncename" id="tecal_events_noncename" value="<?php echo wp_create_nonce( 'tecal_events'.$post->ID );?>" />
+    <input type="hidden" id="tecal_legacy_event_edit" name="tecal_legacy_event_edit" />
 
-	    <p><label for="tecal_events_location"><?php _e('Location:'); ?></label>
-			<input class="widefat" id="tecal_events_location" name="tecal_events_location" type="text" value="<?php echo esc_attr($location); ?>" /></p>
+    <p><label for="tecal_events_location"><?php _e('Location:', 'te-calendar'); ?></label>
+		<input class="widefat" id="tecal_events_location" name="tecal_events_location" type="text" value="<?php echo sanitize_text_field($location); ?>" /></p>
 
-	    <p><label for="tecal_events_allday"><?php _e('All day:'); ?></label>
-			<input class="widefat" id="tecal_events_allday" name="tecal_events_allday" type="checkbox" <?php echo ($allday == "0") ? "" : "checked='checked'" ; ?> /></p>
+    <p><label for="tecal_events_allday"><?php _e('All day:', 'te-calendar'); ?></label>
+		<input class="widefat" id="tecal_events_allday" name="tecal_events_allday" type="checkbox" <?php echo ($allday === "0") ? "" : "checked='checked'" ; ?> /></p>
 
-	    <p><label for="tecal_events_begin"><?php _e('Begin:'); ?></label>
-			<input class="widefat" id="tecal_events_begin" name="tecal_events_begin" type="date" value="<?php echo esc_attr($begin_string); ?>" />
-			<input class="widefat" id="tecal_events_begin_time" name="tecal_events_begin_time" type="time" value="<?php echo esc_attr($begin_time); ?>" <?php echo $disabled; ?> /></p>
+    <p><label for="tecal_events_begin"><?php _e('Begin:', 'te-calendar'); ?></label>
+		<input class="widefat" id="tecal_events_begin" name="tecal_events_begin" type="date" value="<?php echo sanitize_text_field($begin_string); ?>" />
+		<input class="widefat" id="tecal_events_begin_time" name="tecal_events_begin_time" type="time" value="<?php echo sanitize_text_field($begin_time); ?>" /></p>
 
-			<p><label for="tecal_events_has_end"><?php _e('Specify an end:'); ?></label>
-			<input class="widefat" id="tecal_events_has_end" name="tecal_events_has_end" type="checkbox" <?php echo ($has_end == "1") ? "checked='checked'" : "" ; ?> <?php echo $disabled; ?> /></p>
+		<p><label for="tecal_events_has_end"><?php _e('Specify an end:', 'te-calendar'); ?></label>
+		<input class="widefat" id="tecal_events_has_end" name="tecal_events_has_end" type="checkbox" <?php echo ($has_end === "1") ? "checked='checked'" : "" ; ?> /></p>
 
-			<p><label for="tecal_events_end"><?php _e('End:'); ?></label>
-			<input class="widefat" id="tecal_events_end" name="tecal_events_end" type="date" value="<?php echo esc_attr($end_string); ?>" <?php echo $disabled; ?> />
-			<input class="widefat" id="tecal_events_end_time" name="tecal_events_end_time" type="time" value="<?php echo esc_attr($end_time); ?>" <?php echo $disabled; ?> /></p>
+		<p><label for="tecal_events_end"><?php _e('End:', 'te-calendar'); ?></label>
+		<input class="widefat" id="tecal_events_end" name="tecal_events_end" type="date" value="<?php echo sanitize_text_field($end_string); ?>" />
+		<input class="widefat" id="tecal_events_end_time" name="tecal_events_end_time" type="time" value="<?php echo sanitize_text_field($end_time); ?>" /></p>
 
-	    <?php
+    <?php
 	}
 
 	/**
@@ -65,45 +65,66 @@ class Te_Calendar_Event_Details_Controller {
 	 * @since 		1.0.0
 	 */
 	public function event_details_save( $post_id ) {
-		// if( empty( $post_id ) ) {
-			// return;
-		// }
+    // Add nonce for security and authentication.
+    $nonce_name   = isset( $_POST['tecal_events_legacy_edit_nonce'] ) ? $_POST['tecal_events_legacy_edit_nonce'] : '';
+    $nonce_action = 'tecal_events_legacy_edit_nonce_action';
 
-    // verify this came from the our screen and with proper authorization.
-    if ( !isset($_POST['tecal_events_noncename']) || !wp_verify_nonce( $_POST['tecal_events_noncename'], 'tecal_events'.$post_id )) {
-      return $post_id;
+    // Check if nonce is set.
+    if ( ! isset( $nonce_name ) ) {
+      return;
     }
 
-    // verify if this is an auto save routine. If it is our form has not been submitted, so we dont want to do anything
-    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) {
-      return $post_id;
+    // Check if nonce is valid.
+    if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) ) {
+      return;
     }
 
-    // Check permissions
-    if ( !current_user_can( 'edit_post', $post_id ) ) {
-      return $post_id;
+    // Check if user has permissions to save data.
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+      return;
+    }
+
+    // Check if not an autosave.
+    if ( wp_is_post_autosave( $post_id ) ) {
+      return;
+    }
+
+    // Check if not a revision.
+    if ( wp_is_post_revision( $post_id ) ) {
+      return;
     }
 
     // OK, we're authenticated: we need to find and save the data
     $post = get_post( $post_id );
     if ( $post->post_type == 'tecal_events' ) {
     	if( isset( $_POST['tecal_events_begin'] ) && isset( $_POST['tecal_events_begin_time'] ) ) {
-    		$begin_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_begin'] ) . " " . esc_attr( $_POST['tecal_events_begin_time'] ) ) );
+    		$begin_date = date_create_from_format( "Y-m-d H:i", ( sanitize_text_field( $_POST['tecal_events_begin'] ) . " " . sanitize_text_field( $_POST['tecal_events_begin_time'] ) ) );
+    		$begin_date = ( $begin_date == false ) ? date_create() : $begin_date;
+    		update_post_meta( $post_id, 'tecal_events_begin', $begin_date->format('U') );
+    	} else if( isset( $_POST['tecal_events_begin'] ) ) {
+    		// If we don't have a time (all day), save anyways with arbitrary time.
+    		$begin_date = date_create_from_format( "Y-m-d", ( sanitize_text_field( $_POST['tecal_events_begin'] ) ) );
     		$begin_date = ( $begin_date == false ) ? date_create() : $begin_date;
     		update_post_meta( $post_id, 'tecal_events_begin', $begin_date->format('U') );
     	}
 
     	if( isset( $_POST['tecal_events_end'] ) && isset( $_POST['tecal_events_end_time'] ) ) {
-	    	$end_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_end'] ) . " " . esc_attr( $_POST['tecal_events_end_time'] ) ) );
+	    	$end_date = date_create_from_format( "Y-m-d H:i", ( sanitize_text_field( $_POST['tecal_events_end'] ) . " " . sanitize_text_field( $_POST['tecal_events_end_time'] ) ) );
 	    	$end_date = ( $end_date == false ) ? date_create() : $end_date;
 	    	update_post_meta( $post_id, 'tecal_events_end', $end_date->format('U') );
-	    }
+	    } else if( isset( $_POST['tecal_events_end'] ) ) {
+    		// If we don't have a time (all day), save anyways with arbitrary time.
+    		$end_date = date_create_from_format( "Y-m-d", ( sanitize_text_field( $_POST['tecal_events_end'] ) ) );
+    		$end_date = ( $end_date == false ) ? date_create() : $end_date;
+    		update_post_meta( $post_id, 'tecal_events_end', $end_date->format('U') );
+    	}
 
 	    if( isset( $_POST['tecal_events_location'] ) ) {
-	    	update_post_meta( $post_id, 'tecal_events_location', esc_attr( $_POST['tecal_events_location'] ) );
+	    	update_post_meta( $post_id, 'tecal_events_location', sanitize_text_field( $_POST['tecal_events_location'] ) );
 	    }
 
       update_post_meta( $post_id, 'tecal_events_allday', ( isset( $_POST['tecal_events_allday'] ) ) ? "1" : "0" );
+      update_post_meta( $post_id, 'tecal_events_has_end', ( isset( $_POST['tecal_events_has_end'] ) ) ? "1" : "0" );
     }
     return $post_id;
 	}
