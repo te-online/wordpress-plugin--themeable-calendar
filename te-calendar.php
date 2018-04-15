@@ -8,17 +8,17 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              https://thomas-ebert.design
+ * @link              https://thomasebert.net
  * @since             1.0.0
  * @package           Te_Calendar
  *
  * @wordpress-plugin
  * Plugin Name:       Calendar with Templates
- * Plugin URI:        https://thomas-ebert.design/te-calendar
+ * Plugin URI:        https://thomasebert.net/te-calendar
  * Description:       Another calendar plugin, but with a simplistic default template and theme-ability.
  * Version:           0.2.0 Beta
- * Author:            Thomas Ebert, te-online.net
- * Author URI:        https://thomas-ebert.design
+ * Author:            Thomas Ebert, thomasebert.net
+ * Author URI:        https://thomasebert.net
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       te-calendar

@@ -6,7 +6,7 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       https://thomas-ebert.design
+ * @link       https://thomasebert.net
  * @since      1.0.0
  *
  * @package    Te_Calendar
@@ -69,7 +69,7 @@ class Te_Calendar {
 	public function __construct() {
 
 		$this->plugin_name = 'te-calendar';
-		$this->version = '0.1';
+		$this->version = '0.2.0';
 
 		$this->load_dependencies();
 		$this->set_locale();
