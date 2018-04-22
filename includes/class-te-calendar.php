@@ -103,6 +103,11 @@ class Te_Calendar {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-te-calendar-loader.php';
 
 		/**
+		 * Load composer dependencies.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
+
+		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
@@ -206,9 +211,9 @@ class Te_Calendar {
 		$this->loader->add_action( 'edited_tecal_calendars', $plugin_admin, 'tecal_calendars_save_ical_field_edit', 10, 2 );
 		$this->loader->add_action( 'create_tecal_calendars', $plugin_admin, 'tecal_calendars_save_ical_field_create', 10, 2 );
 
+		// Add WP cron to get events from external ical feeds
 		$this->loader->add_action( 'tecal_fetch_from_external_feeds', $plugin_admin, 'fetch_from_external_feeds' );
 
-		// Add WP cron to get events from external ical feeds
 		if ( !wp_next_scheduled( 'tecal_fetch_from_external_feeds' ) ) {
 	    wp_schedule_event( time(), 'twicedaily', 'tecal_fetch_from_external_feeds' );
 		}

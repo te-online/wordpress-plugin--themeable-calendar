@@ -259,7 +259,10 @@ class Te_Calendar_Admin {
 		* @since 		0.1.0
 		*/
 	public function ajax_answer_fetch_calendars() {
-		$calendars = get_terms( 'tecal_calendars' );
+		$calendars = get_terms( array(
+	    'taxonomy' => 'tecal_calendars',
+	    'hide_empty' => false,
+		) );
 
 		$calendar_slugs = array();
 
@@ -617,7 +620,7 @@ class Te_Calendar_Admin {
 		* @since 		0.1.0
 		*/
 	public function tecal_calendars_save_ical_field_edit( $term_id ) {
-		$term_meta = get_term_meta( $t_id, 'tecal_calendar_ical', true );
+		$term_meta = get_term_meta( $term_id, 'tecal_calendar_ical', true );
 		// Only save if calendar was created with feed url.
 		if( $term_meta && !empty($term_meta) ) {
 			if ( isset( $_POST['term_meta'] ) && isset( $_POST['term_meta']['tecal_calendar_ical'] ) ) {
@@ -692,21 +695,159 @@ class Te_Calendar_Admin {
 		*/
 	public function fetch_from_external_feeds() {
 		// Get a list of all calendars
+		$calendars = get_terms(array(
+	    'taxonomy' => 'tecal_calendars',
+	    'hide_empty' => false,
+		));
+
+		$fetchable_calendars = [];
+
+		foreach ( $calendars as $calendar ) {
+	    $ical_feed_url = get_field( 'tecal_calendar_ical', $calendar );
+	    if( $ical_feed_url && !empty( $ical_feed_url ) ) {
+	    	$calendar->ical_feed_url = $ical_feed_url;
+	    	$fetchable_calendars[] = $calendar;
+	    }
+		}
+
+		if( count( $fetchable_calendars ) < 1 ) {
+			return;
+		}
+
 		// Fetch events for each calendar with a feed url
-		// Get ICS file from remote location
-		// Get events from ICS file from now - 1 year until now + 1 year
-		// Foreach event
-		// 	Read the UID and last-modified props of the event
-		// 	Look up the local event with uid and compare last-modified
-		// 	If event exists
-		// 		If last-modified match
-		// 			nothing to do
-		// 			return / goto next event
-		// 		else
-		// 			update local event with details
-		// 			DTSTART, DTEND, DESCRIPTION, LOCATION, SUMMARY
-		// 	else
-		// 		insert local event with given UID and details
-		// 		DTSTART, DTEND, DESCRIPTION, LOCATION, SUMMARY
+		foreach ( $fetchable_calendars as $calendar ) {
+			// Get ICS file from remote location
+			$ical = new ICal\ICal( array(
+				'defaultTimeZone' => get_option( 'timezone_string' )
+			) );
+			$ical->initUrl( $calendar->ical_feed_url );
+			// Set timezone.
+			$timezone = new DateTimeZone( get_option( 'timezone_string' ) );
+			// Get events from ICS file from now - 1 year until now + 1 year
+			$events = $ical->eventsFromRange(
+				date_create( strtotime( "-1 year" ) ),
+				date_create( strtotime( "+1 year" ) )
+			);
+
+			if( count( $events ) < 1 ) {
+				continue;
+			}
+
+			$legit_events = [];
+
+			// Foreach event
+			foreach( $events as $event ) {
+				// 	Read the UID and last-modified props of the event
+				$legit_events[] = $event->uid;
+				// 	Look up the local event with uid and compare last-modified
+				$local_events = get_posts( array(
+					'posts_per_page' => -1,
+					'post_type' => 'tecal_events',
+					'tax_query' => array(
+						array(
+							'taxonomy' => 'tecal_calendars',
+							'field' => 'slug',
+							'terms' => array( $calendar->slug ),
+							'operator' => 'IN'
+						)
+					),
+					'meta_query' => array(
+						array(
+							'key' => 'tecal_ical_uid',
+							'value' => $event->uid
+						)
+					)
+				) );
+				// 	If event exists
+				if( $local_events && count( $local_events ) > 0 ) {
+					$local_event = $local_events[0];
+					$last_modified = get_post_meta( $local_event->ID, 'tecal_ical_last_modified', true );
+					if( $last_modified && !empty( $last_modified ) && $last_modified === $event->last_modified ) {
+						// nothing to do
+						// return / goto next event
+						continue;
+					}
+				} else {
+					// Insert event
+					$event_id = wp_insert_post(
+						array(
+							'post_title' => esc_attr( $event->summary ),
+							'post_content' => esc_attr( $event->description ),
+							'post_type' => 'tecal_events',
+							'post_status' => 'publish'
+						)
+					);
+
+					$local_event = get_post( $event_id );
+
+					// Set calendar
+					wp_set_post_terms( $local_event->ID, $calendar->slug, 'tecal_calendars', false );
+
+					// Set UID
+					update_post_meta( $local_event->ID, 'tecal_ical_uid', $event->uid );
+				}
+
+				if( !$local_event ) {
+					continue;
+				}
+
+				// SUMMARY
+				$local_event->post_title = $event->summary;
+				// DESCRIPTION
+				$local_event->post_content = $event->description;
+
+				// DTSTART
+				$start = $ical->iCalDateToDateTime( $event->dtstart_array[3], false );
+				$start->setTimezone( $timezone );
+				update_post_meta( $local_event->ID, 'tecal_events_begin', $start->format( 'U' ) );
+				// DTEND
+				$end = $ical->iCalDateToDateTime( $event->dtend_array[3], false );
+				$end->setTimezone( $timezone );
+				update_post_meta( $local_event->ID, 'tecal_events_end', $end->format( 'U' ) );
+
+				// LOCATION
+				update_post_meta( $local_event->ID, 'tecal_events_location', $event->location );
+				// Allday events will have only Date not DateTime, hence only 8 digits
+				if( strlen( $event->dtstart ) === 8 ) {
+					// ALLDAY
+					update_post_meta( $local_event->ID, 'tecal_events_allday', true );
+				} else {
+					// These events always have an end, because in a normal calendar you can't omit the end.
+					update_post_meta( $local_event->ID, 'tecal_events_has_end', true );
+				}
+
+				// Last modified
+				update_post_meta( $local_event->ID, 'tecal_ical_last_modified', $event->last_modified );
+
+				wp_update_post( $local_event );
+			}
+
+			// Remove all other events.
+			$old_events = get_posts( array(
+				'posts_per_page' => -1,
+				'post_type' => 'tecal_events',
+				'tax_query' => array(
+					array(
+						'taxonomy' => 'tecal_calendars',
+						'field' => 'slug',
+						'terms' => array( $calendar->slug ),
+						'operator' => 'IN'
+					)
+				),
+				'meta_query' => array(
+					array(
+						'key' => 'tecal_ical_uid',
+						'value' => $legit_events,
+						'compare' => 'NOT IN'
+					)
+				)
+			) );
+
+			if( count( $old_events ) > 0 ) {
+				foreach( $old_events as $event ) {
+					wp_delete_post( $event->ID );
+				}
+			}
+		}
 	}
 }
