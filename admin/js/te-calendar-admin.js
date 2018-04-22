@@ -581,6 +581,10 @@
 		/*
 		**/
 		function convertHTMLEntity(text) {
+			if(!text) {
+				return text
+			}
+
 			var span = document.createElement('span');
 
 			return text
