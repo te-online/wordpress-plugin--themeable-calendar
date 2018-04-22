@@ -558,6 +558,77 @@ class Te_Calendar_Admin {
 	}
 
 	/**
+		* Add ical feed field to new calendar page.
+		*
+		* @since 		0.1.0
+		*/
+	public function tecal_calendars_add_ical_field() {
+
+		?>
+			<div class="form-field">
+				<label for="term_meta[tecal_calendar_ical]"><?php _e( 'iCal-feed address', 'te-calendar' ); ?></label>
+				<input type="text" name="term_meta[tecal_calendar_ical]" id="term_meta[tecal_calendar_ical]" value="">
+				<p class="description"><?php _e( 'Events can be imported from a remote iCal-Feed. When you use this option, this calendar will become read-only.', 'te-calendar' ); ?></p>
+			</div>
+		<?php
+	}
+
+	/**
+		* Add color field to edit calendar page.
+		*
+		* @since 		0.1.0
+		*/
+	public function tecal_calendars_edit_ical_field( $term ) {
+		// put the term ID into a variable
+		$t_id = $term->term_id;
+
+		// retrieve the existing value(s) for this meta field. This returns an array
+		$term_meta = get_term_meta( $t_id, 'tecal_calendar_ical', true ); ?>
+		<tr class="form-field">
+		<th scope="row" valign="top"><label for="term_meta[tecal_calendar_ical]"><?php _e( 'Color', 'te-calendar' ); ?></label></th>
+			<td>
+				<?php if( $term_meta && !empty( esc_attr( $term_meta ) ) ) { ?>
+					<input type="text" name="term_meta[tecal_calendar_ical]" id="term_meta[tecal_calendar_ical]" value="<?php echo esc_attr( $term_meta ) ? esc_attr( $term_meta ) : ''; ?>">
+					<p class="description"><?php _e( 'Events can be imported from a remote iCal-Feed. When you use this option, this calendar will become read-only.', 'te-calendar' ); ?></p>
+				<?php } else { ?>
+					<em>Please create a new calendar to add an iCal-feed. Feeds cannot be added to existing calendars.</em>
+				<?php } ?>
+			</td>
+		</tr>
+	<?php
+	}
+
+	/**
+		* Add saving of ical field on calendar creation.
+		*
+		* @since 		0.1.0
+		*/
+	public function tecal_calendars_save_ical_field_create( $term_id ) {
+		if ( isset( $_POST['term_meta'] ) && isset( $_POST['term_meta']['tecal_calendar_ical'] ) ) {
+			$t_id = $term_id;
+			update_term_meta( $t_id, 'tecal_calendar_ical', $_POST['term_meta']['tecal_calendar_ical'] );
+			$this->fetch_from_external_feeds();
+		}
+	}
+
+	/**
+		* Add updating of ical field.
+		*
+		* @since 		0.1.0
+		*/
+	public function tecal_calendars_save_ical_field_edit( $term_id ) {
+		$term_meta = get_term_meta( $t_id, 'tecal_calendar_ical', true );
+		// Only save if calendar was created with feed url.
+		if( $term_meta && !empty($term_meta) ) {
+			if ( isset( $_POST['term_meta'] ) && isset( $_POST['term_meta']['tecal_calendar_ical'] ) ) {
+				$t_id = $term_id;
+				update_term_meta( $t_id, 'tecal_calendar_ical', $_POST['term_meta']['tecal_calendar_ical'] );
+				$this->fetch_from_external_feeds();
+			}
+		}
+	}
+
+	/**
 		* Add a query var for switching views.
 		*
 		* @since 		0.1.2
@@ -612,5 +683,30 @@ class Te_Calendar_Admin {
 				$allday = ( get_post_meta( $post_id, 'tecal_events_allday', true ) ) ? true : false;
 				echo ($allday) ? __( 'all day', 'te-calendar' ) : _x( '-', 'List: all day n/a', 'te-calendar' );
 		}
+	}
+
+	/**
+		* Fetches events from external iCal feeds.
+		*
+		* @since 		0.3.0
+		*/
+	public function fetch_from_external_feeds() {
+		// Get a list of all calendars
+		// Fetch events for each calendar with a feed url
+		// Get ICS file from remote location
+		// Get events from ICS file from now - 1 year until now + 1 year
+		// Foreach event
+		// 	Read the UID and last-modified props of the event
+		// 	Look up the local event with uid and compare last-modified
+		// 	If event exists
+		// 		If last-modified match
+		// 			nothing to do
+		// 			return / goto next event
+		// 		else
+		// 			update local event with details
+		// 			DTSTART, DTEND, DESCRIPTION, LOCATION, SUMMARY
+		// 	else
+		// 		insert local event with given UID and details
+		// 		DTSTART, DTEND, DESCRIPTION, LOCATION, SUMMARY
 	}
 }

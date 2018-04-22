@@ -200,6 +200,19 @@ class Te_Calendar {
 		$this->loader->add_action( 'edited_tecal_calendars', $plugin_admin, 'tecal_calendars_save_color_field', 10, 2 );
 		$this->loader->add_action( 'create_tecal_calendars', $plugin_admin, 'tecal_calendars_save_color_field', 10, 2 );
 
+		// Add ical feed input to calendar new and edit
+		$this->loader->add_action( 'tecal_calendars_add_form_fields', $plugin_admin, 'tecal_calendars_add_ical_field' );
+		$this->loader->add_action( 'tecal_calendars_edit_form_fields', $plugin_admin, 'tecal_calendars_edit_ical_field' );
+		$this->loader->add_action( 'edited_tecal_calendars', $plugin_admin, 'tecal_calendars_save_ical_field_edit', 10, 2 );
+		$this->loader->add_action( 'create_tecal_calendars', $plugin_admin, 'tecal_calendars_save_ical_field_create', 10, 2 );
+
+		$this->loader->add_action( 'tecal_fetch_from_external_feeds', $plugin_admin, 'fetch_from_external_feeds' );
+
+		// Add WP cron to get events from external ical feeds
+		if ( !wp_next_scheduled( 'tecal_fetch_from_external_feeds' ) ) {
+	    wp_schedule_event( time(), 'twicedaily', 'tecal_fetch_from_external_feeds' );
+		}
+
 		// Add filter to assign default calendar to all events at least.
 		$this->loader->add_action( 'transition_post_status', $plugin_admin, 'post_status_transition_add_calendar', 10, 3 );
 
