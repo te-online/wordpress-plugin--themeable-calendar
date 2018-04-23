@@ -9,7 +9,7 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
-		return date_i18n( $format, $begin );
+		return locale_date_i18n( $format, $begin );
 	}
 
 	/**
@@ -21,7 +21,7 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
-		return date_i18n( 'l', $begin );
+		return locale_date_i18n( 'l', $begin );
 	}
 
 	/**
@@ -33,7 +33,7 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
-		return date_i18n( 'j.n.', $begin );
+		return locale_date_i18n( 'j.n.', $begin );
 	}
 
 	/**
@@ -45,7 +45,7 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
-		return date_i18n( 'Y', $begin );
+		return locale_date_i18n( 'Y', $begin );
 	}
 
 	/**
@@ -62,7 +62,7 @@ class Te_Calendar_Global_Functions {
 		}
 
 		$begin = get_post_meta( $post->ID, 'tecal_events_begin', true );
-		return sprintf( _x( '%s', 'Time. Other languages use some kind of unit for time like "12.00 Uhr"', 'te-calendar' ), date_i18n( 'H.i', $begin ) );
+		return sprintf( _x( '%s', 'Time. Other languages use some kind of unit for time like "12.00 Uhr"', 'te-calendar' ), locale_date_i18n( 'H.i', $begin ) );
 	}
 
 	/**
@@ -74,7 +74,7 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
-		return date_i18n( $format, $end );
+		return locale_date_i18n( $format, $end );
 	}
 
 	/**
@@ -86,7 +86,7 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
-		return date_i18n( 'l', $end );
+		return locale_date_i18n( 'l', $end );
 	}
 
 	/**
@@ -98,7 +98,7 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
-		return date_i18n( 'j.n.', $end );
+		return locale_date_i18n( 'j.n.', $end );
 	}
 
 	/**
@@ -110,7 +110,7 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
-		return date_i18n( 'Y', $end );
+		return locale_date_i18n( 'Y', $end );
 	}
 
 	/**
@@ -127,7 +127,7 @@ class Te_Calendar_Global_Functions {
 		}
 
 		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
-		return sprintf( _x( '%s', 'Time. Other languages use some kind of unit for time like "12.00 Uhr"', 'te-calendar' ), date_i18n( 'H.i', $end ) );
+		return sprintf( _x( '%s', 'Time. Other languages use some kind of unit for time like "12.00 Uhr"', 'te-calendar' ), locale_date_i18n( 'H.i', $end ) );
 	}
 
 	/**
@@ -173,6 +173,30 @@ class Te_Calendar_Global_Functions {
 
 		return false;
 	}
+
+	/**
+	 * Get locale AND timezone specific date string.
+	 * see https://wordpress.stackexchange.com/a/135049/113600
+	 *
+	 * @since 		0.3.0
+	 */
+	static function locale_date_i18n($format, $timestamp) {
+    $timezone_str = get_option('timezone_string') ?: 'UTC';
+    $timezone = new \DateTimeZone($timezone_str);
+
+    // The date in the local timezone.
+    $date = new \DateTime(null, $timezone);
+    $date->setTimestamp($timestamp);
+    $date_str = $date->format('Y-m-d H:i:s');
+
+    // Pretend the local date is UTC to get the timestamp
+    // to pass to date_i18n().
+    $utc_timezone = new \DateTimeZone('UTC');
+    $utc_date = new \DateTime($date_str, $utc_timezone);
+    $timestamp = $utc_date->getTimestamp();
+
+    return date_i18n($format, $timestamp, true);
+	}
 }
 
 // Event begin functions.
@@ -217,5 +241,9 @@ if( !function_exists('the_event_location') ) { function the_event_location() { e
 if( !function_exists('get_event_is_allday') ) { function get_event_is_allday() { return Te_Calendar_Global_Functions::get_event_is_allday(); } }
 
 if( !function_exists('get_event_has_end') ) { function get_event_has_end() { return Te_Calendar_Global_Functions::get_event_has_end(); } }
+
+// Helper functions
+
+if( !function_exists('locale_date_i18n') ) { function locale_date_i18n($format, $timestamp) { return Te_Calendar_Global_Functions::locale_date_i18n($format, $timestamp); } }
 
 ?>

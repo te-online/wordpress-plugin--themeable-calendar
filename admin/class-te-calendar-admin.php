@@ -682,7 +682,7 @@ class Te_Calendar_Admin {
 			case 'begin':
 				$begin_date = get_post_meta( $post_id, 'tecal_events_begin', true );
 				if(!empty($begin_date)) {
-					echo date_i18n( _x( 'l, F j, Y h:i a', 'Full date format', 'te-calendar' ), $begin_date );
+					echo locale_date_i18n( _x( 'l, F j, Y h:i a', 'Full date format', 'te-calendar' ), $begin_date );
 				}
 				break;
 
@@ -690,7 +690,7 @@ class Te_Calendar_Admin {
 				$end_date = get_post_meta( $post_id, 'tecal_events_end', true );
 				$has_end = ( get_post_meta( $post_id, 'tecal_events_has_end', true ) ) ? true : false;
 				if(!empty($end_date) && $has_end) {
-					echo date_i18n( _x( 'l, F j, Y h:i a', 'Full date format', 'te-calendar' ), $end_date );
+					echo locale_date_i18n( _x( 'l, F j, Y h:i a', 'Full date format', 'te-calendar' ), $end_date );
 				} else if(!$has_end) {
 					_e( 'No end specified', 'te-calendar' );
 				}
