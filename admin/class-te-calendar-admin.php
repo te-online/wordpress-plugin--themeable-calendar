@@ -267,15 +267,19 @@ class Te_Calendar_Admin {
 	    'hide_empty' => false,
 		) );
 
-		$calendar_slugs = array();
+		$calendarlist = [];
 
 		if( count( $calendars ) > 0 ) {
 			foreach( $calendars as $calendar ) {
-				$calendar_slugs[] = $calendar->slug;
+				$calendarlist[] = array(
+					'slug' => $calendar->slug,
+					'color' => get_term_meta( $calendar->term_id, 'tecal_calendar_color' ),
+					'external' => !empty( get_term_meta( $calendar->term_id, 'tecal_calendar_ical', true ) )
+				);
 			}
 		}
 
-		echo json_encode( $calendar_slugs );
+		echo json_encode( $calendarlist );
 
 		wp_die();
 	}

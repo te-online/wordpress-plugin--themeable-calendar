@@ -20,7 +20,10 @@ class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
     // Your custom list table is here
     public function display() {
     	// Load calendars.
-    	$calendars = get_terms( 'tecal_calendars' );
+    	$calendars = get_terms( array(
+		    'taxonomy' => 'tecal_calendars',
+		    'hide_empty' => false,
+			) );
     	// See if we are in list view or calendar view.
     	$setListView = ('list' === get_query_var('view')) ? true : false;
     	$setCalendarView = ('calendar' === get_query_var('view')) ? true : false;
@@ -84,7 +87,9 @@ class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
 							<p><label for="tecal_events_calendar"><?php _e('Calendar:', 'te-calendar'); ?></label>
 							<select class="widefat" id="tecal_events_calendar" name="tecal_events_calendar">
 								<?php foreach( $calendars as $calendar ) { ?>
-									<option value="<?php echo $calendar->slug; ?>"><?php echo $calendar->name; ?></option>
+									<?php if( empty( get_term_meta( $calendar->term_id, 'tecal_calendar_ical', true ) ) ) { ?>
+										<option value="<?php echo $calendar->slug; ?>"><?php echo $calendar->name; ?></option>
+									<?php } ?>
 								<?php } ?>
 							</select>
 							</p>

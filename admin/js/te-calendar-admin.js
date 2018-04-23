@@ -634,9 +634,10 @@
 						type: 'POST',
 						data: {
 							action: 'te_calendar_fetch_events',
-							calendar: calendar
+							calendar: calendar.slug
 						},
-						className: 'event-object'
+						className: 'event-object',
+						color: calendar.color
 					};
 
 					eventSources.push( eventSource );
