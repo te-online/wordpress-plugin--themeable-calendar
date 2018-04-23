@@ -203,6 +203,7 @@ class Te_Calendar {
 
 		$this->loader->add_action( 'admin_init', $event_controller, 'event_metaboxes_register' );
 		$this->loader->add_action( 'save_post', $event_controller, 'event_details_save' );
+		$this->loader->add_action( 'pre_post_update', $event_controller, 'should_event_save' );
 
 		// Add color picker to calendar new and edit
 		$this->loader->add_action( 'tecal_calendars_add_form_fields', $plugin_admin, 'tecal_calendars_add_color_field' );

@@ -64,6 +64,27 @@ class Te_Calendar_Event_Details_Controller {
 	}
 
 	/**
+	 * Determines if a post should be saved
+	 *
+	 * @since 		0.1.0
+	 */
+	public function should_event_save( $post_id ) {
+		$post = get_post( $post_id );
+		if ( $post->post_type == 'tecal_events' ) {
+			if( Te_Calendar_Static_Helpers::is_event_external( $post_id ) ) {
+				if( isset( $_POST['action'] ) && $_POST['action'] === 'editpost' ) {
+	    		wp_redirect( '?post=' . $post_id . '&action=edit' );
+	    	} else if( isset( $_GET['action'] ) && $_GET['action'] === 'trash' ) {
+	    		wp_redirect( 'edit.php?post_type=tecal_events' );
+	    	} else {
+	    		_e( 'Cannot edit external event.', 'te-calendar' );
+	    	}
+	    	exit;
+	    }
+		}
+	}
+
+	/**
 	 * Save the event details.
 	 *
 	 * @since 		0.1.0
