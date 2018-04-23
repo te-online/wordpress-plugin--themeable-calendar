@@ -20,7 +20,9 @@
 				timeFormat: "H:mm",
 				weekNumbers: false,
 				eventClick: function(calEvent, jsEvent, view) {
-					tecal_showModal( calEvent, null, null, jsEvent, view, 'edit' );
+					if( calEvent.editable ) {
+						tecal_showModal( calEvent, null, null, jsEvent, view, 'edit' );
+					}
 				},
 				eventDrop: function( calEvent /*, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui , view */ ) {
 					// Disabling calendar for saving

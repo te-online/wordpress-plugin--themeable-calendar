@@ -339,7 +339,8 @@ class Te_Calendar_Admin {
 					'description' => $event->post_content,
 					'hasEnd' => ( get_post_meta( $event->ID, 'tecal_events_has_end', true ) ) ? true : false,
 					'calendar' => $calendar,
-					'color' => $color
+					'color' => $color,
+					'editable' => !Te_Calendar_Static_Helpers::is_event_external( $event->ID )
 				);
 
 				$response_events[] = $prep_event;
