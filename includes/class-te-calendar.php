@@ -114,6 +114,11 @@ class Te_Calendar {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-te-calendar-i18n.php';
 
 		/**
+		 * The class responsible for static helpers.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-te-calendar-static-helpers.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-te-calendar-admin.php';
