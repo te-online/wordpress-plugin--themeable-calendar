@@ -7,7 +7,6 @@ class Te_Calendar_Event_Details_Controller {
 	 */
 	public function event_metaboxes_register() {
 		add_meta_box( 'event-details', __('Eventdetails', 'te-calendar'), array( $this, 'event_details_metabox'), 'tecal_events', 'normal', 'high' );
-		add_filter( 'post_updated_messages', array( $this, 'post_updated_messages_filter' ) );
 	}
 
 	/**
@@ -100,7 +99,6 @@ class Te_Calendar_Event_Details_Controller {
     }
 
     if( Te_Calendar_Static_Helpers::is_event_external( $post_id ) ) {
-    	add_filter( 'redirect_post_location', array( $this, 'redirect_post_location_filter' ), 99 );
     	return;
     }
 
@@ -144,25 +142,17 @@ class Te_Calendar_Event_Details_Controller {
 	}
 
 	/**
-	 * Adds a message after a post redirect, if the event is external
-	 * and cannot be edited.
-	 *
-	 * @since 		0.3.0
-	 */
-	public function redirect_post_location_filter( $location ) {
-		remove_filter( 'redirect_post_location', __FUNCTION__, 99 );
-    $location = add_query_arg( 'message', 99, $location );
-    return $location;
-	}
-
-	/**
 	 * Add a message text for failed edits on read-only (external) events.
 	 *
 	 * @since 		0.3.0
 	 */
-	public function post_updated_messages_filter( $messages ) {
-		$messages['post'][99] = __( 'Editing of an external read-only event is not possible.', 'te-calendar' );
-    return $messages;
+	public function post_updated_admin_notice( $messages ) {
+		//print the message
+    echo '<div class="message error">
+       <p>' . __( 'Editing of an external read-only event is not possible.', 'te-calendar' ) . '</p>
+    </div>';
+    //make sure to remove notice after its displayed so its only displayed when needed.
+    remove_action('admin_notices', array( $this, 'post_updated_admin_notice' ) );
 	}
 }
 
