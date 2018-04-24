@@ -53,7 +53,9 @@
 		} else {
 	?>
 			<div class="calendar__item calendar__item--no-items">
-				<?php _e( 'Sorry, there are no upcoming calendar entries right now.', 'te-calendar' ); ?>
+				<p>
+					<?php _e( 'Sorry, there are no upcoming calendar entries right now.', 'te-calendar' ); ?>
+				</p>
 			</div>
 	<?php
 		}
