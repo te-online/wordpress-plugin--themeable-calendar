@@ -33,11 +33,11 @@ When finished, this is supposed to be a really simple calendar plugin with beaut
 	- Description
 - Use a default calendar or create as many calendars as you want (distinguished by color)
 - Translations: English, German, Dutch (not checked by native-speaker)
+- Use external calendars as read-only for displaying (ical)
 
 ### 💭 Currently Planned Features
 
 - Have a UI for specifying which template to use (dropdowns and display names for templates)
-- Use external calendars for displaying (ical/caldav)
 - Event features
 	- Custom fields
 	- Repeatable events (just like in every normal calendar)
@@ -125,6 +125,12 @@ No frequently asked questions, yet. *If you have a question, open an issue on Gi
 Screenshots are to follow.
 
 ## 💇 Changelog
+
+### 0.3
+- *Breaking change*: Fixed: Times were not saved in UTC before, now they are. All your old dates will unfortunately inevitable off, if your're not using UTC anyways.
+- Fix: Error in JavaScript when event description was `null`.
+- Added: You can now use external iCal feeds as a read-only calendar and display events from the feed 🎉.
+- Added: Updated translations and translation for DE_formal.
 
 ### 0.2
 - Fixed: Shortcode display position was broken.
