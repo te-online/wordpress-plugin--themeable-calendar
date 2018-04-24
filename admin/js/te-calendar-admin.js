@@ -659,19 +659,21 @@
 		/* 	On click this opens the create modal with the current date and hour.
 		/*
 		**/
-		document.querySelector('.page-title-action').addEventListener('click', function(e) {
-			var today = $('td.fc-today');
-			var down = new $.Event("mousedown");
-			var up = new $.Event("mouseup");
-			down.which = up.which = 1;
-			down.pageX = up.pageX = today.offset().left;
-			down.pageY = up.pageY = today.offset().top;
-			today.trigger(down);
-			today.trigger(up);
+		if(document.querySelector('.page-title-action')) {
+			document.querySelector('.page-title-action').addEventListener('click', function(e) {
+				var today = $('td.fc-today');
+				var down = new $.Event("mousedown");
+				var up = new $.Event("mouseup");
+				down.which = up.which = 1;
+				down.pageX = up.pageX = today.offset().left;
+				down.pageY = up.pageY = today.offset().top;
+				today.trigger(down);
+				today.trigger(up);
 
-			e.preventDefault();
-			return false;
-		});
+				e.preventDefault();
+				return false;
+			});
+		}
 
 	});
 
