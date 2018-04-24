@@ -43,31 +43,35 @@
 	?>
 				<div class="calendar__item">
 					<div class="calendar__item__heading">
-						<span class="calendar__item__day">
-							<?php the_event_begin_day(); ?> &middot;
-						</span>
-						<span class="calendar__item__date calendar__item__year">
-							<?php the_event_begin( 'd. F Y'); ?>
-						</span>
-						<span class="calendar__item__time">
-							<?php if( !get_event_is_allday() && get_event_has_end() ) { ?>
-								&middot; <?php the_event_begin_time(); ?> – <?php the_event_end_time(); ?>
-							<?php } else { ?>
-								&middot; <?php the_event_begin_time(); // Gets time or "all day" ?>
-							<?php } ?>
-						</span>
+						<p>
+							<span class="calendar__item__day">
+								<?php the_event_begin_day(); ?> &middot;
+							</span>
+							<span class="calendar__item__date calendar__item__year">
+								<?php the_event_begin( 'd. F Y'); ?>
+							</span>
+							<span class="calendar__item__time">
+								<?php if( !get_event_is_allday() && get_event_has_end() ) { ?>
+									&middot; <?php the_event_begin_time(); ?> – <?php the_event_end_time(); ?>
+								<?php } else { ?>
+									&middot; <?php the_event_begin_time(); // Gets time or "all day" ?>
+								<?php } ?>
+							</span>
+						</p>
 					</div>
 					<div>
-						<div class="calendar__item__title">
+						<p class="calendar__item__title">
 							<a href="<?php the_permalink(); ?>">
 								<?php the_title(); ?>
 							</a>
-						</div>
+						</p>
 					</div>
 					<div>
-						<span class="calendar__item__location">
-							<em><?php the_event_location(); ?></em>
-						</span>
+						<p>
+							<span class="calendar__item__location">
+								<em><?php the_event_location(); ?></em>
+							</span>
+						</p>
 					</div>
 					<?php if( !empty( get_the_content() ) ): ?>
 						<div class="calendar__item__description">
@@ -80,7 +84,7 @@
 		} else {
 	?>
 			<div class="calendar__item calendar__item--no-items">
-				Sorry, there are no upcoming calendar entries right now.
+				<?php _e( 'Sorry, there are no upcoming calendar entries right now.', 'te-calendar' ); ?>
 			</div>
 	<?php
 		}

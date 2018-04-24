@@ -23,15 +23,17 @@
 	?>
 				<div class="calendar__item">
 					<div>
-						<span class="calendar__item__day">
-							<?php the_event_begin_day(); ?> &middot;
-						</span>
-						<span class="calendar__item__date calendar__item__year">
-							<?php the_event_begin_date(); // date_format($datum,'j.n.') ?><?php the_event_begin_year(); // date_format($datum,'Y') ?>
-						</span>
-						<span class="calendar__item__time">
-							&middot; <?php the_event_begin_time(); // date_format($datum,'Y') ?>
-						</span>
+						<p>
+							<span class="calendar__item__day">
+								<?php the_event_begin_day(); ?> &middot;
+							</span>
+							<span class="calendar__item__date calendar__item__year">
+								<?php the_event_begin_date(); // date_format($datum,'j.n.') ?><?php the_event_begin_year(); // date_format($datum,'Y') ?>
+							</span>
+							<span class="calendar__item__time">
+								&middot; <?php the_event_begin_time(); // date_format($datum,'Y') ?>
+							</span>
+						</p>
 					</div>
 					<div>
 						<h4 class="calendar__item__title">
@@ -41,9 +43,9 @@
 						</h4>
 					</div>
 					<div>
-						<span class="calendar__item__location">
+						<p class="calendar__item__location">
 							<em><?php the_event_location(); ?></em>
-						</span>
+						</p>
 					</div>
 				</div>
 	<?php
@@ -51,7 +53,7 @@
 		} else {
 	?>
 			<div class="calendar__item calendar__item--no-items">
-				Sorry, there are no upcoming calendar entries right now.
+				<?php _e( 'Sorry, there are no upcoming calendar entries right now.', 'te-calendar' ); ?>
 			</div>
 	<?php
 		}

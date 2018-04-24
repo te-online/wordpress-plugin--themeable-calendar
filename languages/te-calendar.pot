@@ -1,7 +1,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2018-04-24 21:16+0000\n"
+"POT-Creation-Date: 2018-04-24 21:59+0000\n"
 "Language: \n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -287,6 +287,11 @@ msgstr ""
 msgctxt ""
 "Time. Other languages use some kind of unit for time like \"12.00 Uhr\""
 msgid "%s"
+msgstr ""
+
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/templates/te-calendar-default-template-archive.php:87
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/templates/te-calendar-default-template-sidebar.php:56
+msgid "Sorry, there are no upcoming calendar entries right now."
 msgstr ""
 
 #. Name of the plugin

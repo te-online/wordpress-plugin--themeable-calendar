@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2018-04-24 21:16+0000\n"
+"POT-Creation-Date: 2018-04-24 21:59+0000\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"PO-Revision-Date: 2018-04-24 21:18+0000\n"
+"PO-Revision-Date: 2018-04-24 22:00+0000\n"
 "X-Generator: Loco https://localise.biz/\n"
 "Project-Id-Version: Calendar with Templates\n"
 "Report-Msgid-Bugs-To: \n"
@@ -301,6 +301,11 @@ msgctxt ""
 "Time. Other languages use some kind of unit for time like \"12.00 Uhr\""
 msgid "%s"
 msgstr "%s Uhr"
+
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/templates/te-calendar-default-template-archive.php:87
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/templates/te-calendar-default-template-sidebar.php:56
+msgid "Sorry, there are no upcoming calendar entries right now."
+msgstr "Leider sind zur Zeit keine anstehenden Termine verfügbar."
 
 #. Name of the plugin
 msgid "Calendar with Templates"
