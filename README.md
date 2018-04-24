@@ -42,6 +42,21 @@ When finished, this is supposed to be a really simple calendar plugin with beaut
 	- Custom fields
 	- Repeatable events (just like in every normal calendar)
 
+### Usage
+
+#### Widget
+
+#### Shortcode
+
+Use the shortcode like this: `[calendar num_events="5" template="my_template_file_in_theme_directory.php" archive="false" calendar="calendar's slug"]`
+
+All options are optional.
+
+`num_events` – the number of events to display.
+`template` – the name of the template file in your theme's directory. Defaults to `default` which is the template shipped with this plugin.
+`archive` – whether or not to display *only* events from the past.
+`calendar` – the calendar to use for displaying events. Multiple comma separated.
+
 ### 💅 Template Tags you can use today!
 
 For an example of how to create a template see the files in the `templates` folder of the plugin. *The template functions are inspired by the core WordPress functions you can use for posts and pages.*
