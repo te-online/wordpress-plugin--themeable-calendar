@@ -46,16 +46,18 @@ When finished, this is supposed to be a really simple calendar plugin with beaut
 
 #### Widget
 
+Use the UI in the Widgets area to add a calendar to a sidebar and set the options. The options are similar to the options for the shortcode (see below).
+
 #### Shortcode
 
 Use the shortcode like this: `[calendar num_events="5" template="my_template_file_in_theme_directory.php" archive="false" calendar="calendar's slug"]`
 
 All options are optional.
 
-`num_events` – the number of events to display.
-`template` – the name of the template file in your theme's directory. Defaults to `default` which is the template shipped with this plugin.
-`archive` – whether or not to display *only* events from the past.
-`calendar` – the calendar to use for displaying events. Multiple comma separated.
+- `num_events` – the number of events to display.
+- `template` – the name of the template file in your theme's directory. Defaults to `default` which is the template shipped with this plugin.
+- `archive` – whether or not to display *only* events from the past.
+- `calendar` – the calendar to use for displaying events. Multiple comma separated.
 
 ### 💅 Template Tags you can use today!
 
@@ -128,7 +130,9 @@ Screenshots are to follow.
 
 ### 0.3
 - *Breaking change*: Fixed: Times were not saved in UTC before, now they are. All your old dates will unfortunately inevitable off, if your're not using UTC anyways.
-- Fix: Error in JavaScript when event description was `null`.
+- Fixed: Error in JavaScript when event description was `null`.
+- Fixed: JS Error on other WP admin pages.
+- Added: The Readme is now readable and has some considerable emoji-explosion.
 - Added: You can now use external iCal feeds as a read-only calendar and display events from the feed 🎉.
 - Added: Updated translations and translation for DE_formal.
 
