@@ -752,6 +752,10 @@ class Te_Calendar_Admin {
 				continue;
 			}
 
+			// Save that the calendar is updating to temporarily allow editing
+			// of read-only events.
+			update_term_meta( $calendar->term_id, 'tecal_calendar_is_updating', true );
+
 			$legit_events = [];
 
 			// Foreach event
@@ -867,6 +871,8 @@ class Te_Calendar_Admin {
 					wp_delete_post( $event->ID );
 				}
 			}
+
+			update_term_meta( $calendar->term_id, 'tecal_calendar_is_updating', false );
 		}
 	}
 }

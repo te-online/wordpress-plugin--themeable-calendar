@@ -33,8 +33,9 @@ class Te_Calendar_Static_Helpers {
 		// Find out if this event has one or more external calendars
 		$is_external = false;
 		foreach( $external_calendars as $calendar ) {
-	    $ical_feed_url = get_field( 'tecal_calendar_ical', $calendar );
-	    if( $ical_feed_url && !empty( $ical_feed_url ) ) {
+	    $ical_feed_url = get_field( 'tecal_calendar_ical', $calendar, true );
+	    $calendar_is_updating = get_field( 'tecal_calendar_is_updating', $calendar, true );
+	    if( $ical_feed_url && !empty( $ical_feed_url ) && !$calendar_is_updating === true ) {
 	    	if( array_search( $calendar->slug, $calendar_slugs ) !== false ) {
 	    		$is_external = true;
 	    		break;
