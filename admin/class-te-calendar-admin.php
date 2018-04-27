@@ -839,10 +839,10 @@ class Te_Calendar_Admin {
 				if( strlen( $event->dtstart ) === 8 ) {
 					// ALLDAY
 					update_post_meta( $local_event->ID, 'tecal_events_allday', true );
-				} else {
-					// These events always have an end, because in a normal calendar you can't omit the end.
-					update_post_meta( $local_event->ID, 'tecal_events_has_end', true );
 				}
+
+				// These events always have an end, because in a normal calendar you can't omit the end.
+				update_post_meta( $local_event->ID, 'tecal_events_has_end', true );
 
 				// Last modified
 				update_post_meta( $local_event->ID, 'tecal_ical_last_modified', $event->last_modified );
