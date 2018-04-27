@@ -55,11 +55,26 @@ class Te_Calendar_Widget extends WP_Widget {
 			    )
 			  ),
 				'meta_query' => array(
+					'relation' => 'OR',
 					array(
 						'key' => 'tecal_events_begin',
 						'value' => $today,
 						'type' => 'numeric',
 						'compare' => '>='
+					),
+					array(
+						'relation' => 'AND',
+						array(
+							'key' => 'tecal_events_end',
+							'value' => $today,
+							'type' => 'numeric',
+							'compare' => '>='
+						),
+						array(
+							'key' => 'tecal_events_has_end',
+							'value' => true,
+							'type' => 'boolean'
+						)
 					)
 				),
 			)

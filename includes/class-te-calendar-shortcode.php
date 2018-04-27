@@ -62,11 +62,26 @@ class Te_Calendar_Shortcode {
 			    )
 			  ),
 				'meta_query' => array(
+					'relation' => 'OR',
 					array(
 						'key' => 'tecal_events_begin',
 						'value' => $today,
 						'type' => 'numeric',
 						'compare' => $compare_operator
+					),
+					array(
+						'relation' => 'AND',
+						array(
+							'key' => 'tecal_events_end',
+							'value' => $today,
+							'type' => 'numeric',
+							'compare' => $compare_operator
+						),
+						array(
+							'key' => 'tecal_events_has_end',
+							'value' => true,
+							'type' => 'boolean'
+						)
 					)
 				)
 			)
