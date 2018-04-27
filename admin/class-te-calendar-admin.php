@@ -743,10 +743,15 @@ class Te_Calendar_Admin {
 			// Set timezone.
 			$timezone = new DateTimeZone( get_option( 'timezone_string' ) );
 			// Get events from ICS file from now - 1 year until now + 1 year
-			$events = $ical->eventsFromRange(
-				date_create( strtotime( "-1 year" ) ),
-				date_create( strtotime( "+1 year" ) )
-			);
+
+			try {
+				$events = $ical->eventsFromRange(
+					date_create_from_format( 'U', strtotime( "-1 year" ) )->format('Y-m-d'),
+					date_create_from_format( 'U', strtotime( "+1 year" ) )->format('Y-m-d')
+				);
+			} catch(Exception $e) {
+				continue;
+			}
 
 			if( count( $events ) < 1 ) {
 				continue;
