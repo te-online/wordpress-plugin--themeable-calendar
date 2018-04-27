@@ -221,7 +221,7 @@ class Te_Calendar {
 		$this->loader->add_action( 'tecal_fetch_from_external_feeds', $plugin_admin, 'fetch_from_external_feeds' );
 
 		if ( !wp_next_scheduled( 'tecal_fetch_from_external_feeds' ) ) {
-	    wp_schedule_event( time(), 'twicedaily', 'tecal_fetch_from_external_feeds' );
+	    wp_schedule_event( time(), 'hourly', 'tecal_fetch_from_external_feeds' );
 		}
 
 		// Add filter to assign default calendar to all events at least.
