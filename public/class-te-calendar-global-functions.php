@@ -74,6 +74,12 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
+		// Subtract one day for allday events, because they are saved as ending after 24 hours
+		$allday = get_post_meta( $post->ID, 'tecal_events_allday', true );
+		if( $allday ) {
+			$end = strtotime( '-1 day', $end );
+		}
+
 		return locale_date_i18n( $format, $end );
 	}
 
@@ -86,6 +92,12 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
+		// Subtract one day for allday events, because they are saved as ending after 24 hours
+		$allday = get_post_meta( $post->ID, 'tecal_events_allday', true );
+		if( $allday ) {
+			$end = strtotime( '-1 day', $end );
+		}
+
 		return locale_date_i18n( 'l', $end );
 	}
 
@@ -98,6 +110,12 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
+		// Subtract one day for allday events, because they are saved as ending after 24 hours
+		$allday = get_post_meta( $post->ID, 'tecal_events_allday', true );
+		if( $allday ) {
+			$end = strtotime( '-1 day', $end );
+		}
+
 		return locale_date_i18n( 'j.n.', $end );
 	}
 
@@ -110,6 +128,12 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
+		// Subtract one day for allday events, because they are saved as ending after 24 hours
+		$allday = get_post_meta( $post->ID, 'tecal_events_allday', true );
+		if( $allday ) {
+			$end = strtotime( '-1 day', $end );
+		}
+
 		return locale_date_i18n( 'Y', $end );
 	}
 
