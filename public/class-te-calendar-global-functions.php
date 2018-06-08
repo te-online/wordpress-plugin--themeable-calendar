@@ -74,11 +74,7 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
-		// Subtract one day for allday events, because they are saved as ending after 24 hours
-		$allday = get_post_meta( $post->ID, 'tecal_events_allday', true );
-		if( $allday ) {
-			$end = strtotime( '-1 day', $end );
-		}
+		$end = Te_Calendar_Global_Functions::maybe_allday_subtract_end( $post->ID, $end );
 
 		return locale_date_i18n( $format, $end );
 	}
@@ -92,11 +88,7 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
-		// Subtract one day for allday events, because they are saved as ending after 24 hours
-		$allday = get_post_meta( $post->ID, 'tecal_events_allday', true );
-		if( $allday ) {
-			$end = strtotime( '-1 day', $end );
-		}
+		$end = Te_Calendar_Global_Functions::maybe_allday_subtract_end( $post->ID, $end );
 
 		return locale_date_i18n( 'l', $end );
 	}
@@ -110,11 +102,7 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
-		// Subtract one day for allday events, because they are saved as ending after 24 hours
-		$allday = get_post_meta( $post->ID, 'tecal_events_allday', true );
-		if( $allday ) {
-			$end = strtotime( '-1 day', $end );
-		}
+		$end = Te_Calendar_Global_Functions::maybe_allday_subtract_end( $post->ID, $end );
 
 		return locale_date_i18n( 'j.n.', $end );
 	}
@@ -128,11 +116,7 @@ class Te_Calendar_Global_Functions {
 		global $post;
 
 		$end = get_post_meta( $post->ID, 'tecal_events_end', true );
-		// Subtract one day for allday events, because they are saved as ending after 24 hours
-		$allday = get_post_meta( $post->ID, 'tecal_events_allday', true );
-		if( $allday ) {
-			$end = strtotime( '-1 day', $end );
-		}
+		$end = Te_Calendar_Global_Functions::maybe_allday_subtract_end( $post->ID, $end );
 
 		return locale_date_i18n( 'Y', $end );
 	}
@@ -204,22 +188,39 @@ class Te_Calendar_Global_Functions {
 	 *
 	 * @since 		0.3.0
 	 */
-	static function locale_date_i18n($format, $timestamp) {
-    $timezone_str = get_option('timezone_string') ?: 'UTC';
-    $timezone = new \DateTimeZone($timezone_str);
+	static function locale_date_i18n( $format, $timestamp ) {
+    $timezone_str = get_option( 'timezone_string' ) ?: 'UTC';
+    $timezone = new \DateTimeZone( $timezone_str );
 
     // The date in the local timezone.
-    $date = new \DateTime(null, $timezone);
-    $date->setTimestamp($timestamp);
-    $date_str = $date->format('Y-m-d H:i:s');
+    $date = new \DateTime( null, $timezone );
+    $date->setTimestamp( $timestamp );
+    $date_str = $date->format( 'Y-m-d H:i:s' );
 
     // Pretend the local date is UTC to get the timestamp
     // to pass to date_i18n().
-    $utc_timezone = new \DateTimeZone('UTC');
-    $utc_date = new \DateTime($date_str, $utc_timezone);
+    $utc_timezone = new \DateTimeZone( 'UTC' );
+    $utc_date = new \DateTime( $date_str, $utc_timezone );
     $timestamp = $utc_date->getTimestamp();
 
-    return date_i18n($format, $timestamp, true);
+    return date_i18n( $format, $timestamp, true );
+	}
+
+	/**
+	 * Get the actual end of an allday event
+	 *
+	 * @since			0.3.7
+	 */
+	static function maybe_allday_subtract_end( $post_id, $end ) {
+		// Subtract one day for allday events, because they are saved as ending after 24 hours.
+		// But only do this if the time of the start and end date are the same.
+		$allday = get_post_meta( $post_id, 'tecal_events_allday', true );
+		$begin = get_post_meta( $post_id, 'tecal_events_begin', true );
+		if( $allday && locale_date_i18n( 'H:i', $begin ) === locale_date_i18n( 'H:i', $end ) ) {
+			$end = strtotime( '-1 day', $end );
+		}
+
+		return $end;
 	}
 }
 
