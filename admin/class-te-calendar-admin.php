@@ -629,7 +629,7 @@ class Te_Calendar_Admin {
 		if ( isset( $_POST['term_meta'] ) && isset( $_POST['term_meta']['tecal_calendar_ical'] ) ) {
 			$t_id = $term_id;
 			update_term_meta( $t_id, 'tecal_calendar_ical', $_POST['term_meta']['tecal_calendar_ical'] );
-			$this->fetch_from_external_feeds();
+			wp_schedule_single_event( time(), 'tecal_fetch_from_external_feeds' );
 		}
 	}
 
@@ -839,6 +839,9 @@ class Te_Calendar_Admin {
 				if( strlen( $event->dtstart ) === 8 ) {
 					// ALLDAY
 					update_post_meta( $local_event->ID, 'tecal_events_allday', true );
+				} else {
+					// Not allday
+					update_post_meta( $local_event->ID, 'tecal_events_allday', false );
 				}
 
 				// These events always have an end, because in a normal calendar you can't omit the end.
