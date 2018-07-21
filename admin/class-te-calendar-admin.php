@@ -764,9 +764,18 @@ class Te_Calendar_Admin {
 			$legit_events = [];
 
 			// Foreach event
-			foreach( $events as $event ) {
+			foreach( $events as $index => $event ) {
 				// 	Read the UID and last-modified props of the event
-				$legit_events[] = $event->uid;
+				if(isset($event->rrule)) {
+					// Repeating events cannot be identified by their uid, because it
+					// is always the same for every repetition. So let's just create
+					// a custom uid and have all old repeating events deleted.
+					$event->internal_uid = $event->uid . '-' . $event->dtstart_array[3];
+				} else {
+					$event->internal_uid = $event->uid;
+				}
+				// Collect this event as legit and not be deleted.
+				$legit_events[] = $event->internal_uid;
 				// 	Look up the local event with uid and compare last-modified
 				$local_events = get_posts( array(
 					'posts_per_page' => -1,
@@ -782,7 +791,7 @@ class Te_Calendar_Admin {
 					'meta_query' => array(
 						array(
 							'key' => 'tecal_ical_uid',
-							'value' => $event->uid
+							'value' => $event->internal_uid
 						)
 					)
 				) );
@@ -812,7 +821,7 @@ class Te_Calendar_Admin {
 					wp_set_post_terms( $local_event->ID, $calendar->slug, 'tecal_calendars', false );
 
 					// Set UID
-					update_post_meta( $local_event->ID, 'tecal_ical_uid', $event->uid );
+					update_post_meta( $local_event->ID, 'tecal_ical_uid', $event->internal_uid );
 				}
 
 				if( !$local_event ) {
@@ -825,11 +834,11 @@ class Te_Calendar_Admin {
 				$local_event->post_content = $event->description;
 
 				// DTSTART
-				$start = $ical->iCalDateToDateTime( $event->dtstart_array[3], false );
+				$start = $ical->iCalDateToDateTime( $event->dtstart_array[3], true );
 				$start->setTimezone( new DateTimeZone( 'UTC' ) );
 				update_post_meta( $local_event->ID, 'tecal_events_begin', $start->format( 'U' ) );
 				// DTEND
-				$end = $ical->iCalDateToDateTime( $event->dtend_array[3], false );
+				$end = $ical->iCalDateToDateTime( $event->dtend_array[3], true );
 				$end->setTimezone( new DateTimeZone( 'UTC' ) );
 				update_post_meta( $local_event->ID, 'tecal_events_end', $end->format( 'U' ) );
 
