@@ -799,7 +799,7 @@ class Te_Calendar_Admin {
 			// Foreach event
 			foreach( $events as $index => $event ) {
 				// 	Read the UID and last-modified props of the event
-				if(isset($event->rrule)) {
+				if(isset($event->rrule) || isset($event->recurrence_id)) {
 					// Repeating events cannot be identified by their uid, because it
 					// is always the same for every repetition. So let's just create
 					// a custom uid and have all old repeating events deleted.
