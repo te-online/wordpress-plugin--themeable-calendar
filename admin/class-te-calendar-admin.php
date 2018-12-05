@@ -253,7 +253,8 @@ class Te_Calendar_Admin {
 		global $wp_list_table;
 
 		$custom_list_table = new Te_Calendar_Custom_List_Table();
-		$wp_list_table = $custom_list_table ;
+		$wp_list_table = $custom_list_table;
+		$wp_list_table->prepare_items();
 	}
 
 	/**
@@ -607,7 +608,7 @@ class Te_Calendar_Admin {
 		// retrieve the existing value(s) for this meta field. This returns an array
 		$term_meta = get_term_meta( $t_id, 'tecal_calendar_ical', true ); ?>
 		<tr class="form-field">
-		<th scope="row" valign="top"><label for="term_meta[tecal_calendar_ical]"><?php _e( 'Color', 'te-calendar' ); ?></label></th>
+		<th scope="row" valign="top"><label for="term_meta[tecal_calendar_ical]"><?php _e( 'ICal-Feed address', 'te-calendar' ); ?></label></th>
 			<td>
 				<?php if( $term_meta && !empty( esc_attr( $term_meta ) ) ) { ?>
 					<input type="text" name="term_meta[tecal_calendar_ical]" id="term_meta[tecal_calendar_ical]" value="<?php echo esc_attr( $term_meta ) ? esc_attr( $term_meta ) : ''; ?>">
@@ -708,6 +709,38 @@ class Te_Calendar_Admin {
 	}
 
 	/**
+		* Add content to the custom columns of list view in admin.
+		*
+		* @since 		0.2.0
+		*/
+
+	/**
+	 * Order by the correct meta field value and not the parsed date
+	 * in list view in admin, when ordering by begin and end fields.
+	 *
+	 * Also order by `begin` by default.
+	 *
+	 * @since 0.3.9
+	 */
+	public function event_column_order_adjustments( $query ) {
+		$orderby = $query->get( 'orderby' );
+		$post_type = $query->get( 'post_type' );
+
+		// Order by begin, if no other order is set
+		// Correctly order by begin, if selected
+		if( 'tecal_events' === $post_type && ( '' === $orderby || 'begin' === $orderby ) ) {
+			$query->set( 'meta_key', 'tecal_events_begin' );
+			$query->set( 'orderby', 'meta_value_num' );
+    }
+
+		// Correctly order by end, if selected
+		if( 'tecal_events' === $post_type && 'end' === $orderby ) {
+			$query->set( 'meta_key', 'tecal_events_end' );
+			$query->set( 'orderby', 'meta_value_num' );
+		}
+	}
+
+	/**
 		* Fetches events from external iCal feeds.
 		*
 		* @since 		0.3.0
@@ -799,11 +832,19 @@ class Te_Calendar_Admin {
 				if( $local_events && count( $local_events ) > 0 ) {
 					$local_event = $local_events[0];
 					$last_modified = get_post_meta( $local_event->ID, 'tecal_ical_last_modified', true );
+
+					// Check if last_modified date matches the local copy
 					if( $last_modified && !empty( $last_modified ) && $last_modified === $event->last_modified ) {
 						// nothing to do
 						// return / goto next event
 						continue;
 					}
+
+					// Update summary
+					$local_event->post_title = esc_attr( $event->summary );
+
+					// Update description
+					$local_event->post_content = esc_attr( $event->description );
 				} else {
 					// Insert event
 					$event_id = wp_insert_post(
@@ -827,11 +868,6 @@ class Te_Calendar_Admin {
 				if( !$local_event ) {
 					continue;
 				}
-
-				// SUMMARY
-				$local_event->post_title = $event->summary;
-				// DESCRIPTION
-				$local_event->post_content = $event->description;
 
 				// DTSTART
 				$start = $ical->iCalDateToDateTime( $event->dtstart_array[3], true );

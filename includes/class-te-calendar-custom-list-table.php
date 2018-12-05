@@ -14,10 +14,19 @@ class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
 			parent::_construct();
 		}
 
-    // remove search box
-    public function search_box( $text, $input_id ) { return false; }
+		/**
+		 * Returns an array of sortable columns.
+		 */
+		protected function get_sortable_columns() {
+			return array(
+				'begin'    => 'begin',
+				'end' 		 => 'end',
+				'title'    => 'title',
+				'taxonomy-tecal_calendars' => 'taxonomy-tecal_calendars'
+			);
+		}
 
-    // Your custom list table is here
+    // The custom list table is here
     public function display() {
     	// Load calendars.
     	$calendars = get_terms( array(
@@ -114,7 +123,6 @@ class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
 
 				<div class="tecal_list_table">
 					<?php
-						// parent::search_box();
 						parent::display();
 					?>
 				</div>

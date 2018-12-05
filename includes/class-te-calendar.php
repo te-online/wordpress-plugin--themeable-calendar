@@ -234,6 +234,7 @@ class Te_Calendar {
 		// Add custom columns to admin list view
 		$this->loader->add_filter( 'manage_tecal_events_posts_columns', $plugin_admin, 'add_event_columns');
 		$this->loader->add_action( 'manage_tecal_events_posts_custom_column' , $plugin_admin, 'display_event_columns', 10, 2 );
+		$this->loader->add_action( 'pre_get_posts' , $plugin_admin, 'event_column_order_adjustments', 10, 2 );
 	}
 
 	/**
