@@ -1,12 +1,12 @@
 # 📅 Calendar With Custom Themes BETA
 - Contributors: thomas.ebert
-- Donate link: https://paypal.me/teonline
 - Tags: calendar, events, theme, template
 - Requires at least: 4.7.2
-- Tested up to: 4.7.2
+- Tested up to: 4.9.8
 - Stable tag: trunk
 - License: GPLv2 or later
 - License URI: http://www.gnu.org/licenses/gpl-2.0.html
+- Donate link: https://paypal.me/teonline
 
 Note: This a BETA plugin. A Really Simple™ Calendar with beautiful default templates and a way to create your own themes for your events.
 
@@ -127,6 +127,41 @@ No frequently asked questions, yet. *If you have a question, open an issue on Gi
 Screenshots are to follow.
 
 ## 💇 Changelog
+
+### 0.3.9 Beta (5 Dec 2018)
+- ICAL – Fix recurring events apparently can also have *no* `RRULE`, but a `RECURRENCE_ID` instead. Account for that while checking uid of event.
+- LIST VIEW – Enhancements to list view.
+  - Fix pagination not working
+  - Add sorting by column and default order
+  - Fix ical field caption in calendar settings
+
+### 0.3.8 Beta (21 Jul 2018)
+- ICAL – Fix allday events could not be updated to be timed events.
+- Update composer ical parser library.
+- ICAL – Fix event specific timezone was used for UTC time. Fix repeating events all had the same uid.
+
+### 0.3.7 Beta (8 Jun 2018)
+- Fix allday events with set start and begin will be displayed incorrectly.
+
+### 0.3.6 Beta (5 Jun 2018)
+- Fix allday events have the next day as end day, because they are saved as 24 hours long.
+
+### 0.3.5 Beta (27 Apr 2018)
+- Always set external events to have end, because otherwise it won't be saved for multi-day allday events.
+
+### 0.3.4 Beta (27 Apr 2018)
+- Fix problem with calendar range format when fetching events.
+
+### 0.3.3 Beta
+*(skipped)*
+
+### 0.3.2 Beta (27 Apr 2018)
+- Switch WP Cron to hourly jobs fetching external events (instead of twicedaily).
+
+### 0.3.1 Beta (25 Apr 2018)
+- Fix external calendar not editable.
+- Also add p tag around empty state message.
+- Make default template structure a bit more concise and add translations
 
 ### 0.3
 - *Breaking change*: Fixed: Times were not saved in UTC before, now they are. All your old dates will unfortunately inevitable off, if your're not using UTC anyways.
