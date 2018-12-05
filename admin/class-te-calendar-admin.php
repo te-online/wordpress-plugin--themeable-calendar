@@ -252,9 +252,34 @@ class Te_Calendar_Admin {
 	public function custom_list_table_register() {
 		global $wp_list_table;
 
+		// Instantiate our own list table
 		$custom_list_table = new Te_Calendar_Custom_List_Table();
+		// Replace common list table with ours
 		$wp_list_table = $custom_list_table;
+		// Do this to prepare items and enable pagination
 		$wp_list_table->prepare_items();
+
+		// See if we are in list view or calendar view.
+		$setListView = ('list' === get_query_var('view')) ? true : false;
+		$setCalendarView = ('calendar' === get_query_var('view')) ? true : false;
+
+		global $current_user;
+		// Get current user preference.
+		$current_view = get_user_meta($current_user->ID, 'tecal_current_view', true);
+		// Save user preference.
+		if($setListView && $current_view !== 'list') {
+			update_user_meta( $current_user->ID, 'tecal_current_view', 'list');
+			$current_view = 'list';
+		} else if($setCalendarView && $current_view !== 'calendar') {
+			update_user_meta( $current_user->ID, 'tecal_current_view', 'calendar');
+			$current_view = 'calendar';
+		}
+		// Set view to display.
+		$listView = ($current_view === 'list') ? true : false;
+		$wp_list_table->is_list_view = $listView;
+
+		// Return views, so that we see them (but only for list view)
+		return $listView ? $wp_list_table->get_views() : [];
 	}
 
 	/**

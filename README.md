@@ -128,6 +128,9 @@ Screenshots are to follow.
 
 ## 💇 Changelog
 
+### 0.4.0 Beta (tba)
+- List View – Add view switch. Now we can also see and remove trashed events.
+
 ### 0.3.9 Beta (5 Dec 2018)
 - ICAL – Fix recurring events apparently can also have *no* `RRULE`, but a `RECURRENCE_ID` instead. Account for that while checking uid of event.
 - LIST VIEW – Enhancements to list view.
