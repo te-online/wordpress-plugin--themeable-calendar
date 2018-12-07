@@ -63,9 +63,9 @@
 					// is not timed at 00:00 hours.
 					if(eventData.allDay) {
 						// Make a copy of the actual end time for our edit dialog.
-						eventData.realEnd = moment(eventData.end).utc()
-						// Replace given time on end date with start of day (midnight).
-						var end = moment(eventData.end).hours(0).minutes(0);
+						eventData.realEnd = moment(eventData.end);
+						// Replace given time on end date with end of day (midnight + 1 day).
+						var end = moment(eventData.end).add(1, 'days').hours(0).minutes(0);
 						eventData.end = end.format();
 					}
 
@@ -145,9 +145,6 @@
 				var end_time = '';
 				if( moment.isMoment( end ) ) {
 					end_time = end.format('HH:mm');
-				} else if( calEvent.allDay ) {
-					end = now
-					end_time = now.clone().add('1', 'hours').format('HH:00');
 				} else {
 					end = begin.clone().add('1', 'hours');
 					end_time = end.format('HH:00')
@@ -217,7 +214,7 @@
 		}
 
 		/**
-		/*	Displays the edit modal. This modal is used for creating and editing events.
+		/*	Enhances the event input fields in legacy edit mode.
 		/*
 		**/
 		function tecal_enhanceMetaBox() {
@@ -249,9 +246,6 @@
 			var end_time = '';
 			if( moment.isMoment( end ) ) {
 				end_time = end.format('HH:mm');
-			} else if( allday_input.checked  ) {
-				end = now
-				end_time = now.clone().add('1', 'hours').format('HH:00');
 			} else {
 				end = begin.clone().add('1', 'hours');
 				end_time = end.format('HH:00')
@@ -424,6 +418,8 @@
 			var begin_time_input = document.querySelector('[name="tecal_events_begin_time"]');
 			var end_date_input = document.querySelector('[name="tecal_events_end"]');
 			var end_time_input = document.querySelector('[name="tecal_events_end_time"]');
+			var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
+			var allday_input = document.querySelector('[name="tecal_events_allday"]');
 
 			// Check if all dates are valid.
 			if(!moment(begin_date_input.value).isValid()) {
@@ -454,13 +450,21 @@
 				};
 			}
 
-			// Check if end date is after begin date.
-			if(moment(end_date_input.value + 'T' + end_time_input.value).isBefore(
+			// Check if end date is after begin date. (Ignore time.)
+			if(has_end_input.checked && moment(end_date_input.value).isSameOrBefore(moment(begin_date_input.value))) {
+				return {
+					valid: false,
+					message: 'End date has to be after begin date.'
+				};
+			}
+
+			// Check if end time is after begin time. (Only if time is relevant.)
+			if(has_end_input.checked && !allday_input.checked && moment(end_date_input.value + 'T' + end_time_input.value).isBefore(
 				moment(begin_date_input.value + 'T' + begin_time_input.value)
 			)) {
 				return {
 					valid: false,
-					message: 'End has to be later than begin.'
+					message: 'End time has to be later than begin time.'
 				};
 			}
 
@@ -560,8 +564,10 @@
 				tecal_events_begin: begin_date_input.value,
 				tecal_events_begin_time: begin_time_input.value,
 				tecal_events_allday: allday_input.checked,
+				// If event has no end, we set the end date to the same date as the begin date.
 				tecal_events_end: ( !has_end_input.checked ) ? begin_date_input.value : end_date_input.value,
-				tecal_events_end_time: ( !has_end_input.checked ) ? begin_time_input.value : end_time_input.value,
+				// If event has no end or is all day, we set the end time to the same time as the begin time.
+				tecal_events_end_time: ( !has_end_input.checked || allday_input.checked ) ? begin_time_input.value : end_time_input.value,
 				tecal_events_has_end: has_end_input.checked,
 				tecal_events_description: description_input.value,
 				tecal_events_calendar: ( calendar_input.options[calendar_input.selectedIndex] ) ? calendar_input.options[calendar_input.selectedIndex].value : 'calendar'
