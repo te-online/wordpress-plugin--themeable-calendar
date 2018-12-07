@@ -28,6 +28,15 @@ class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
 			);
 		}
 
+		/**
+		 * Only show the search box when in list view.
+		 */
+		public function search_box($text, $input_id) {
+			if($this->is_list_view) {
+				return parent::search_box($text, $input_id);
+			}
+		}
+
     // The custom list table is here
     public function display() {
     	// Load calendars.
