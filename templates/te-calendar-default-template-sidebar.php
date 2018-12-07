@@ -28,10 +28,10 @@
 								<?php the_event_begin_day(); ?> &middot;
 							</span>
 							<span class="calendar__item__date calendar__item__year">
-								<?php the_event_begin_date(); // date_format($datum,'j.n.') ?><?php the_event_begin_year(); // date_format($datum,'Y') ?>
+								<?php the_event_begin_date(); // Example: 24.12. ?><?php the_event_begin_year(); // Example: 2011 ?>
 							</span>
 							<span class="calendar__item__time">
-								&middot; <?php the_event_begin_time(); // date_format($datum,'Y') ?>
+								&middot; <?php the_event_begin_time(); // Example: 14:00 ?>
 							</span>
 						</p>
 					</div>
