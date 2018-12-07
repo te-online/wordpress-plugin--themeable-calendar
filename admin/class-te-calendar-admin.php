@@ -159,7 +159,9 @@ class Te_Calendar_Admin {
 				),
 				'supports' => array('title', 'editor', 'taxonomy'),
 				'menu_position' => 100,
-				'menu_icon' => 'dashicons-calendar'
+				'menu_icon' => 'dashicons-calendar',
+				'show_in_rest' => true,
+				'rest_base' => 'events'
 			)
 		);
 	}
@@ -198,6 +200,8 @@ class Te_Calendar_Admin {
 			'update_count_callback' => '_update_post_term_count',
 			'query_var'             => true,
 			'rewrite'               => array( 'slug' => 'calendar' ),
+			'show_in_rest'					=> true,
+			'rest_base' 						=> 'calendars'
 		);
 
 		register_taxonomy( 'tecal_calendars', 'tecal_events', $args );
@@ -960,5 +964,90 @@ class Te_Calendar_Admin {
 
 			update_term_meta( $calendar->term_id, 'tecal_calendar_is_updating', false );
 		}
+	}
+
+	/**
+	 * Adds event data to the REST API response of the
+	 * `tecal_events` custom post type.
+	 *
+	 * @since 0.4.0
+	 */
+	function add_event_data_to_rest_response() {
+		register_rest_field( 'tecal_events', 'event_details', array(
+			'get_callback' => function( $event ) {
+				// Parse dates
+				$event_start = date_create_from_format( 'U', get_post_meta( $event['id'], 'tecal_events_begin', true ) );
+				$event_start->setTimezone( new DateTimeZone( get_option( 'timezone_string' ) ) );
+				$event_end = date_create_from_format( 'U', get_post_meta( $event['id'], 'tecal_events_end', true ) );
+				$event_end->setTimezone( new DateTimeZone( get_option( 'timezone_string' ) ) );
+
+				// Event options
+				$has_end = ( get_post_meta( $event['id'], 'tecal_events_has_end', true ) ) ? true : false;
+				$all_day = ( get_post_meta( $event['id'], 'tecal_events_allday', true ) ) ? true : false;
+
+				// Compile details objects
+				$event_details = array(
+					'location' => (string) get_post_meta( $event['id'], 'tecal_events_location', true ),
+					'begin' => $event_start->format( 'c' ),
+					'end' => $has_end ? $event_end->format( 'c' ) : null,
+					'begin_date' => $event_start->format( 'Y-m-d' ),
+					'end_date' => $has_end ? $event_end->format( 'Y-m-d' ) : null,
+					'begin_time' => !$all_day ? $event_start->format( 'H:i' ) : null,
+					'end_time' => $has_end && !$all_day ?  $event_end->format( 'H:i' ) : null,
+					'all_day' => $all_day,
+					'has_end' => $has_end
+				);
+
+				return $event_details;
+			},
+			'schema' => array(
+				'description' => __( 'Event details.' ),
+				'type'        => 'object'
+			),
+		));
+	}
+
+	/**
+	 * Filters REST API responses between the boundaries
+	 * of two dates. The parameters are _including_, meaning
+	 * that the given date will be included in the results.
+	 *
+	 * By default sorts the rest response by begin in desc order.
+	 *
+	 * @since 0.4.0
+	 */
+	function rest_response_filter_and_sort( $args, $request ) {
+		// Always order by begin by default
+		$args['orderby'] = 'meta_value_num';
+		$args['meta_key'] = 'tecal_events_begin';
+
+		// Prepare incoming dates
+		$start = ( isset( $request['begin_after'] ) ) ? date_create_from_format( 'Y-m-d', $request['begin_after'] ) : null;
+		$end = ( isset( $request['end_before'] ) ) ? date_create_from_format( 'Y-m-d', $request['end_before'] ) : null;
+
+		// Prepare meta query
+		$args['meta_query'] = array();
+
+		// Set begin meta query
+		if( $start ) {
+			$args['meta_query'][] = array(
+				'key' => 'tecal_events_begin',
+				'value' => $start->format('U') - 60 * 60 * 24, // minus 1 day
+				'type' => 'numeric',
+				'compare' => '>='
+			);
+		}
+
+		// Set end meta query
+		if( $end ) {
+			$args['meta_query'][] = array(
+				'key' => 'tecal_events_end',
+				'value' => $end->format('U'),
+				'type' => 'numeric',
+				'compare' => '<='
+			);
+		}
+
+		return $args;
 	}
 }

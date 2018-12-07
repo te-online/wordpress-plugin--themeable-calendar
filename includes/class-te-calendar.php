@@ -235,6 +235,10 @@ class Te_Calendar {
 		$this->loader->add_filter( 'manage_tecal_events_posts_columns', $plugin_admin, 'add_event_columns');
 		$this->loader->add_action( 'manage_tecal_events_posts_custom_column' , $plugin_admin, 'display_event_columns', 10, 2 );
 		$this->loader->add_action( 'pre_get_posts' , $plugin_admin, 'event_column_order_adjustments', 10, 2 );
+
+		// Add details to REST API response / customize endpoints
+		$this->loader->add_action( 'rest_api_init' , $plugin_admin, 'add_event_data_to_rest_response', 10, 2 );
+		$this->loader->add_action( 'rest_tecal_events_query' , $plugin_admin, 'rest_response_filter_and_sort', 10, 2 );
 	}
 
 	/**
