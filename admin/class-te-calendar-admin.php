@@ -780,7 +780,7 @@ class Te_Calendar_Admin {
 		$fetchable_calendars = [];
 
 		foreach ( $calendars as $calendar ) {
-	    $ical_feed_url = get_term_meta( $calendar->ID, 'tecal_calendar_ical', true );
+	    $ical_feed_url = get_term_meta( $calendar->term_id, 'tecal_calendar_ical', true );
 	    if( $ical_feed_url && !empty( $ical_feed_url ) ) {
 	    	$calendar->ical_feed_url = $ical_feed_url;
 	    	$fetchable_calendars[] = $calendar;
