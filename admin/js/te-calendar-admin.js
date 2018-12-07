@@ -425,28 +425,28 @@
 			if(!moment(begin_date_input.value).isValid()) {
 				return {
 					valid: false,
-					message: 'Begin date has to be a valid date.'
+					message: TE_CAL.translations.validate_begin_date_message
 				};
 			}
 
 			if(!moment(begin_date_input.value + 'T' + begin_time_input.value).isValid()) {
 				return {
 					valid: false,
-					message: 'Begin time has to be a valid time.'
+					message: TE_CAL.translations.validate_begin_time_message
 				};
 			}
 
 			if(!moment(end_date_input.value).isValid()) {
 				return {
 					valid: false,
-					message: 'End date has to be a valid date.'
+					message: TE_CAL.translations.validate_end_date_message
 				};
 			}
 
 			if(!moment(end_date_input.value + 'T' + end_time_input.value).isValid()) {
 				return {
 					valid: false,
-					message: 'End time has to be a valid time.'
+					message: TE_CAL.translations.validate_end_time_message
 				};
 			}
 
@@ -454,7 +454,7 @@
 			if(has_end_input.checked && moment(end_date_input.value).isSameOrBefore(moment(begin_date_input.value))) {
 				return {
 					valid: false,
-					message: 'End date has to be after begin date.'
+					message: TE_CAL.translations.validate_date_range_message
 				};
 			}
 
@@ -464,7 +464,7 @@
 			)) {
 				return {
 					valid: false,
-					message: 'End time has to be later than begin time.'
+					message: TE_CAL.translations.validate_time_range_message
 				};
 			}
 

@@ -108,7 +108,15 @@ class Te_Calendar_Admin {
 		wp_localize_script( $this->plugin_name, 'WPURLS', array( 'siteurl' => get_option('siteurl') ) );
 		wp_localize_script( $this->plugin_name, 'TE_CAL', array(
 			'locale' => get_user_locale(),
-			'timezone' => get_option( 'timezone_string' )
+			'timezone' => get_option( 'timezone_string' ),
+			'translations' => array(
+				'validate_time_range_message' => __( 'End time has to be later than begin time.', 'te-calendar' ),
+				'validate_date_range_message' => __( 'End date has to be after begin date.', 'te-calendar' ),
+				'validate_begin_date_message' => __( 'Begin date has to be a valid date.', 'te-calendar' ),
+				'validate_begin_time_message' => __( 'Begin time has to be a valid time.', 'te-calendar' ),
+				'validate_end_date_message' => __( 'End date has to be a valid date.', 'te-calendar' ),
+				'validate_end_time_message' => __( 'End time has to be a valid time.', 'te-calendar' )
+			)
 		) );
 
 		wp_enqueue_script( $this->plugin_name . "moment", plugin_dir_url( __FILE__ ) . 'lib/fullcalendar/lib/moment-with-locales.min.js', array( 'jquery' ), $this->version, false );

@@ -1,149 +1,173 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2018-04-24 21:59+0000\n"
+"POT-Creation-Date: 2018-12-07 21:50+0000\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"PO-Revision-Date: 2018-04-24 22:00+0000\n"
+"PO-Revision-Date: 2018-12-07 21:53+0000\n"
 "X-Generator: Loco https://localise.biz/\n"
 "Project-Id-Version: Calendar with Templates\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: te-online <services@te-online.net>\n"
-"Language-Team: German\n"
+"Language-Team: Deutsch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Loco-Version: 2.2.0; wp-5.0"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:133
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:136
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:140
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:113
+msgid "End time has to be later than begin time."
+msgstr "Die End-Uhrzeit muss später als die Start-Uhrzeit sein."
+
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:114
+msgid "End date has to be after begin date."
+msgstr "Das End-Datum muss nach dem Start-Datum liegen."
+
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:115
+msgid "Begin date has to be a valid date."
+msgstr "Das Startdatum muss ein gültiges Datum sein."
+
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:116
+msgid "Begin time has to be a valid time."
+msgstr "Die Start-Uhrzeit muss eine gültige Uhrzeit sein."
+
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:117
+msgid "End date has to be a valid date."
+msgstr "Das Enddatum muss ein gültiges Datum sein."
+
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:118
+msgid "End time has to be a valid time."
+msgstr "Die End-Uhrzeit muss eine gültige Uhrzeit sein."
+
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:141
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:144
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:148
 msgid "Events"
 msgstr "Termine"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:134
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:142
 msgid "Event"
 msgstr "Termin"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:135
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:143
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:137
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:145
 msgid "Add event"
 msgstr "Termin hinzufügen"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:138
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:60
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:146
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:63
 msgid "Edit event"
 msgstr "Termin bearbeiten"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:139
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:59
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:147
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:62
 msgid "New event"
 msgstr "Neuer Termin"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:141
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:149
 msgid "View event"
 msgstr "Termin anzeigen"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:142
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:150
 msgid "Search events"
 msgstr "Termine durchsuchen"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:143
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:151
 msgid "Looks like there are no events, yet."
 msgstr "Sieht so aus, als wären noch keine Termine vorhanden."
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:144
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:152
 msgid "There are no trashed events."
 msgstr "Keine Termine im Mülleimer."
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:150
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:158
 msgid "events"
 msgstr "termine"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:167
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:175
 msgctxt "taxonomy general name"
 msgid "Calendars"
 msgstr "Kalender"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:168
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:176
 msgctxt "taxonomy singular name"
 msgid "Calendar"
 msgstr "Kalender"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:169
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:177
 msgid "Search Calendars"
 msgstr "Kalender durchsuchen"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:170
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:178
 msgid "Popular Calendars"
 msgstr "Beliebte Kalender"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:171
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:179
 msgid "All Calendars"
 msgstr "Alle Kalender"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:174
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:182
 msgid "Edit Calendar"
 msgstr "Kalender bearbeiten"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:175
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:183
 msgid "Update Calendar"
 msgstr "Kalender aktualisieren"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:176
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:184
 msgid "Add New Calendar"
 msgstr "Neuen Kalender hinzufügen"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:177
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:185
 msgid "New Calendar Name"
 msgstr "Name des neuen Kalenders"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:178
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:186
 msgid "Separate calendars with commas"
 msgstr "Trenne mehrere Kalender mit Kommata"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:179
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:187
 msgid "Add or remove calendars"
 msgstr "Kalender hinzufügen oder entfernen"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:180
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:188
 msgid "Choose from the most used calendars"
 msgstr "Aus den am meisten verwendeten Kalendern auswählen"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:181
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:189
 msgid "No calendars found."
 msgstr "Keine Kalender gefunden."
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:182
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:190
 msgid "Calendars"
 msgstr "Kalender"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:201
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:209
 msgid "Default Calendar"
 msgstr "Standard-Kalender"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:204
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:212
 msgid "Your default calendar that stores all the events."
 msgstr "Dein Standard-Kalender, der die Termine beinhaltet."
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:542
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:561
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:610
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:576
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:595
 msgid "Color"
 msgstr "Farbe"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:544
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:564
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:578
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:598
 msgid "Choose a color for your calendar"
 msgstr "Wähle eine Farbe für deinen Kalender"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:591
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:625
 msgid "iCal-feed address"
 msgstr "iCal-Feed Adresse"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:593
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:614
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:627
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:648
 msgid ""
 "Events can be imported from a remote iCal-Feed. When you use this option, "
 "this calendar will become read-only."
@@ -151,101 +175,105 @@ msgstr ""
 "Termine können von einem iCal-Feed abgerufen werden. Wenn du diese Option "
 "nutzt, werden Termine in diesem Kalender schreibgeschützt sein."
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:673
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:644
+msgid "ICal-Feed address"
+msgstr "ICal-Feed-Adresse"
+
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:707
 msgid "Begin"
 msgstr "Start"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:674
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:708
 msgid "End"
 msgstr "Ende"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:675
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:709
 msgid "All day"
 msgstr "Ganztägig"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:690
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:698
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:724
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:732
 msgctxt "Full date format"
 msgid "l, F j, Y h:i a"
 msgstr "l, j. F Y H:i"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:700
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:734
 msgid "No end specified"
 msgstr "Kein Ende festgelegt"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:706
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:740
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/public/class-te-calendar-global-functions.php:61
 msgid "all day"
 msgstr "ganztägig"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:706
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:740
 msgctxt "List: all day n/a"
 msgid "-"
 msgstr "-"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:48
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:51
 msgid "Calendar view"
 msgstr "Kalender"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:51
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:54
 msgid "List view"
 msgstr "Liste"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:64
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-widget.php:93
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:67
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-widget.php:108
 msgid "Title:"
 msgstr "Titel:"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:67
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:70
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-event-details-controller.php:49
 msgid "All day:"
 msgstr "Ganztägig:"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:70
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:73
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-event-details-controller.php:52
 msgid "Begin:"
 msgstr "Start:"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:74
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:77
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-event-details-controller.php:56
 msgid "Specify an end:"
 msgstr "Ende festlegen:"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:77
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:80
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-event-details-controller.php:59
 msgid "End:"
 msgstr "Ende:"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:81
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:84
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-event-details-controller.php:46
 msgid "Location:"
 msgstr "Ort:"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:84
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:87
 msgid "Description:"
 msgstr "Beschreibung:"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:87
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:90
 msgid "Calendar:"
 msgstr "Kalender:"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:100
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:106
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:102
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:108
 msgid "Delete"
 msgstr "Löschen"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:102
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:108
 msgid "Deleting..."
 msgstr "Lösche..."
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:104
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:110
 msgid "Save"
 msgstr "Speichern"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:104
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-custom-list-table.php:110
 msgid "Saving..."
 msgstr "Speichere..."
 
@@ -278,15 +306,15 @@ msgstr "Widget zur Anzeige von Terminen."
 msgid "Calendar Events"
 msgstr "Terminkalender"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-widget.php:96
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-widget.php:111
 msgid "Number of events to display:"
 msgstr "Anzahl der angezeigten Termine:"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-widget.php:99
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-widget.php:114
 msgid "Name of template file in theme directory <em>(optional)</em>:"
 msgstr "Name der Template-Datei in deinem Theme-Ordner (optional):"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-widget.php:102
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-widget.php:117
 msgid ""
 "Slug of calendar to show <em>(omitting shows default, multiple comma-"
 "separated)</em>:"
@@ -295,15 +323,15 @@ msgstr ""
 "verwenden; mehrere mit Kommata trennen)</em>:"
 
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/public/class-te-calendar-global-functions.php:65
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/public/class-te-calendar-global-functions.php:130
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/public/class-te-calendar-global-functions.php:138
 #, php-format
 msgctxt ""
 "Time. Other languages use some kind of unit for time like \"12.00 Uhr\""
 msgid "%s"
 msgstr "%s Uhr"
 
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/templates/te-calendar-default-template-archive.php:87
-#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/templates/te-calendar-default-template-sidebar.php:56
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/templates/te-calendar-default-template-archive.php:88
+#: Users/thomas/Sites/wordpress-plugin--themeable-calendar/templates/te-calendar-default-template-sidebar.php:57
 msgid "Sorry, there are no upcoming calendar entries right now."
 msgstr "Leider sind zur Zeit keine anstehenden Termine verfügbar."
 
