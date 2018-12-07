@@ -16,7 +16,7 @@ class Te_Calendar_Event_Details_Controller {
 	 */
 	public function event_details_metabox( $post ) {
 		if( Te_Calendar_Static_Helpers::is_event_external( $post->ID ) ) {
-			echo '<div class="message error"><p><em>' . __( 'This event is read-only, because it comes from an external calendar. Please edit the event inside the external calendar.</em>', 'te-calendar' ) . '</em></p></div>';
+			echo '<div class="message error"><p><em>' . __( 'This event is read-only, because it comes from an external calendar. Please edit the event inside the external calendar.', 'te-calendar' ) . '</em></p></div>';
 		}
 
 		$today = date_create();

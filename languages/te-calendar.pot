@@ -1,7 +1,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2018-12-07 21:50+0000\n"
+"POT-Creation-Date: 2018-12-07 21:59+0000\n"
 "Language: \n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -275,7 +275,7 @@ msgstr ""
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-event-details-controller.php:19
 msgid ""
 "This event is read-only, because it comes from an external calendar. Please "
-"edit the event inside the external calendar.</em>"
+"edit the event inside the external calendar."
 msgstr ""
 
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-event-details-controller.php:80

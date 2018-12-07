@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2018-12-07 21:50+0000\n"
+"POT-Creation-Date: 2018-12-07 21:59+0000\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"PO-Revision-Date: 2018-12-07 21:53+0000\n"
+"PO-Revision-Date: 2018-12-07 22:03+0000\n"
 "X-Generator: Loco https://localise.biz/\n"
 "Project-Id-Version: Calendar with Templates\n"
 "Report-Msgid-Bugs-To: \n"
@@ -16,27 +16,27 @@ msgstr ""
 
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:113
 msgid "End time has to be later than begin time."
-msgstr ""
+msgstr "Eindtijd moet later zijn dan de begintijd."
 
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:114
 msgid "End date has to be after begin date."
-msgstr ""
+msgstr "Einddatum moet na de begindatum zijn."
 
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:115
 msgid "Begin date has to be a valid date."
-msgstr ""
+msgstr "Begindatum moet een geldige datum zijn."
 
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:116
 msgid "Begin time has to be a valid time."
-msgstr ""
+msgstr "Begintijd moet een geldige tijd zijn."
 
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:117
 msgid "End date has to be a valid date."
-msgstr ""
+msgstr "Einddatum moet een geldige datum zijn."
 
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:118
 msgid "End time has to be a valid time."
-msgstr ""
+msgstr "Eindtijd moet een geldige tijd zijn."
 
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:141
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:144
@@ -164,7 +164,7 @@ msgstr "Kies een kleur voor uw kalender"
 
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:625
 msgid "iCal-feed address"
-msgstr ""
+msgstr "iCal-feed-adres"
 
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:627
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:648
@@ -172,10 +172,12 @@ msgid ""
 "Events can be imported from a remote iCal-Feed. When you use this option, "
 "this calendar will become read-only."
 msgstr ""
+"Evenementen kunnen worden geïmporteerd vanuit een externe iCal-feed. Wanneer "
+"u deze optie gebruikt, wordt deze agenda alleen-lezen."
 
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:644
 msgid "ICal-Feed address"
-msgstr ""
+msgstr "ICal-Feed-adres"
 
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/admin/class-te-calendar-admin.php:707
 msgid "Begin"
@@ -282,16 +284,18 @@ msgstr "Eventdetails"
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-event-details-controller.php:19
 msgid ""
 "This event is read-only, because it comes from an external calendar. Please "
-"edit the event inside the external calendar.</em>"
+"edit the event inside the external calendar."
 msgstr ""
+"Dit evenement is alleen-lezen, omdat het afkomstig is van een externe agenda."
+" Bewerk de evenement in de externe agenda."
 
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-event-details-controller.php:80
 msgid "Cannot edit external event."
-msgstr ""
+msgstr "Kan externe evenement niet bewerken."
 
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-event-details-controller.php:173
 msgid "Editing of an external read-only event is not possible."
-msgstr ""
+msgstr "Het bewerken van een externe alleen-lezen-evenement is niet mogelijk."
 
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/includes/class-te-calendar-widget.php:18
 msgid "Widget for display of calendar events."
@@ -328,7 +332,7 @@ msgstr "%s uur"
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/templates/te-calendar-default-template-archive.php:88
 #: Users/thomas/Sites/wordpress-plugin--themeable-calendar/templates/te-calendar-default-template-sidebar.php:57
 msgid "Sorry, there are no upcoming calendar entries right now."
-msgstr ""
+msgstr "Sorry, er zijn geen aankomende agenda-items op dit moment."
 
 #. Name of the plugin
 msgid "Calendar with Templates"
