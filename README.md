@@ -131,6 +131,10 @@ Screenshots are to follow.
 ### 0.4.0 Beta (tba)
 - List View – Add view switch. Now we can also see and remove trashed events.
 
+### 0.3.9.1 Beta (7 Dec 2018)
+- Hotfix: Fix accidental call to `get_field` of ACF instead of `get_term_meta`.
+- Enhancement: List View – Add view switch. Now we can also see and remove trashed events.
+
 ### 0.3.9 Beta (5 Dec 2018)
 - ICAL – Fix recurring events apparently can also have *no* `RRULE`, but a `RECURRENCE_ID` instead. Account for that while checking uid of event.
 - LIST VIEW – Enhancements to list view.
