@@ -200,6 +200,8 @@ class Te_Calendar {
 		$this->loader->add_action( 'wp_ajax_te_calendar_save_new_event', $plugin_admin, 'ajax_save_new_event' );
 		$this->loader->add_action( 'wp_ajax_te_calendar_delete_event', $plugin_admin, 'ajax_delete_event' );
 		$this->loader->add_action( 'wp_ajax_te_calendar_move_event', $plugin_admin, 'ajax_save_move_event' );
+		$this->loader->add_action( 'wp_ajax_te_calendar_get_acf_form', $plugin_admin, 'ajax_get_acf_form' );
+		$this->loader->add_action( 'wp_ajax_te_calendar_acf_save', $plugin_admin, 'ajax_acf_save' );
 
 		$this->loader->add_action( 'admin_init', $event_controller, 'event_metaboxes_register' );
 		$this->loader->add_action( 'save_post', $event_controller, 'event_details_save' );

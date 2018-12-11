@@ -176,6 +176,10 @@ Screenshots are to follow.
 ### 0.4.0 Beta (tba)
 - REST API: Add support for the WordPress JSON API. You can now fetch calendars and events through the API, and filter and sort the result.
 
+### 0.3.9.2 Beta (7 Dec 2018)
+- Fixes to the modal event editor
+- Additions to the hotfix from 0.3.9.1
+
 ### 0.3.9.1 Beta (7 Dec 2018)
 - Hotfix: Fix accidental call to `get_field` of ACF instead of `get_term_meta`.
 - Enhancement: List View – Add view switch. Now we can also see and remove trashed events.

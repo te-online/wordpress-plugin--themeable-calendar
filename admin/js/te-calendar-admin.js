@@ -116,6 +116,37 @@
 
 			var edit_id_hidden = document.querySelector('[name="tecal_events_edit_id"]');
 
+			// Fetch ACF form if available
+			$.post(ajaxurl,
+				{
+					tecal_events_post_id: calEvent ? calEvent.id : null,
+					action: 'te_calendar_get_acf_form'
+				}, function(form) {
+					console.log({form})
+					if(form && form.length > 0) {
+						// Append form
+						var acf_column = modal.querySelector('.tecal__edit-grid-column-right');
+						acf_column.innerHTML = form;
+						var acf_form = acf_column.querySelector('#acf-form');
+						console.log({acf_form});
+						// See how many fields the form has
+						var fields = acf_column.querySelectorAll('.acf-field');
+						// One hidden field is always present, but we need more
+						if(fields && fields.length > 1) {
+							// Adjust layout of modal
+							modal.classList.add('has_acf');
+							// Set-up fields
+							acf.do_action('append', $(acf_form));
+							// Remove ACF button, we'll do that in our submit logic
+							modal.querySelector('.acf-form-submit').remove();
+						} else {
+							// No useful ACF fields found
+							acf_column.innerHTML = '';
+						}
+					}
+				}
+			);
+
 			allday_input.addEventListener('click', tecal_alldayClicked, true);
 			has_end_input.addEventListener('click', tecal_hasEndClicked, true);
 
@@ -288,6 +319,14 @@
 			var delete_button = document.querySelector('[name="tecal_edit-modal_delete"]');
 			// var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
 			// var allday_input = document.querySelector('[name="tecal_events_allday"]');
+			var acf_column = modal.querySelector('.tecal__edit-grid-column-right');
+
+			// Remove ACF form
+			if(acf_column && acf) {
+				modal.classList.remove('has_acf');
+				acf_column.innerHTML = '';
+				acf.doAction('remove', $(acf_column));
+			}
 
 			modal.classList.remove('is-visible');
 			// Incorporate that an animation is taking place.
@@ -392,17 +431,53 @@
 				e.preventDefault();
 				return false;
 			}
+
 			// Prepare data.
 			var data = prepareInputData(modalCase);
 
 			// Show within the button caption that we are working on it.
 			e.target.value = e.target.getAttribute('data-busycaption');
 
-			// Post data.
-			$.post(ajaxurl, data, function() {
+			var complete = function(e) {
 				e.target.value = e.target.getAttribute('data-defaultcaption');
 				tecal_modalUnregisterEventListener();
 				$( '#tecal_calendar' ).fullCalendar( 'refetchEvents' );
+			};
+
+			// Post data.
+			$.post(ajaxurl, data, function() {
+				// Try saving ACF data
+				var acf_form = $('.has_acf #acf-form');
+				// acf_form.append('<input type="hidden" name="action" value="acf/validate_save_post" />');
+				if(acf_form) {
+					$.ajax({
+						url: window.location.href,
+						method: 'post',
+						data: $(acf_form).serialize(),
+						success: () => {
+							// unlock the form
+							// acf.validation.toggle( $form, 'unlock' );
+							// Close modal
+							complete(e);
+						}
+					});
+					// $.post(window.location.href, $(acf_form).serialize())
+					// .done(function() {
+					// 	// Close modal
+					// 	complete(e);
+					// })
+					// .fail(function(error) {
+					// 	// Show error
+					// 	console.log({error})
+					// 	e.target.value = e.target.getAttribute('data-defaultcaption');
+					// 	tecal_displayModalErrors(error.statusText);
+					// 	e.preventDefault();
+					// 	return false;
+					// });
+				} else {
+					// Close modal
+					complete(e);
+				}
 			});
 
 			e.preventDefault();

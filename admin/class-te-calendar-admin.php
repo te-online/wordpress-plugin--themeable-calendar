@@ -127,6 +127,18 @@ class Te_Calendar_Admin {
 
 		wp_enqueue_script( $this->plugin_name . "rome", plugin_dir_url( __FILE__ ) . 'lib/rome/rome.min.js', $this->version, false );
 
+		$screen = get_current_screen();
+
+		// Run ACF form head
+		if(function_exists('acf_form_head') && function_exists('acf_enqueue_uploader')) {
+			if('edit-tecal_events' === $screen->id) {
+				acf_form_head();
+			}
+			// acf_enqueue_uploader();
+			add_action( 'wp_ajax_nopriv_acf_form_head', 'acf_form_head' );
+			add_action( 'wp_ajax_acf_form_head', 'acf_form_head' );
+		}
+
 	}
 
 	/**
@@ -565,6 +577,32 @@ class Te_Calendar_Admin {
 
 		wp_delete_post( $post_id );
 
+		wp_die();
+	}
+
+	/**
+	 * Get the ACF form, if ACF is installed.
+	 *
+	 * @since 0.4.0
+	 */
+	public function ajax_get_acf_form() {
+		$post_id = $_POST['tecal_events_post_id'];
+
+		if( function_exists( 'acf_form' ) ) {
+			acf_form( array( 'post_id' => $post_id ) );
+			wp_die();
+		} else {
+			echo '';
+			wp_die();
+		}
+	}
+
+	/**
+	 * Do nothing, since ACF handles everything.
+	 *
+	 * @since 0.4.0
+	 */
+	public function ajax_acf_save() {
 		wp_die();
 	}
 
