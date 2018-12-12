@@ -233,6 +233,9 @@
 				delete_button.disabled = true;
 			}
 
+			// Focus title input
+			title_input.focus();
+
 			rome(begin_date_input, { time: false, initialValue: begin_date_input.value });
 			rome(begin_time_input, { date: false, initialValue: begin_time_input.value });
 			rome(end_date_input, { time: false, initialValue: end_date_input.value });
