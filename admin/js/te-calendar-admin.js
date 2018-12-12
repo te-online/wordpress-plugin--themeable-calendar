@@ -34,7 +34,8 @@
 						tecal_events_begin_time: moment(calEvent.start).format('HH:mm'),
 						tecal_events_end: ( calEvent.hasEnd === true || calEvent.hasEnd === "1" ) ? moment(calEvent.end).format('YYYY-MM-DD') : moment(calEvent.start).format('YYYY-MM-DD'),
 						tecal_events_end_time: ( calEvent.hasEnd === true || calEvent.hasEnd === "1" ) ? moment(calEvent.end).format('HH:mm') : moment(calEvent.start).format('HH:mm'),
-						action: 'te_calendar_move_event'
+						action: 'te_calendar_move_event',
+						tecal_ajax_nonce: TE_CAL.tecal_ajax_nonce
 					};
 
 					$.post(ajaxurl, data, function() {
@@ -120,7 +121,8 @@
 			$.post(ajaxurl,
 				{
 					tecal_events_post_id: calEvent ? calEvent.id : null,
-					action: 'te_calendar_get_acf_form'
+					action: 'te_calendar_get_acf_form',
+					tecal_ajax_nonce: TE_CAL.tecal_ajax_nonce
 				}, function (form) {
 					if (form && form.length > 0) {
 						// Append form
@@ -558,7 +560,8 @@
 
 			var data = {
 				tecal_events_post_id: edit_id_hidden.value,
-				action: 'te_calendar_delete_event'
+				action: 'te_calendar_delete_event',
+				tecal_ajax_nonce: TE_CAL.tecal_ajax_nonce
 			};
 
 			e.target.value = e.target.getAttribute('data-busycaption');
@@ -625,7 +628,9 @@
 				tecal_events_end_time: ( !has_end_input.checked || allday_input.checked ) ? begin_time_input.value : end_time_input.value,
 				tecal_events_has_end: has_end_input.checked,
 				tecal_events_description: description_input.value,
-				tecal_events_calendar: ( calendar_input.options[calendar_input.selectedIndex] ) ? calendar_input.options[calendar_input.selectedIndex].value : 'calendar'
+				tecal_events_calendar: ( calendar_input.options[calendar_input.selectedIndex] ) ? calendar_input.options[calendar_input.selectedIndex].value : 'calendar',
+				// Add nonce to request
+				tecal_ajax_nonce: TE_CAL.tecal_ajax_nonce
 			};
 
 			if( modalCase === 'edit' ) {

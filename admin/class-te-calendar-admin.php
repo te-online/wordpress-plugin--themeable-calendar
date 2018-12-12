@@ -116,7 +116,8 @@ class Te_Calendar_Admin {
 				'validate_begin_time_message' => __( 'Begin time has to be a valid time.', 'te-calendar' ),
 				'validate_end_date_message' => __( 'End date has to be a valid date.', 'te-calendar' ),
 				'validate_end_time_message' => __( 'End time has to be a valid time.', 'te-calendar' )
-			)
+			),
+			'tecal_ajax_nonce' => wp_create_nonce( 'tecal_events_edit' )
 		) );
 
 		wp_enqueue_script( $this->plugin_name . "moment", plugin_dir_url( __FILE__ ) . 'lib/fullcalendar/lib/moment-with-locales.min.js', array( 'jquery' ), $this->version, false );
@@ -413,14 +414,9 @@ class Te_Calendar_Admin {
 	public function ajax_save_edit_event() {
 		$post_id = $_POST['tecal_events_post_id'];
 
-		// verify this came from the our screen and with proper authorization.
-		// if ( !isset($_POST['tecal_events_noncename']) || !wp_verify_nonce( $_POST['tecal_events_noncename'], 'tecal_events'.$post_id )) {
-		//   return $post_id;
-		// }
-
-		// verify if this is an auto save routine. If it is our form has not been submitted, so we dont want to do anything
-		if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) {
-		  return $post_id;
+		// Verify this came from the our screen and with proper authorization.
+		if ( !isset( $_POST['tecal_ajax_nonce'] ) || !wp_verify_nonce( $_POST['tecal_ajax_nonce'], 'tecal_events_edit' )) {
+		  return;
 		}
 
 		// Check permissions
@@ -493,6 +489,11 @@ class Te_Calendar_Admin {
 	public function ajax_save_move_event() {
 		$post_id = $_POST['tecal_events_post_id'];
 
+		// Verify this came from the our screen and with proper authorization.
+		if ( !isset( $_POST['tecal_ajax_nonce'] ) || !wp_verify_nonce( $_POST['tecal_ajax_nonce'], 'tecal_events_edit' )) {
+		  return;
+		}
+
 		// Check permissions
 		if ( !current_user_can( 'edit_post', $post_id ) ) {
 			echo "Current user can't edit this kind of posts.";
@@ -537,6 +538,12 @@ class Te_Calendar_Admin {
 		* @since 		0.1.0
 		*/
 	public function ajax_save_new_event() {
+		// Verify this came from the our screen and with proper authorization.
+		if ( !isset( $_POST['tecal_ajax_nonce'] ) || !wp_verify_nonce( $_POST['tecal_ajax_nonce'], 'tecal_events_edit' )) {
+		  return;
+		}
+
+		// Verify permissions.
 		if ( !current_user_can( 'edit_posts' ) ) {
 			echo "Error, user can't edit posts";
 			return;
@@ -605,6 +612,12 @@ class Te_Calendar_Admin {
 	public function ajax_delete_event() {
 		$post_id = $_POST['tecal_events_post_id'];
 
+		// Verify this came from the our screen and with proper authorization.
+		if ( !isset( $_POST['tecal_ajax_nonce'] ) || !wp_verify_nonce( $_POST['tecal_ajax_nonce'], 'tecal_events_edit' )) {
+		  return 0;
+		}
+
+		// Verify permissions.
 		if ( !current_user_can( 'delete_post', $post_id ) ) {
 			echo "Error, user can't delete this post.";
 			return;
@@ -623,6 +636,17 @@ class Te_Calendar_Admin {
 	public function ajax_get_acf_form() {
 		$post_id = $_POST['tecal_events_post_id'];
 
+		// Verify this came from the our screen and with proper authorization.
+		if ( !isset( $_POST['tecal_ajax_nonce'] ) || !wp_verify_nonce( $_POST['tecal_ajax_nonce'], 'tecal_events_edit' )) {
+		  return;
+		}
+
+		// Verify permissions.
+		if ( !current_user_can( 'edit_post', $post_id ) ) {
+			echo "Current user can't edit this kind of posts.";
+			return;
+		}
+
 		if( function_exists( 'acf_form' ) ) {
 			acf_form(
 				array(
@@ -639,15 +663,6 @@ class Te_Calendar_Admin {
 			echo '';
 			wp_die();
 		}
-	}
-
-	/**
-	 * Do nothing, since ACF handles everything.
-	 *
-	 * @since 0.4.0
-	 */
-	public function ajax_acf_save() {
-		wp_die();
 	}
 
 	/**
