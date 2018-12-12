@@ -320,7 +320,7 @@
 			var acf_column = modal.querySelector('.tecal__edit-grid-column-right');
 
 			// Remove ACF form
-			if(acf_column && acf) {
+			if(acf_column && window.acf) {
 				modal.classList.remove('has_acf');
 				acf_column.innerHTML = '';
 				acf.doAction('remove', $(acf_column));

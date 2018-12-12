@@ -121,17 +121,6 @@ class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
 
 				<div id="tecal_calendar"></div>
 
-				<script type="text/javascript">
-					(function($) {
-						$(document).ready(function() {
-
-						// setup fields
-						window.acf.do_action('append', $('.tecal__edit-modal__container'));
-					});
-
-					})(jQuery);
-				</script>
-
 			<?php else: ?>
 
 				<div class="tecal_list_table">
