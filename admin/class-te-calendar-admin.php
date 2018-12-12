@@ -128,10 +128,10 @@ class Te_Calendar_Admin {
 		wp_enqueue_script( $this->plugin_name . "rome", plugin_dir_url( __FILE__ ) . 'lib/rome/rome.min.js', $this->version, false );
 
 
-		// Run ACF form head
-		if(function_exists('acf_form_head') && function_exists('acf_enqueue_uploader')) {
+		// Run ACF form head to add styling to ACF form
+		if( function_exists( 'acf_form_head' ) ) {
 			$screen = get_current_screen();
-			if('edit-tecal_events' === $screen->id) {
+			if( 'edit-tecal_events' === $screen->id ) {
 				acf_form_head();
 			}
 		}
