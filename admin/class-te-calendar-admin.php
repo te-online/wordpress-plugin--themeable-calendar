@@ -108,7 +108,7 @@ class Te_Calendar_Admin {
 		wp_localize_script( $this->plugin_name, 'WPURLS', array( 'siteurl' => get_option('siteurl') ) );
 		wp_localize_script( $this->plugin_name, 'TE_CAL', array(
 			'locale' => get_user_locale(),
-			'timezone' => get_option( 'timezone_string' ),
+			'timezone' => Te_Calendar_Static_Helpers::get_wp_timezone(),
 			'translations' => array(
 				'validate_time_range_message' => __( 'End time has to be later than begin time.', 'te-calendar' ),
 				'validate_date_range_message' => __( 'End date has to be after begin date.', 'te-calendar' ),
@@ -379,9 +379,9 @@ class Te_Calendar_Admin {
 		if( count( $events ) > 0 ) {
 			foreach( $events as $event ) {
 				$event_start = date_create_from_format( 'U', get_post_meta( $event->ID, 'tecal_events_begin', true ) );
-				$event_start->setTimezone( new DateTimeZone( get_option( 'timezone_string' ) ) );
+				$event_start->setTimezone( new DateTimeZone( Te_Calendar_Static_Helpers::get_wp_timezone() ) );
 				$event_end = date_create_from_format( 'U', get_post_meta( $event->ID, 'tecal_events_end', true ) );
-				$event_end->setTimezone( new DateTimeZone( get_option( 'timezone_string' ) ) );
+				$event_end->setTimezone( new DateTimeZone( Te_Calendar_Static_Helpers::get_wp_timezone() ) );
 				$prep_event = array(
 					'id' => $event->ID,
 					'title' => $event->post_title,
@@ -437,14 +437,22 @@ class Te_Calendar_Admin {
 		if ( $post->post_type == 'tecal_events' ) {
 
 			if( isset( $_POST['tecal_events_begin'] ) && isset( $_POST['tecal_events_begin_time'] ) ) {
-				$begin_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_begin'] ) . " " . esc_attr( $_POST['tecal_events_begin_time'] ) ), new DateTimeZone( get_option( 'timezone_string' ) ) );
+				$begin_date = date_create_from_format(
+					"Y-m-d H:i",
+					( esc_attr( $_POST['tecal_events_begin'] ) . " " . esc_attr( $_POST['tecal_events_begin_time'] ) ),
+					new DateTimeZone( Te_Calendar_Static_Helpers::get_wp_timezone() )
+				);
 				$begin_date = ( $begin_date == false ) ? date_create() : $begin_date;
 				$begin_date->setTimezone( new DateTimeZone( 'UTC' ) );
 				update_post_meta( $post_id, 'tecal_events_begin', $begin_date->format('U') );
 			}
 
 			if( isset( $_POST['tecal_events_end'] ) && isset( $_POST['tecal_events_end_time'] ) ) {
-				$end_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_end'] ) . " " . esc_attr( $_POST['tecal_events_end_time'] ) ), new DateTimeZone( get_option( 'timezone_string' ) ) );
+				$end_date = date_create_from_format(
+					"Y-m-d H:i",
+					( esc_attr( $_POST['tecal_events_end'] ) . " " . esc_attr( $_POST['tecal_events_end_time'] ) ),
+					new DateTimeZone( Te_Calendar_Static_Helpers::get_wp_timezone() )
+				);
 				$end_date = ( $end_date == false ) ? date_create() : $end_date;
 				$end_date->setTimezone( new DateTimeZone( 'UTC' ) );
 				update_post_meta( $post_id, 'tecal_events_end', $end_date->format('U') );
@@ -492,14 +500,22 @@ class Te_Calendar_Admin {
 		if ( $post && $post->post_type == 'tecal_events' ) {
 
 			if( isset( $_POST['tecal_events_begin'] ) && isset( $_POST['tecal_events_begin_time'] ) ) {
-				$begin_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_begin'] ) . " " . esc_attr( $_POST['tecal_events_begin_time'] ) ), new DateTimeZone( get_option( 'timezone_string' ) ) );
+				$begin_date = date_create_from_format(
+					"Y-m-d H:i",
+					( esc_attr( $_POST['tecal_events_begin'] ) . " " . esc_attr( $_POST['tecal_events_begin_time'] ) ),
+					new DateTimeZone( Te_Calendar_Static_Helpers::get_wp_timezone() )
+				);
 				$begin_date = ( $begin_date == false ) ? date_create() : $begin_date;
 				$begin_date->setTimezone( new DateTimeZone( 'UTC' ) );
 				update_post_meta( $post_id, 'tecal_events_begin', $begin_date->format('U') );
 			}
 
 			if( isset( $_POST['tecal_events_end'] ) && isset( $_POST['tecal_events_end_time'] ) ) {
-				$end_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_end'] ) . " " . esc_attr( $_POST['tecal_events_end_time'] ) ), new DateTimeZone( get_option( 'timezone_string' ) ) );
+				$end_date = date_create_from_format(
+					"Y-m-d H:i",
+					( esc_attr( $_POST['tecal_events_end'] ) . " " . esc_attr( $_POST['tecal_events_end_time'] ) ),
+					new DateTimeZone( Te_Calendar_Static_Helpers::get_wp_timezone() )
+				);
 				$end_date = ( $end_date == false ) ? date_create() : $end_date;
 				$end_date->setTimezone( new DateTimeZone( 'UTC' ) );
 				update_post_meta( $post_id, 'tecal_events_end', $end_date->format('U') );
@@ -535,14 +551,22 @@ class Te_Calendar_Admin {
 		$post = get_post( $post_id );
 		if ( $post ) {
 			if( isset( $_POST['tecal_events_begin'] ) && isset( $_POST['tecal_events_begin_time'] ) ) {
-				$begin_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_begin'] ) . " " . esc_attr( $_POST['tecal_events_begin_time'] ) ), new DateTimeZone( get_option( 'timezone_string' ) ) );
+				$begin_date = date_create_from_format(
+					"Y-m-d H:i",
+					( esc_attr( $_POST['tecal_events_begin'] ) . " " . esc_attr( $_POST['tecal_events_begin_time'] ) ),
+					new DateTimeZone( Te_Calendar_Static_Helpers::get_wp_timezone() )
+				);
 				$begin_date = ( $begin_date == false ) ? date_create() : $begin_date;
 				$begin_date->setTimezone( new DateTimeZone( 'UTC' ) );
 				update_post_meta( $post_id, 'tecal_events_begin', $begin_date->format('U') );
 			}
 
 			if( isset( $_POST['tecal_events_end'] ) && isset( $_POST['tecal_events_end_time'] ) ) {
-				$end_date = date_create_from_format( "Y-m-d H:i", ( esc_attr( $_POST['tecal_events_end'] ) . " " . esc_attr( $_POST['tecal_events_end_time'] ) ), new DateTimeZone( get_option( 'timezone_string' ) ) );
+				$end_date = date_create_from_format(
+					"Y-m-d H:i",
+					( esc_attr( $_POST['tecal_events_end'] ) . " " . esc_attr( $_POST['tecal_events_end_time'] ) ),
+					new DateTimeZone( Te_Calendar_Static_Helpers::get_wp_timezone() )
+				);
 				$end_date = ( $end_date == false ) ? date_create() : $end_date;
 				$end_date->setTimezone( new DateTimeZone( 'UTC' ) );
 				update_post_meta( $post_id, 'tecal_events_end', $end_date->format('U') );
@@ -845,11 +869,11 @@ class Te_Calendar_Admin {
 		foreach ( $fetchable_calendars as $calendar ) {
 			// Get ICS file from remote location
 			$ical = new ICal\ICal( array(
-				'defaultTimeZone' => get_option( 'timezone_string' )
+				'defaultTimeZone' => Te_Calendar_Static_Helpers::get_wp_timezone()
 			) );
 			$ical->initUrl( $calendar->ical_feed_url );
 			// Set timezone.
-			$timezone = new DateTimeZone( get_option( 'timezone_string' ) );
+			$timezone = new DateTimeZone( Te_Calendar_Static_Helpers::get_wp_timezone() );
 			// Get events from ICS file from now - 1 year until now + 1 year
 
 			try {
@@ -1015,9 +1039,9 @@ class Te_Calendar_Admin {
 			'get_callback' => function( $event ) {
 				// Parse dates
 				$event_start = date_create_from_format( 'U', get_post_meta( $event['id'], 'tecal_events_begin', true ) );
-				$event_start->setTimezone( new DateTimeZone( get_option( 'timezone_string' ) ) );
+				$event_start->setTimezone( new DateTimeZone( Te_Calendar_Static_Helpers::get_wp_timezone() ) );
 				$event_end = date_create_from_format( 'U', get_post_meta( $event['id'], 'tecal_events_end', true ) );
-				$event_end->setTimezone( new DateTimeZone( get_option( 'timezone_string' ) ) );
+				$event_end->setTimezone( new DateTimeZone( Te_Calendar_Static_Helpers::get_wp_timezone() ) );
 
 				// Event options
 				$has_end = ( get_post_meta( $event['id'], 'tecal_events_has_end', true ) ) ? true : false;

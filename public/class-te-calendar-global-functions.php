@@ -189,8 +189,7 @@ class Te_Calendar_Global_Functions {
 	 * @since 		0.3.0
 	 */
 	static function locale_date_i18n( $format, $timestamp ) {
-    $timezone_str = get_option( 'timezone_string' ) ?: 'UTC';
-    $timezone = new \DateTimeZone( $timezone_str );
+    $timezone = new \DateTimeZone( Te_Calendar_Static_Helpers::get_wp_timezone() );
 
     // The date in the local timezone.
     $date = new \DateTime( null, $timezone );

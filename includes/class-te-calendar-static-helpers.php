@@ -45,4 +45,25 @@ class Te_Calendar_Static_Helpers {
 
 		return $is_external;
 	}
+
+	/**
+	 * Determine time zone from WordPress options and return as object.
+	 * See https://wordpress.stackexchange.com/a/283094/113600
+	 *
+	 * @return string
+	 */
+	public static function get_wp_timezone() {
+		$timezone_string = get_option( 'timezone_string' );
+
+		if ( ! empty( $timezone_string ) ) {
+				return $timezone_string;
+		}
+
+		$offset  = get_option( 'gmt_offset' );
+		$hours   = (int) $offset;
+		$minutes = ( $offset - floor( $offset ) ) * 60;
+		$offset  = sprintf( '%+03d:%02d', $hours, $minutes );
+
+		return $offset;
+	}
 }
