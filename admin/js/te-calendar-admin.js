@@ -121,24 +121,19 @@
 				{
 					tecal_events_post_id: calEvent ? calEvent.id : null,
 					action: 'te_calendar_get_acf_form'
-				}, function(form) {
-					console.log({form})
-					if(form && form.length > 0) {
+				}, function (form) {
+					if (form && form.length > 0) {
 						// Append form
 						var acf_column = modal.querySelector('.tecal__edit-grid-column-right');
 						acf_column.innerHTML = form;
-						var acf_form = acf_column.querySelector('#acf-form');
-						console.log({acf_form});
 						// See how many fields the form has
 						var fields = acf_column.querySelectorAll('.acf-field');
 						// One hidden field is always present, but we need more
-						if(fields && fields.length > 1) {
+						if (fields && fields.length > 1) {
 							// Adjust layout of modal
 							modal.classList.add('has_acf');
 							// Set-up fields
-							acf.do_action('append', $(acf_form));
-							// Remove ACF button, we'll do that in our submit logic
-							modal.querySelector('.acf-form-submit').remove();
+							acf.do_action('append', $(acf_column));
 						} else {
 							// No useful ACF fields found
 							acf_column.innerHTML = '';
@@ -438,49 +433,28 @@
 			// Show within the button caption that we are working on it.
 			e.target.value = e.target.getAttribute('data-busycaption');
 
+			// A method to be called, when saving is complete.
 			var complete = function(e) {
 				e.target.value = e.target.getAttribute('data-defaultcaption');
 				tecal_modalUnregisterEventListener();
 				$( '#tecal_calendar' ).fullCalendar( 'refetchEvents' );
 			};
 
+			// Add ACF data to our update request, if available.
+			var acf_form = $('.has_acf #acf-form');
+			if(acf_form) {
+				// Serialize data in acf form.
+				var acf_data = $(acf_form).serializeArray();
+				// Apply every field to the data object, we're sending.
+				for(var i = 0; i < acf_data.length; i++) {
+					var field = acf_data[i];
+					data[field.name] = field.value;
+				}
+			}
+
 			// Post data.
 			$.post(ajaxurl, data, function() {
-				// Try saving ACF data
-				var acf_form = $('.has_acf #acf-form');
-				// acf_form.append('<input type="hidden" name="action" value="acf/save_post" />');
-				$('input[name="_acf_validation"]').val('0');
-				if(acf_form) {
-					// acf.do_action('validation_begin', $(acf_form));
-					// acf.do_action('submit', $(acf_form));
-					$.ajax({
-						url: ajaxurl,
-						method: 'post',
-						data: $(acf_form).serialize(),
-						success: () => {
-							// unlock the form
-							// acf.validation.toggle( $form, 'unlock' );
-							// Close modal
-							complete(e);
-						}
-					});
-					// $.post(window.location.href, $(acf_form).serialize())
-					// .done(function() {
-					// 	// Close modal
-					// 	complete(e);
-					// })
-					// .fail(function(error) {
-					// 	// Show error
-					// 	console.log({error})
-					// 	e.target.value = e.target.getAttribute('data-defaultcaption');
-					// 	tecal_displayModalErrors(error.statusText);
-					// 	e.preventDefault();
-					// 	return false;
-					// });
-				} else {
-					// Close modal
-					complete(e);
-				}
+				complete(e);
 			});
 
 			e.preventDefault();

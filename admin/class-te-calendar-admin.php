@@ -127,16 +127,13 @@ class Te_Calendar_Admin {
 
 		wp_enqueue_script( $this->plugin_name . "rome", plugin_dir_url( __FILE__ ) . 'lib/rome/rome.min.js', $this->version, false );
 
-		$screen = get_current_screen();
 
 		// Run ACF form head
 		if(function_exists('acf_form_head') && function_exists('acf_enqueue_uploader')) {
+			$screen = get_current_screen();
 			if('edit-tecal_events' === $screen->id) {
 				acf_form_head();
 			}
-			// acf_enqueue_uploader();
-			add_action( 'wp_ajax_nopriv_acf_form_head', 'acf_form_head' );
-			add_action( 'wp_ajax_acf_form_head', 'acf_form_head' );
 		}
 
 	}
@@ -469,6 +466,13 @@ class Te_Calendar_Admin {
 			$post->post_title = esc_attr( $_POST['tecal_events_title'] );
 			$post->post_content = esc_attr( $_POST['tecal_events_description'] );
 
+			// Update ACF Fields
+			if( function_exists( 'update_field' ) && isset( $_POST['acf'] ) ) {
+				foreach( $_POST['acf'] as $field_name => $field_value ) {
+					update_field( $field_name, esc_attr( $field_value ), $post_id );
+				}
+			}
+
 			wp_update_post( $post );
 
 			if( isset( $_POST['tecal_events_calendar'] ) ) {
@@ -580,6 +584,13 @@ class Te_Calendar_Admin {
 
 			update_post_meta( $post_id, 'tecal_events_has_end', ( $_POST['tecal_events_has_end'] == "true" ) ? "1" : "0" );
 
+			// Update ACF Fields
+			if( function_exists( 'update_field' ) && isset( $_POST['acf'] ) ) {
+				foreach( $_POST['acf'] as $field_name => $field_value ) {
+					update_field( $field_name, esc_attr( $field_value ), $post_id );
+				}
+			}
+
 			return 1;
 		}
 
@@ -613,7 +624,7 @@ class Te_Calendar_Admin {
 		$post_id = $_POST['tecal_events_post_id'];
 
 		if( function_exists( 'acf_form' ) ) {
-			acf_form( array( 'post_id' => $post_id ) );
+			acf_form( array( 'post_id' => $post_id && $post_id > 0 ? $post_id : 'new_post', 'html_submit_button' => '' ) );
 			wp_die();
 		} else {
 			echo '';
