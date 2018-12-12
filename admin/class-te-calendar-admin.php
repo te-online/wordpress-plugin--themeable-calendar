@@ -624,7 +624,16 @@ class Te_Calendar_Admin {
 		$post_id = $_POST['tecal_events_post_id'];
 
 		if( function_exists( 'acf_form' ) ) {
-			acf_form( array( 'post_id' => $post_id && $post_id > 0 ? $post_id : 'new_post', 'html_submit_button' => '' ) );
+			acf_form(
+				array(
+					'post_id' => $post_id ? $post_id : 'new_post',
+					'html_submit_button' => '',
+					'new_post' => $post_id ? array() : array(
+						'post_type'		=> 'tecal_events',
+						'post_status'	=> 'publish'
+					)
+				)
+			);
 			wp_die();
 		} else {
 			echo '';
