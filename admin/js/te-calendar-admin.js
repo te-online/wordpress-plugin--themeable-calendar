@@ -448,10 +448,13 @@
 			$.post(ajaxurl, data, function() {
 				// Try saving ACF data
 				var acf_form = $('.has_acf #acf-form');
-				// acf_form.append('<input type="hidden" name="action" value="acf/validate_save_post" />');
+				// acf_form.append('<input type="hidden" name="action" value="acf/save_post" />');
+				$('input[name="_acf_validation"]').val('0');
 				if(acf_form) {
+					// acf.do_action('validation_begin', $(acf_form));
+					// acf.do_action('submit', $(acf_form));
 					$.ajax({
-						url: window.location.href,
+						url: ajaxurl,
 						method: 'post',
 						data: $(acf_form).serialize(),
 						success: () => {
