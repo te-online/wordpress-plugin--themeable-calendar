@@ -34,7 +34,8 @@
 						tecal_events_begin_time: moment(calEvent.start).format('HH:mm'),
 						tecal_events_end: ( calEvent.hasEnd === true || calEvent.hasEnd === "1" ) ? moment(calEvent.end).format('YYYY-MM-DD') : moment(calEvent.start).format('YYYY-MM-DD'),
 						tecal_events_end_time: ( calEvent.hasEnd === true || calEvent.hasEnd === "1" ) ? moment(calEvent.end).format('HH:mm') : moment(calEvent.start).format('HH:mm'),
-						action: 'te_calendar_move_event'
+						action: 'te_calendar_move_event',
+						tecal_ajax_nonce: TE_CAL.tecal_ajax_nonce
 					};
 
 					$.post(ajaxurl, data, function() {
@@ -115,6 +116,33 @@
 			var calendar_input = document.querySelector('[name="tecal_events_calendar"]');
 
 			var edit_id_hidden = document.querySelector('[name="tecal_events_edit_id"]');
+
+			// Fetch ACF form if available
+			$.post(ajaxurl,
+				{
+					tecal_events_post_id: calEvent ? calEvent.id : null,
+					action: 'te_calendar_get_acf_form',
+					tecal_ajax_nonce: TE_CAL.tecal_ajax_nonce
+				}, function (form) {
+					if (form && form.length > 0) {
+						// Append form
+						var acf_column = modal.querySelector('.tecal__edit-grid-column-right');
+						acf_column.innerHTML = form;
+						// See how many fields the form has
+						var fields = acf_column.querySelectorAll('.acf-field');
+						// One hidden field is always present, but we need more
+						if (fields && fields.length > 1) {
+							// Adjust layout of modal
+							modal.classList.add('has_acf');
+							// Set-up fields
+							acf.do_action('append', $(acf_column));
+						} else {
+							// No useful ACF fields found
+							acf_column.innerHTML = '';
+						}
+					}
+				}
+			);
 
 			allday_input.addEventListener('click', tecal_alldayClicked, true);
 			has_end_input.addEventListener('click', tecal_hasEndClicked, true);
@@ -207,6 +235,9 @@
 				delete_button.disabled = true;
 			}
 
+			// Focus title input
+			title_input.focus();
+
 			rome(begin_date_input, { time: false, initialValue: begin_date_input.value });
 			rome(begin_time_input, { date: false, initialValue: begin_time_input.value });
 			rome(end_date_input, { time: false, initialValue: end_date_input.value });
@@ -288,6 +319,14 @@
 			var delete_button = document.querySelector('[name="tecal_edit-modal_delete"]');
 			// var has_end_input = document.querySelector('[name="tecal_events_has_end"]');
 			// var allday_input = document.querySelector('[name="tecal_events_allday"]');
+			var acf_column = modal.querySelector('.tecal__edit-grid-column-right');
+
+			// Remove ACF form
+			if(acf_column && window.acf) {
+				modal.classList.remove('has_acf');
+				acf_column.innerHTML = '';
+				acf.doAction('remove', $(acf_column));
+			}
 
 			modal.classList.remove('is-visible');
 			// Incorporate that an animation is taking place.
@@ -392,17 +431,35 @@
 				e.preventDefault();
 				return false;
 			}
+
 			// Prepare data.
 			var data = prepareInputData(modalCase);
 
 			// Show within the button caption that we are working on it.
 			e.target.value = e.target.getAttribute('data-busycaption');
 
-			// Post data.
-			$.post(ajaxurl, data, function() {
+			// A method to be called, when saving is complete.
+			var complete = function(e) {
 				e.target.value = e.target.getAttribute('data-defaultcaption');
 				tecal_modalUnregisterEventListener();
 				$( '#tecal_calendar' ).fullCalendar( 'refetchEvents' );
+			};
+
+			// Add ACF data to our update request, if available.
+			var acf_form = $('.has_acf #acf-form');
+			if(acf_form) {
+				// Serialize data in acf form.
+				var acf_data = $(acf_form).serializeArray();
+				// Apply every field to the data object, we're sending.
+				for(var i = 0; i < acf_data.length; i++) {
+					var field = acf_data[i];
+					data[field.name] = field.value;
+				}
+			}
+
+			// Post data.
+			$.post(ajaxurl, data, function() {
+				complete(e);
 			});
 
 			e.preventDefault();
@@ -503,7 +560,8 @@
 
 			var data = {
 				tecal_events_post_id: edit_id_hidden.value,
-				action: 'te_calendar_delete_event'
+				action: 'te_calendar_delete_event',
+				tecal_ajax_nonce: TE_CAL.tecal_ajax_nonce
 			};
 
 			e.target.value = e.target.getAttribute('data-busycaption');
@@ -570,7 +628,9 @@
 				tecal_events_end_time: ( !has_end_input.checked || allday_input.checked ) ? begin_time_input.value : end_time_input.value,
 				tecal_events_has_end: has_end_input.checked,
 				tecal_events_description: description_input.value,
-				tecal_events_calendar: ( calendar_input.options[calendar_input.selectedIndex] ) ? calendar_input.options[calendar_input.selectedIndex].value : 'calendar'
+				tecal_events_calendar: ( calendar_input.options[calendar_input.selectedIndex] ) ? calendar_input.options[calendar_input.selectedIndex].value : 'calendar',
+				// Add nonce to request
+				tecal_ajax_nonce: TE_CAL.tecal_ajax_nonce
 			};
 
 			if( modalCase === 'edit' ) {

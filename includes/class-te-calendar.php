@@ -200,6 +200,7 @@ class Te_Calendar {
 		$this->loader->add_action( 'wp_ajax_te_calendar_save_new_event', $plugin_admin, 'ajax_save_new_event' );
 		$this->loader->add_action( 'wp_ajax_te_calendar_delete_event', $plugin_admin, 'ajax_delete_event' );
 		$this->loader->add_action( 'wp_ajax_te_calendar_move_event', $plugin_admin, 'ajax_save_move_event' );
+		$this->loader->add_action( 'wp_ajax_te_calendar_get_acf_form', $plugin_admin, 'ajax_get_acf_form' );
 
 		$this->loader->add_action( 'admin_init', $event_controller, 'event_metaboxes_register' );
 		$this->loader->add_action( 'save_post', $event_controller, 'event_details_save' );
@@ -235,6 +236,10 @@ class Te_Calendar {
 		$this->loader->add_filter( 'manage_tecal_events_posts_columns', $plugin_admin, 'add_event_columns');
 		$this->loader->add_action( 'manage_tecal_events_posts_custom_column' , $plugin_admin, 'display_event_columns', 10, 2 );
 		$this->loader->add_action( 'pre_get_posts' , $plugin_admin, 'event_column_order_adjustments', 10, 2 );
+
+		// Add details to REST API response / customize endpoints
+		$this->loader->add_action( 'rest_api_init' , $plugin_admin, 'add_event_data_to_rest_response', 10, 2 );
+		$this->loader->add_action( 'rest_tecal_events_query' , $plugin_admin, 'rest_response_filter_and_sort', 10, 2 );
 	}
 
 	/**

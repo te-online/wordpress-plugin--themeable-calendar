@@ -61,6 +61,10 @@
   box-shadow: 0 0 10px 5px #aaa;
 }
 
+.has_acf .tecal__edit-modal__inner {
+	width: 600px;
+}
+
 .tecal__edit-modal__inner h3 {
 	margin-top: 12px;
 }
@@ -220,3 +224,9 @@ textarea.infos {
 .ui-timepicker-rtl{ direction: rtl; }
 .ui-timepicker-rtl dl { text-align: right; }
 .ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; } */
+
+.has_acf .tecal__edit-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-column-gap: 20px;
+}

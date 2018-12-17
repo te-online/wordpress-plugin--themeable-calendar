@@ -59,6 +59,51 @@ All options are optional.
 - `archive` – whether or not to display *only* events from the past.
 - `calendar` – the calendar to use for displaying events. Multiple comma separated.
 
+#### JSON REST API
+By default, REST API access to calendars and events is enabled from (including) version 0.4.0 and upwards. Standard WordPress endpoints are used. You can add custom attributes for your own purposes. Take a look at the specific chapter in the [Developer handbook](https://developer.wordpress.org/rest-api/extending-the-rest-api/modifying-responses/).
+
+Calendars are a custom `term` and events are represented by a custom `post_type`.
+
+All standard limitations and usages for the WordPress REST API apply, be aware of that. Example: Responses are limited to a certain number of items. Use the `X-WP-Total` header to determine how many entries exist and use the `page` query parameter to browse through the paginated entries.
+
+Replace `https://example.org` with your own WordPress URL in the examples below.
+
+##### Calendars
+To get a list of calendars from the WordPress REST API, try the following endpoint:
+(GET) `https://example.org/wp-json/wp/v2/calendars`.
+
+**Attributes**. The field `name` is your calendar's name. You can use the field `id` to fetch events only for a specific calendar or for a list of calendars.
+
+##### Events
+After we got details about the calendars from the API, we can use this information to retrieve events for specific calendars.
+
+Use the endpoint (GET) `https://example.org/wp-json/wp/v2/events?calendars=1,2` to fetch events for the calendars that have assigned the ids `1` and `2`. You can also just use one calendar-id.
+
+To retrieve all events from all calendars, use this endpoint `https://example.org/wp-json/wp/v2/events`.
+
+**Attributes**. The plugin adds one custom attribute to each event in the reponse called `event_details`.
+
+This attribute is an object with values like `location`, `begin`, `end`, `begin_date`, `end_date`, `begin_time`, `end_time`, `all_day`, `has_end`. The `end`, `end_date` and `end_time` attributes will be `null`, if `has_end` is `false`. The `begin_time` and `end_time` attributes will be `null`, if `all_day` is `true`.
+
+Use the `title.rendered` and `content.rendered` attributes, that are added by default to the response, to get the *title* and *description* (*content*) for the specific event.
+
+**Time ranges**. To fetch events within certain time ranges, we can use the custom query fields `begin_after` and `end_before`, as well as the default fields `order` and `per_page`. The fields `begin_after` and `end_before` are *inclusive*, meaning that the date you specify (format: `YYYY-MM-DD`) will be included in the results on both ends of the boundary.
+
+Examples:
+
+- **Fetching events between two dates**
+
+Assuming we want the events between the 1st of January 2011 and the 31st of July 2011. The start and end of our boundaries can be specified in the query attributes `begin_after` and `end_before`. To get the earliest events first instead of the latest events, we use `order`=`asc`.
+
+(GET) `https://example.org/wp-json/wp/v2/events?begin_after=2011-01-01&end_before=2011-07-31&order=asc`
+
+- **Fetching 3 events after specific date**
+
+Assuming we just want the 3 first events in the year 2019. Specifying the `begin_after` will get us all events after that date (including the date itself). Assigining `3` to the `per_page` parameter, reduces our results to 3 entries.
+
+(GET) `https://example.org/wp-json/wp/v2/events?begin_after=2019-01-01&order=asc&per_page=3`
+
+
 ### 💅 Template Tags you can use today!
 
 For an example of how to create a template see the files in the `templates` folder of the plugin. *The template functions are inspired by the core WordPress functions you can use for posts and pages.*
@@ -128,8 +173,14 @@ Screenshots are to follow.
 
 ## 💇 Changelog
 
-### 0.4.0 Beta (tba)
-- List View – Add view switch. Now we can also see and remove trashed events.
+### 0.4.0 Beta (17 Dec 2018)
+- REST API: Add support for the WordPress JSON API. You can now fetch calendars and events through the API, and filter and sort the result.
+- Secure Ajax request with nonces.
+- Add basic support for [Advanced Custom Fields](https://www.advancedcustomfields.com/) in calendar view.
+
+### 0.3.9.2 Beta (7 Dec 2018)
+- Fixes to the modal event editor
+- Additions to the hotfix from 0.3.9.1
 
 ### 0.3.9.1 Beta (7 Dec 2018)
 - Hotfix: Fix accidental call to `get_field` of ACF instead of `get_term_meta`.
