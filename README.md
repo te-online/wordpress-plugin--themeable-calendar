@@ -77,7 +77,7 @@ To get a list of calendars from the WordPress REST API, try the following endpoi
 ##### Events
 After we got details about the calendars from the API, we can use this information to retrieve events for specific calendars.
 
-Use the endpoint (GET) `https://example.org/wp-json/wp/v2/events?tecal_calendars=1,2` to fetch events for the calendars that have assigned the ids `1` and `2`. You can also just use one calendar-id.
+Use the endpoint (GET) `https://example.org/wp-json/wp/v2/events?calendars=1,2` to fetch events for the calendars that have assigned the ids `1` and `2`. You can also just use one calendar-id.
 
 To retrieve all events from all calendars, use this endpoint `https://example.org/wp-json/wp/v2/events`.
 
@@ -173,8 +173,10 @@ Screenshots are to follow.
 
 ## 💇 Changelog
 
-### 0.4.0 Beta (tba)
+### 0.4.0 Beta (17 Dec 2018)
 - REST API: Add support for the WordPress JSON API. You can now fetch calendars and events through the API, and filter and sort the result.
+- Secure Ajax request with nonces.
+- Add basic support for [Advanced Custom Fields](https://www.advancedcustomfields.com/) in calendar view.
 
 ### 0.3.9.2 Beta (7 Dec 2018)
 - Fixes to the modal event editor

@@ -46,8 +46,10 @@ class Te_Calendar_Custom_List_Table extends WP_Posts_List_Table {
 			) );
 
     	?>
-			</form>
-    	<h2 class="nav-tab-wrapper tecal__nav-tab-wrapper">
+
+			</form> <!-- @TODO: We need to close the form of the list-table earlier for ACF to work -->
+
+			<h2 class="nav-tab-wrapper tecal__nav-tab-wrapper">
 		    <a href="?post_type=tecal_events&view=calendar" class="nav-tab<?php echo (!$this->is_list_view) ? ' nav-tab-active' : ''; ?>">
 		    	<?php _e('Calendar view', 'te-calendar'); ?>
 		    </a>
