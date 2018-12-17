@@ -642,7 +642,8 @@ class Te_Calendar_Admin {
 		}
 
 		// Verify permissions.
-		if ( !current_user_can( 'edit_post', $post_id ) ) {
+		if ( ( $post_id && !current_user_can( 'edit_post', $post_id ) )
+			|| ( !$post_id && !current_user_can( 'edit_posts' ) ) ) {
 			echo "Current user can't edit this kind of posts.";
 			return;
 		}
