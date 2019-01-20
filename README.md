@@ -58,6 +58,7 @@ All options are optional.
 - `template` – the name of the template file in your theme's directory. Defaults to `default` which is the template shipped with this plugin.
 - `archive` – whether or not to display *only* events from the past.
 - `calendar` – the calendar to use for displaying events. Multiple comma separated.
+- `filter` – a search term to filter events with. Only matching will be shown.
 
 #### JSON REST API
 By default, REST API access to calendars and events is enabled from (including) version 0.4.0 and upwards. Standard WordPress endpoints are used. You can add custom attributes for your own purposes. Take a look at the specific chapter in the [Developer handbook](https://developer.wordpress.org/rest-api/extending-the-rest-api/modifying-responses/).
@@ -172,6 +173,9 @@ No frequently asked questions, yet. *If you have a question, open an issue on Gi
 Screenshots are to follow.
 
 ## 💇 Changelog
+
+### 0.4.1 Beta (20 Jan 2019)
+- Add `filter` property to Shortcode. Enables you to only show events that contain a specific search string.
 
 ### 0.4.0 Beta (17 Dec 2018)
 - REST API: Add support for the WordPress JSON API. You can now fetch calendars and events through the API, and filter and sort the result.

@@ -29,7 +29,8 @@ class Te_Calendar_Shortcode {
 				'num_events' => '5',
 				'template' => 'default',
 				'archive' => 'false',
-				'calendar' => 'calendar'
+				'calendar' => 'calendar',
+				'filter' => ''
 			),
 			$atts,
 			'calendar'
@@ -42,50 +43,59 @@ class Te_Calendar_Shortcode {
 		$calendars = sanitize_text_field( $atts['calendar'] );
 		$calendars = explode( ',', $calendars );
 
+		$filter = sanitize_text_field( $atts['filter'] );
+
 		$today = strtotime( 'today midnight' );
 
 		$compare_operator = ( $atts['archive'] == 'true' ) ? '<' : '>=';
 		$order = ( $atts['archive'] == 'true' ) ? 'DESC' : 'ASC';
 
-		query_posts( array(
-				'posts_per_page' => $num_events,
-				'post_type' => 'tecal_events',
-				'orderby' => 'meta_value',
-				'meta_key' => 'tecal_events_begin',
-				'order' => $order,
-				'tax_query' => array(
-			    array(
-			      'taxonomy' => 'tecal_calendars',
-			      'field' => 'slug',
-			      'terms' => $calendars,
-			      'operator' => 'IN'
-			    )
-			  ),
-				'meta_query' => array(
-					'relation' => 'OR',
+		$query = array(
+			'posts_per_page' => $num_events,
+			'post_type' => 'tecal_events',
+			'orderby' => 'meta_value',
+			'meta_key' => 'tecal_events_begin',
+			'order' => $order,
+			's' => $atts['filter'],
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'tecal_calendars',
+					'field' => 'slug',
+					'terms' => $calendars,
+					'operator' => 'IN'
+				)
+			),
+			'meta_query' => array(
+				'relation' => 'OR',
+				array(
+					'key' => 'tecal_events_begin',
+					'value' => $today,
+					'type' => 'numeric',
+					'compare' => $compare_operator
+				),
+				array(
+					'relation' => 'AND',
 					array(
-						'key' => 'tecal_events_begin',
+						'key' => 'tecal_events_end',
 						'value' => $today,
 						'type' => 'numeric',
 						'compare' => $compare_operator
 					),
 					array(
-						'relation' => 'AND',
-						array(
-							'key' => 'tecal_events_end',
-							'value' => $today,
-							'type' => 'numeric',
-							'compare' => $compare_operator
-						),
-						array(
-							'key' => 'tecal_events_has_end',
-							'value' => true,
-							'type' => 'boolean'
-						)
+						'key' => 'tecal_events_has_end',
+						'value' => true,
+						'type' => 'boolean'
 					)
 				)
 			)
 		);
+
+		// Add search query filter string, if provided
+		if( isset( $filter ) && strlen( $filter ) > 0 ) {
+			$query['s'] = $filter;
+		}
+
+		query_posts( $query );
 
 		// Stream template.
 		ob_start();
