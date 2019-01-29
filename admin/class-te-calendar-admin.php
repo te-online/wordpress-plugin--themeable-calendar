@@ -787,6 +787,44 @@ class Te_Calendar_Admin {
 	}
 
 	/**
+		* Add options field for ignore-modified-date to edit calendar page.
+		*
+		* @since 		0.4.2
+		*/
+	public function tecal_calendars_edit_ignore_modified_date_field( $term ) {
+		// put the term ID into a variable
+		$t_id = $term->term_id;
+
+		if( !get_term_meta( $t_id, 'tecal_calendar_ical', true ) ) {
+			return;
+		}
+
+		// retrieve the existing value(s) for this meta field. This returns an array
+		$term_meta = get_term_meta( $t_id, 'tecal_calendar_ignore_modified_date', true ); ?>
+		<tr class="form-field">
+		<th scope="row" valign="top"><label for="term_meta[tecal_calendar_ignore_modified_date]"><?php _e( 'Always update all events', 'te-calendar' ); ?></label></th>
+			<td>
+				<input type="checkbox" name="term_meta[tecal_calendar_ignore_modified_date]" id="term_meta[tecal_calendar_ignore_modified_date]"<?php echo esc_attr( $term_meta ) ? ' checked="checked"' : ''; ?>>
+				<p class="description"><?php _e( 'Try this, if changes to existing events in your calender don\'t get synchronized.', 'te-calendar' ); ?></p>
+			</td>
+		</tr>
+	<?php
+	}
+
+	/**
+		* Add saving of ignore-modified-date option field.
+		*
+		* @since 		0.4.1
+		*/
+	public function tecal_calendars_save_ignore_modified_date_field( $term_id ) {
+		if ( isset( $_POST['term_meta'] ) && isset( $_POST['term_meta']['tecal_calendar_ignore_modified_date'] ) ) {
+			update_term_meta( $term_id, 'tecal_calendar_ignore_modified_date', true );
+		} else {
+			update_term_meta( $term_id, 'tecal_calendar_ignore_modified_date', false );
+		}
+	}
+
+	/**
 		* Add a query var for switching views.
 		*
 		* @since 		0.1.2
@@ -844,12 +882,6 @@ class Te_Calendar_Admin {
 	}
 
 	/**
-		* Add content to the custom columns of list view in admin.
-		*
-		* @since 		0.2.0
-		*/
-
-	/**
 	 * Order by the correct meta field value and not the parsed date
 	 * in list view in admin, when ordering by begin and end fields.
 	 *
@@ -890,9 +922,11 @@ class Te_Calendar_Admin {
 		$fetchable_calendars = [];
 
 		foreach ( $calendars as $calendar ) {
-	    $ical_feed_url = get_term_meta( $calendar->term_id, 'tecal_calendar_ical', true );
+			$ical_feed_url = get_term_meta( $calendar->term_id, 'tecal_calendar_ical', true );
+			$ignore_modified_date = get_term_meta( $calendar->term_id, 'tecal_calendar_ignore_modified_date', true );
 	    if( $ical_feed_url && !empty( $ical_feed_url ) ) {
-	    	$calendar->ical_feed_url = $ical_feed_url;
+				$calendar->ical_feed_url = $ical_feed_url;
+				$calendar->ignore_modified_date = $ignore_modified_date;
 	    	$fetchable_calendars[] = $calendar;
 	    }
 		}
@@ -969,7 +1003,8 @@ class Te_Calendar_Admin {
 					$last_modified = get_post_meta( $local_event->ID, 'tecal_ical_last_modified', true );
 
 					// Check if last_modified date matches the local copy
-					if( $last_modified && !empty( $last_modified ) && $last_modified === $event->last_modified ) {
+					if( !$calendar->ignore_modified_date && $last_modified
+						&& !empty( $last_modified ) && $last_modified === $event->last_modified ) {
 						// nothing to do
 						// return / goto next event
 						continue;

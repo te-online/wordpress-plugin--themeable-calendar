@@ -174,6 +174,9 @@ Screenshots are to follow.
 
 ## 💇 Changelog
 
+### 0.4.2 Beta (29 Jan 2019)
+- Add option to ignore `modified-date` field in iCal feed, to be compatible with Nextcloud.
+
 ### 0.4.1 Beta (20 Jan 2019)
 - Add `filter` property to Shortcode. Enables you to only show events that contain a specific search string.
 
