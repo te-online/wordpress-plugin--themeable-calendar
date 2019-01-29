@@ -1063,7 +1063,9 @@ class Te_Calendar_Admin {
 				update_post_meta( $local_event->ID, 'tecal_events_has_end', true );
 
 				// Last modified
-				update_post_meta( $local_event->ID, 'tecal_ical_last_modified', $event->last_modified );
+				if( isset( $event->last_modified ) ) {
+					update_post_meta( $local_event->ID, 'tecal_ical_last_modified', $event->last_modified );
+				}
 
 				wp_update_post( $local_event );
 			}
