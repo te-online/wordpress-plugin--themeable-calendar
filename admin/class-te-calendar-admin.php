@@ -939,11 +939,12 @@ class Te_Calendar_Admin {
 		foreach ( $fetchable_calendars as $calendar ) {
 			// Get ICS file from remote location
 			$ical = new ICal\ICal( array(
-				'defaultTimeZone' => Te_Calendar_Static_Helpers::get_wp_timezone()
+				// 'defaultTimeZone' => Te_Calendar_Static_Helpers::get_wp_timezone(),
+				// 'replaceWindowsTimeZoneIds' => true
+				// 'defaultTimeZone' => 'UTC'
+				// 'replaceWindowsTimeZoneIds' => true
 			) );
 			$ical->initUrl( $calendar->ical_feed_url );
-			// Set timezone.
-			$timezone = new DateTimeZone( Te_Calendar_Static_Helpers::get_wp_timezone() );
 			// Get events from ICS file from now - 1 year until now + 1 year
 
 			try {
@@ -1042,10 +1043,26 @@ class Te_Calendar_Admin {
 				// DTSTART
 				$start = $ical->iCalDateToDateTime( $event->dtstart_array[3], true );
 				$start->setTimezone( new DateTimeZone( 'UTC' ) );
+				// Outlook Hotfix
+				if( isset( $event->dtstart_array[0]['TZID'] ) && $event->dtstart_array[0]['TZID'] === 'W. Europe Standard Time' ) {
+					$tz = new DateTimeZone( 'Europe/Berlin' );
+    			$transition = $tz->getTransitions( $event->dtstart_array[2] );
+					$start = date_sub( $start, date_interval_create_from_date_string(
+						$transition[0]['isdst'] ? "2 hours" : "1 hour"
+					) );
+				}
 				update_post_meta( $local_event->ID, 'tecal_events_begin', $start->format( 'U' ) );
 				// DTEND
 				$end = $ical->iCalDateToDateTime( $event->dtend_array[3], true );
 				$end->setTimezone( new DateTimeZone( 'UTC' ) );
+				// Outlook Hotfix
+				if( isset( $event->dtend_array[0]['TZID'] ) && $event->dtend_array[0]['TZID'] === 'W. Europe Standard Time' ) {
+					$tz = new DateTimeZone( 'Europe/Berlin' );
+    			$transition = $tz->getTransitions( $event->dtend_array[2] );
+					$end = date_sub( $end, date_interval_create_from_date_string(
+						$transition[0]['isdst'] ? "2 hours" : "1 hour"
+					) );
+				}
 				update_post_meta( $local_event->ID, 'tecal_events_end', $end->format( 'U' ) );
 
 				// LOCATION
@@ -1140,6 +1157,12 @@ class Te_Calendar_Admin {
 				'type'        => 'object'
 			),
 		));
+	}
+
+	function getDST( $tzId, $time ) {
+		$tz = new DateTimeZone($tzId);
+		$transition = $tz->getTransitions($time);
+		return $transition[0]['isdst'];
 	}
 
 	/**
