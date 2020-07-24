@@ -164,9 +164,6 @@ class Te_Calendar_Admin {
 				),
 				'public' => true,
 				'has_archive' => false,
-				'rewrite' => array(
-					'slug' => __('events', 'te-calendar')
-				),
 				'supports' => array('title', 'editor', 'taxonomy'),
 				'menu_position' => 100,
 				'menu_icon' => 'dashicons-calendar',
