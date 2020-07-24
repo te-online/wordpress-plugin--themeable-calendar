@@ -3,11 +3,11 @@
     "description": "ICS Parser",
     "homepage": "https://github.com/u01jmg3/ics-parser",
     "keywords": [
+        "ical",
+        "ical-parser",
         "icalendar",
         "ics",
         "ics-parser",
-        "ical",
-        "ical-parser",
         "ifb"
     ],
     "type": "library",
@@ -21,20 +21,22 @@
             "name": "John Grogg",
             "email": "john.grogg@gmail.com",
             "role": "Developer/Prior Owner"
-        },
+        }
+    ],
+    "funding": [
         {
-            "name": "Martin Thoma",
-            "email": "info@martin-thoma.de",
-            "role": "Original Developer"
+            "type": "github",
+            "url": "https://github.com/sponsors/u01jmg3"
         }
     ],
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.3.9",
         "ext-mbstring": "*",
-        "nesbot/carbon": "~1.28"
+        "nesbot/carbon": "^1.39.0 || ^2.0"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "~2.9.1"
+        "squizlabs/php_codesniffer": "~2.9.1",
+        "phpunit/phpunit": "^4"
     },
     "autoload": {
         "psr-0": {
@@ -45,5 +47,10 @@
         "platform": {
             "php": "5.3.29"
         }
+    },
+    "scripts": {
+        "test": [
+            "phpunit --colors=always"
+        ]
     }
 }

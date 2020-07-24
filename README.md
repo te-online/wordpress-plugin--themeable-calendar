@@ -174,6 +174,12 @@ Screenshots are to follow.
 
 ## 💇 Changelog
 
+### 0.4.3 Beta (24 July 2020)
+- Add Outlook compatibility by temporarily fixing timezone issues with Outlook-generated events
+- Update composer dependencies
+- Remove registration of `events` custom-post-type namespace
+- Catch when `last_modified` is not set on ical event
+
 ### 0.4.2 Beta (29 Jan 2019)
 - Add option to ignore `modified-date` field in iCal feed, to be compatible with Nextcloud.
 

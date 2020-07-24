@@ -4,7 +4,7 @@ namespace ICal;
 
 class Event
 {
-    // phpcs:disable Generic.Arrays.DisallowLongArraySyntax.Found
+    // phpcs:disable Generic.Arrays.DisallowLongArraySyntax
 
     const HTML_TEMPLATE = '<p>%s: %s</p>';
 
@@ -121,11 +121,9 @@ class Event
      */
     public function __construct(array $data = array())
     {
-        if (!empty($data)) {
-            foreach ($data as $key => $value) {
-                $variable = self::snakeCase($key);
-                $this->{$variable} = self::prepareData($value);
-            }
+        foreach ($data as $key => $value) {
+            $variable = self::snakeCase($key);
+            $this->{$variable} = self::prepareData($value);
         }
     }
 
@@ -175,7 +173,8 @@ class Event
             'ATTENDEE(S)'   => $this->attendee,
         );
 
-        $data   = array_filter($data); // Remove any blank values
+        // Remove any blank values
+        $data   = array_filter($data);
         $output = '';
 
         foreach ($data as $key => $value) {
@@ -196,7 +195,7 @@ class Event
     protected static function snakeCase($input, $glue = '_', $separator = '-')
     {
         $input = preg_split('/(?<=[a-z])(?=[A-Z])/x', $input);
-        $input = join($input, $glue);
+        $input = implode($glue, $input);
         $input = str_replace($separator, $glue, $input);
 
         return strtolower($input);

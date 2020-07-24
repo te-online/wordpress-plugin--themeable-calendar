@@ -48,4 +48,11 @@ vendor
 ##########
 # Custom #
 ##########
+*.git
 *-report.*
+
+########
+# IDEs #
+########
+.idea
+*.iml
