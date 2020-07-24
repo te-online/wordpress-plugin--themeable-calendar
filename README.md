@@ -174,6 +174,9 @@ Screenshots are to follow.
 
 ## 💇 Changelog
 
+### 0.4.4 Beta (24 July 2020)
+- Fix validation error when creating an event starting and ending on the same day but specifying times
+
 ### 0.4.3 Beta (24 July 2020)
 - Add Outlook compatibility by temporarily fixing timezone issues with Outlook-generated events
 - Update composer dependencies
