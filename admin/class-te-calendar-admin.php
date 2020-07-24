@@ -1156,12 +1156,6 @@ class Te_Calendar_Admin {
 		));
 	}
 
-	function getDST( $tzId, $time ) {
-		$tz = new DateTimeZone($tzId);
-		$transition = $tz->getTransitions($time);
-		return $transition[0]['isdst'];
-	}
-
 	/**
 	 * Filters REST API responses between the boundaries
 	 * of two dates. The parameters are _including_, meaning
