@@ -508,7 +508,7 @@
 			}
 
 			// Check if end date is after begin date. (Ignore time.)
-			if(has_end_input.checked && moment(end_date_input.value).isSameOrBefore(moment(begin_date_input.value))) {
+			if(allday_input.checked && has_end_input.checked && moment(end_date_input.value).isSameOrBefore(moment(begin_date_input.value))) {
 				return {
 					valid: false,
 					message: TE_CAL.translations.validate_date_range_message
@@ -516,7 +516,7 @@
 			}
 
 			// Check if end time is after begin time. (Only if time is relevant.)
-			if(has_end_input.checked && !allday_input.checked && moment(end_date_input.value + 'T' + end_time_input.value).isBefore(
+			if(!allday_input.checked && has_end_input.checked && moment(end_date_input.value + 'T' + end_time_input.value).isBefore(
 				moment(begin_date_input.value + 'T' + begin_time_input.value)
 			)) {
 				return {
