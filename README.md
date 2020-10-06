@@ -174,6 +174,9 @@ Screenshots are to follow.
 
 ## 💇 Changelog
 
+### 0.4.5 Beta (6 Oct 2020)
+- Remove Outlook compatibility hotfix, because it doesn't actually do any good
+
 ### 0.4.4 Beta (24 July 2020)
 - Fix validation error when creating an event starting and ending on the same day but specifying times
 
