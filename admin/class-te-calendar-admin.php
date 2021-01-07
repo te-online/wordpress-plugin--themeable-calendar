@@ -120,7 +120,7 @@ class Te_Calendar_Admin {
 			'tecal_ajax_nonce' => wp_create_nonce( 'tecal_events_edit' )
 		) );
 
-		wp_enqueue_script( $this->plugin_name . "moment", plugin_dir_url( __FILE__ ) . 'lib/fullcalendar/lib/moment-with-locales.min.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name . "moment", plugin_dir_url( __FILE__ ) . 'lib/moment/moment-with-locales.js', array( 'jquery' ), $this->version, false );
 
 		wp_enqueue_script( $this->plugin_name . "fullcalendar", plugin_dir_url( __FILE__ ) . 'lib/fullcalendar/fullcalendar.min.js', array( 'jquery' ), $this->version, false );
 

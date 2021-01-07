@@ -174,6 +174,10 @@ Screenshots are to follow.
 
 ## 💇 Changelog
 
+### 0.4.6 Beta (7 Jan 2021)
+- Update Full Calendar to [3.10.2](https://github.com/fullcalendar/fullcalendar/releases/tag/v3.10.2) to be compatible with jQuery 3.5.0
+- Bundle moment-with-locales with plugin, because it is no longer included in Full Calendar
+
 ### 0.4.5 Beta (6 Oct 2020)
 - Remove Outlook compatibility hotfix, because it doesn't actually do any good
 
