@@ -174,6 +174,9 @@ Screenshots are to follow.
 
 ## 💇 Changelog
 
+### 0.4.7 Beta (7 March 2024)
+- Attempt to fix an issue with a constructor in the dependency Carbon when running sync of calendars on WPCron
+
 ### 0.4.6 Beta (7 Jan 2021)
 - Update Full Calendar to [3.10.2](https://github.com/fullcalendar/fullcalendar/releases/tag/v3.10.2) to be compatible with jQuery 3.5.0
 - Bundle moment-with-locales with plugin, because it is no longer included in Full Calendar
