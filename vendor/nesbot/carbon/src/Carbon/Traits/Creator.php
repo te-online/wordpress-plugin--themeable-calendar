@@ -93,7 +93,12 @@ trait Creator
             setlocale(LC_NUMERIC, $locale);
         }
 
-        static::setLastErrors(parent::getLastErrors());
+        $parentLastErrors = parent::getLastErrors();
+        if (is_array($parentLastErrors)) {
+            static::setLastErrors($parentLastErrors);
+        } else {
+            static::setLastErrors([]);
+        }
     }
 
     /**
